@@ -1,6 +1,6 @@
 Databases (Built in SQLite)
 # TourSchedule(TourID, Street Address, City, State, Zip, Date, Capacity, CoverCharge, DoorPay, TicketsSold)
-# Sales(SaleID, MerchID, TourID, ItemsSold, TotalSales)
+# Sales(SaleID, TourID, ItemsSold, TotalSales)
 # Merchandise(MerchID, Type, Description, Price, UnitCost, Inventory, TotalSold)
 # LineItem(SaleID, SaleLineItemID, MerchID)
 
