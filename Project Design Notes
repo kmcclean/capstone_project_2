@@ -9,10 +9,10 @@ There will be four databases
 -Databases will have the ability to be updated, including adding new items, within the system. Possibly delete?
 -Ability to pull and print out results from the database.
 -Analysis needed:
-    Ordering items by units sold.
-    Ordering items by gross $ sales.
-    Ordering items by net $ sales.
-    Ordering items by sales per ticket sold.
+    Ordering items by units sold. * Complete *
+    Ordering items by gross $ sales. * Complete *
+    Ordering items by net $ sales. * Complete*
+    Showing items by sales per ticket sold.
     Produce warning for items that have less than 2 weeks worth of items remaining.
     Estimates for the next 5 shows.
     Estimated time of depletion per item.

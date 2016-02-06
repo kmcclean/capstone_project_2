@@ -138,14 +138,75 @@ class DBManager():
         self.cur.execute('select * from merchandise')
         best_selling_list = []
         for item in self.cur:
-           best_selling_list.append(item)
-        print(best_selling_list)
-        best_selling_list.sort(key=itemgetter[5], reverse=True)
-        print(best_selling_list)
+            best_selling_list.append(item)
 
+        # procedure taken from StackOverFlow: http://stackoverflow.com/questions/3121979/how-to-sort-list-tuple-of-lists-tuples
+        best_selling_list = sorted(best_selling_list, key=lambda tup:tup[5], reverse= True)
+
+        print("Ordered by Best Selling")
+        for item in best_selling_list:
+            print(item[2])
+
+    # this function takes the number of items sold for each unit, multiplies by the sales_price of each unit, and...
+    # then sorts by the gross value of the sales.
+    def show_best_units_sold_gross(self):
+        self.cur.execute('select * from merchandise')
+        gross_list = []
+
+        for item in self.cur:
+            units_sold = item[5]
+            sales_price = item [2]
+            total_sales = units_sold * sales_price
+            new_item = (item, total_sales)
+            gross_list.append(new_item)
+
+        # procedure taken from StackOverFlow: http://stackoverflow.com/questions/3121979/how-to-sort-list-tuple-of-lists-tuples
+        gross_list = sorted(gross_list, key=lambda tup:tup[1], reverse= True)
+
+        for item in gross_list:
+            print(item)
+
+    #this function shows the net value of each item sold, and then reports it back.
+    def show_best_units_sold_net(self):
+        self.cur.execute('select * from merchandise')
+        gross_list = []
+
+        for item in self.cur:
+            units_sold = item[5]
+            sales_price = item[2]
+            unit_cost = item[3]
+            net_sales = (units_sold * sales_price) - (units_sold * unit_cost)
+            new_item = (item, net_sales)
+            gross_list.append(new_item)
+
+        # procedure taken from StackOverFlow: http://stackoverflow.com/questions/3121979/how-to-sort-list-tuple-of-lists-tuples
+        gross_list = sorted(gross_list, key=lambda tup:tup[1], reverse= True)
+
+        for item in gross_list:
+            print(item)
+
+
+    def show_line_item_sales(self):
+        self.cur.execute('select * from line_item_sales')
+        for row in self.cur:
+            print(row)
+        return self.cur
 
     def show_merchandise(self):
         self.cur.execute('select * from merchandise')
-        #for row in self.cur:
-        #    print(row)
+        for row in self.cur:
+            print(row)
+        return self.cur
+
+    def show_sales(self):
+        self.cur.execute('select * from sales')
+        for row in self.cur:
+            print(row)
+        return self.cur
+
+
+    def show_tour_schedule(self):
+        self.cur.execute('select * from tour_schedule')
+        for row in self.cur:
+            print(row)
         return self.cur
