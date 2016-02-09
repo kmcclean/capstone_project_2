@@ -78,6 +78,10 @@ class MainWindow(tk.Tk):
     def client_exit(self):
         exit()
 
+    def getEntry(self, event):
+        print("Entry received: ")
+
+
 # Nav class
 class NavigationPage (tk.Frame):
 
@@ -96,11 +100,12 @@ class NavigationPage (tk.Frame):
         analysisButton = tk.Button(self, text="Analysis",
                             command=lambda: controller.show_frame(AnalysisPage))
 
-        # Packs
+        # --Grid layout--
         merchButton.grid(row=1, column=1)
         salesButton.grid(row=1, column=2)
         schedButton.grid(row=1, column=3)
         analysisButton.grid(row=1, column=4)
+
 
 # Merch class
 class MerchPage (tk.Frame):
@@ -110,8 +115,24 @@ class MerchPage (tk.Frame):
         merch_label = tk.Label(self, text="Merchandise", font="LARGE_FONT")
         merch_label.grid(row=0, column=0, columnspan=4)
 
+        # --String variables--
+        self.merch_id = StringVar()
+        self.merch_id.set("merch id")
+        self.type = StringVar()
+        self.type.set("type")
+        self.description = StringVar()
+        self.description.set("description")
+        self.unit_cost = StringVar()
+        self.unit_cost.set("unit cost")
+        self.quantity = StringVar()
+        self.quantity.set("quantity")
+        self.price = StringVar()
+        self.price.set("price")
+        self.total_sold = StringVar()
+        self.total_sold.set("total sold")
+
         # --Field labels--
-        id_label = tk.Label(self, text="ID")
+        merch_id_label = tk.Label(self, text="ID")
         type_label = tk.Label(self, text="Type")
         desc_label = tk.Label(self, text="Description")
         unit_cost_label = tk.Label(self, text="Unit Cost")
@@ -120,44 +141,50 @@ class MerchPage (tk.Frame):
         total_sold_label = tk.Label(self, text="Total Sold")
 
         # # --Form fields--
-        id_entry = tk.Entry(self)
+        merch_id_entry = tk.Entry(self)
+        merch_id_entry["textvariable"] = self.merch_id
+        merch_id_entry.bind('<Key-Return>', MainWindow.getEntry)
         type_entry = Entry(self)
+        type_entry["textvariable"] = self.type
+        type_entry.bind('<Key-Return>', MainWindow.getEntry)
         desc_entry = tk.Entry(self)
+        desc_entry["textvariable"] = self.description
+        desc_entry.bind('<Key-Return>', MainWindow.getEntry)
         unit_cost_entry = tk.Entry(self)
+        unit_cost_entry["textvariable"] = self.unit_cost
+        unit_cost_entry.bind('<Key-Return>', MainWindow.getEntry)
         quant_entry = tk.Entry(self)
+        quant_entry["textvariable"] = self.quantity
+        quant_entry.bind('<Key-Return>', MainWindow.getEntry)
         price_entry = tk.Entry(self)
+        price_entry["textvariable"] = self.price
+        price_entry.bind('<Key-Return>', MainWindow.getEntry)
         total_sold_entry = tk.Entry(self)
+        total_sold_entry["textvariable"] = self.total_sold
+        total_sold_entry.bind('<Key-Return>', MainWindow.getEntry)
 
         # --Grid Layouts--
         #ID
-        id_label.grid(row=1, column=2)
-        id_entry.grid(row=1, column=3)
-
+        merch_id_label.grid(row=1, column=2)
+        merch_id_entry.grid(row=1, column=3)
         #Type
         type_label.grid(row=3, column=2)
         type_entry.grid(row=3, column=3)
-
         #Description
         desc_label.grid(row=3, column=5)
         desc_entry.grid(row=3, column=6, columnspan=3)
-
         #Unit Cost
         unit_cost_label.grid(row=5, column=2)
         unit_cost_entry.grid(row=5, column=3)
-
         #Quantity
         quant_label.grid(row=5, column=5)
         quant_entry.grid(row=5, column=6)
-
         #Price
         price_label.grid(row=5, column=8)
         price_entry.grid(row=5, column=9)
-
         #TotalSold
         total_sold_label.grid(row=5, column=11)
         total_sold_entry.grid(row=5, column=12)
-
-
 
 
 # Sales class
@@ -167,6 +194,24 @@ class SalesPage (tk.Frame):
         tk.Frame.__init__(self, parent)
         label = tk.Label(self, text="New Sale", font="LARGE_FONT")
         label.grid(row=0, column=0, columnspan=8)
+
+        # --String variables--
+        self.sale_id = StringVar()
+        self.sale_id.set("sale id")
+        self.merch_id = StringVar()
+        self.merch_id.set("merch id")
+        self.tour_id = StringVar()
+        self.tour_id.set("tour id")
+        self.item_sold = StringVar()
+        self.item_sold.set("item sold")
+        self.description = StringVar()
+        self.description.set("description")
+        self.quantity = StringVar()
+        self.quantity.set("quantity")
+        self.subtotal = StringVar()
+        self.subtotal.set("subtotal")
+        self.total = StringVar()
+        self.total.set("total")
 
         # --Field labels--
         sale_id_label = tk.Label(self, text="Sale ID")
@@ -180,13 +225,29 @@ class SalesPage (tk.Frame):
 
         # --Form fields--
         sale_id_entry = tk.Entry(self)
+        sale_id_entry["textvariable"] = self.sale_id
+        sale_id_entry.bind('<Key-Return>', MainWindow.getEntry)
         merch_id_entry = Entry(self)
+        merch_id_entry["textvariable"] = self.merch_id
+        merch_id_entry.bind('<Key-Return>', MainWindow.getEntry)
         tour_id_entry = tk.Entry(self)
+        tour_id_entry["textvariable"] = self.tour_id
+        tour_id_entry.bind('<Key-Return>', MainWindow.getEntry)
         item_sold_entry = tk.Entry(self)
+        item_sold_entry["textvariable"] = self.item_sold
+        item_sold_entry.bind('<Key-Return>', MainWindow.getEntry)
         description_entry = tk.Entry(self)
+        description_entry["textvariable"] = self.description
+        description_entry.bind('<Key-Return>', MainWindow.getEntry)
         quantity_entry = tk.Entry(self)
+        quantity_entry["textvariable"] = self.quantity
+        quantity_entry.bind('<Key-Return>', MainWindow.getEntry)
         subtotal_entry = tk.Entry(self)
+        subtotal_entry["textvariable"] = self.subtotal
+        subtotal_entry.bind('<Key-Return>', MainWindow.getEntry)
         total_entry = tk.Entry(self)
+        total_entry["textvariable"] = self.total
+        total_entry.bind('<Key-Return>', MainWindow.getEntry)
 
         # --Buttons--
         applyButton = tk.Button(self, text="Apply")
@@ -221,6 +282,7 @@ class SalesPage (tk.Frame):
         applyButton.grid(row=5, column=6)
         cancelButton.grid(row=5, column=7)
 
+
 # Schedule class
 class SchedulePage (tk.Frame):
 
@@ -229,8 +291,26 @@ class SchedulePage (tk.Frame):
         label = tk.Label(self, text="Schedule", font="LARGE_FONT")
         label.grid(row=0, column=0, columnspan=12)
 
+        # --String variables--
+        self.schedule_id = StringVar()
+        self.schedule_id.set("schedule id")
+        self.date = StringVar()
+        self.date.set("date")
+        self.phone = StringVar()
+        self.phone.set("phone")
+        self.location = StringVar()
+        self.location.set("location")
+        self.address = StringVar()
+        self.address.set("address")
+        self.capacity = StringVar()
+        self.capacity.set("capacity")
+        self.door_pay = StringVar()
+        self.door_pay.set("door pay")
+        self.cover_charge = StringVar()
+        self.cover_charge.set("cover charge")
+
         # --Field labels--
-        id_label = tk.Label(self, text="ID")
+        sched_id_label = tk.Label(self, text="Schedule ID")
         date_label = tk.Label(self, text="Date")
         phone_label = tk.Label(self, text="Phone")
         location_label = tk.Label(self, text="Location")
@@ -240,14 +320,30 @@ class SchedulePage (tk.Frame):
         cover_charge_label = tk.Label(self, text="Cover Charge")
 
         # --Form fields--
-        id_entry = tk.Entry(self)
+        sched_id_entry = tk.Entry(self)
+        sched_id_entry["textvariable"] = self.schedule_id
+        sched_id_entry.bind('<Key-Return>', MainWindow.getEntry)
         date_entry = Entry(self)
+        date_entry["textvariable"] = self.date
+        date_entry.bind('<Key-Return>', MainWindow.getEntry)
         phone_entry = tk.Entry(self)
+        phone_entry["textvariable"] = self.phone
+        phone_entry.bind('<Key-Return>', MainWindow.getEntry)
         location_entry = tk.Entry(self)
+        location_entry["textvariable"] = self.location
+        location_entry.bind('<Key-Return>', MainWindow.getEntry)
         address_entry = tk.Entry(self)
+        address_entry["textvariable"] = self.address
+        address_entry.bind('<Key-Return>', MainWindow.getEntry)
         cap_entry = tk.Entry(self)
+        cap_entry["textvariable"] = self.capacity
+        cap_entry.bind('<Key-Return>', MainWindow.getEntry)
         door_pay_entry = tk.Entry(self)
+        door_pay_entry["textvariable"] = self.door_pay
+        door_pay_entry.bind('<Key-Return>', MainWindow.getEntry)
         cover_charge_entry = tk.Entry(self)
+        cover_charge_entry["textvariable"] = self.cover_charge
+        cover_charge_entry.bind('<Key-Return>', MainWindow.getEntry)
 
         # --Buttons--
         applyButton = tk.Button(self, text="Apply")
@@ -255,8 +351,8 @@ class SchedulePage (tk.Frame):
 
         # --Grid layout--
         #ID
-        id_label.grid(row=1, column=0)
-        id_entry.grid(row=1, column=1)
+        sched_id_label.grid(row=1, column=0)
+        sched_id_entry.grid(row=1, column=1)
         #Date
         date_label.grid(row=1, column=2)
         date_entry.grid(row=1, column=3)
@@ -300,8 +396,6 @@ class AnalysisPage(tk.Frame):
         toolbar = NavigationToolbar2TkAgg(canvas, self)
         toolbar.update()
         canvas._tkcanvas.pack(side=tk.BOTTOM, fill=tk.BOTH, expand=True)
-
-
 
 
 app = MainWindow()
