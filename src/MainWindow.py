@@ -128,32 +128,32 @@ class MerchPage (tk.Frame):
         price_entry = tk.Entry(self)
         total_sold_entry = tk.Entry(self)
 
-        # # --Grid Layouts--
-        # #ID
+        # --Grid Layouts--
+        #ID
         id_label.grid(row=1, column=2)
         id_entry.grid(row=1, column=3)
 
-        # #Type
+        #Type
         type_label.grid(row=3, column=2)
         type_entry.grid(row=3, column=3)
 
-        # #Description
+        #Description
         desc_label.grid(row=3, column=5)
         desc_entry.grid(row=3, column=6, columnspan=3)
 
-        # #Unit Cost
+        #Unit Cost
         unit_cost_label.grid(row=5, column=2)
         unit_cost_entry.grid(row=5, column=3)
 
-        # #Quantity
+        #Quantity
         quant_label.grid(row=5, column=5)
         quant_entry.grid(row=5, column=6)
 
-        # #Price
+        #Price
         price_label.grid(row=5, column=8)
         price_entry.grid(row=5, column=9)
 
-        # #TotalSold
+        #TotalSold
         total_sold_label.grid(row=5, column=11)
         total_sold_entry.grid(row=5, column=12)
 
@@ -165,9 +165,61 @@ class SalesPage (tk.Frame):
 
     def __init__(self, parent, controller):
         tk.Frame.__init__(self, parent)
-        label = tk.Label(self, text="Sales", font="LARGE_FONT")
-        label.pack(pady=10, padx=10)
+        label = tk.Label(self, text="New Sale", font="LARGE_FONT")
+        label.grid(row=0, column=0, columnspan=8)
 
+        # --Field labels--
+        sale_id_label = tk.Label(self, text="Sale ID")
+        merch_id_label = tk.Label(self, text="Merch ID")
+        tour_id_label = tk.Label(self, text="Tour ID")
+        item_sold_label = tk.Label(self, text="Item Sold")
+        description_label = tk.Label(self, text="Description")
+        quantity_label = tk.Label(self, text="Quantity")
+        subtotal_label = tk.Label(self, text="Subtotal")
+        total_label = tk.Label(self, text="Total")
+
+        # --Form fields--
+        sale_id_entry = tk.Entry(self)
+        merch_id_entry = Entry(self)
+        tour_id_entry = tk.Entry(self)
+        item_sold_entry = tk.Entry(self)
+        description_entry = tk.Entry(self)
+        quantity_entry = tk.Entry(self)
+        subtotal_entry = tk.Entry(self)
+        total_entry = tk.Entry(self)
+
+        # --Buttons--
+        applyButton = tk.Button(self, text="Apply")
+        cancelButton = tk.Button(self, text="Cancel")
+
+        # --Grid layout--
+        #Sale ID
+        sale_id_label.grid(row=1, column=0)
+        sale_id_entry.grid(row=1, column=1)
+        #Merch ID
+        merch_id_label.grid(row=1, column=2)
+        merch_id_entry.grid(row=1, column=3)
+        #Tour ID
+        tour_id_label.grid(row=1, column=4)
+        tour_id_entry.grid(row=1, column=5)
+        #Item sold
+        item_sold_label.grid(row=2, column=0)
+        item_sold_entry.grid(row=2, column=1)
+        #Description
+        description_label.grid(row=2, column=2)
+        description_entry.grid(row=2, column=3)
+        #Quantity
+        quantity_label.grid(row=2, column=4)
+        quantity_entry.grid(row=2, column=5)
+        #Subtotal
+        subtotal_label.grid(row=2, column=6)
+        subtotal_entry.grid(row=2, column=7)
+        #Total
+        total_label.grid(row=3, column=6)
+        total_entry.grid(row=3, column=7)
+
+        applyButton.grid(row=5, column=6)
+        cancelButton.grid(row=5, column=7)
 
 # Schedule class
 class SchedulePage (tk.Frame):
@@ -175,8 +227,60 @@ class SchedulePage (tk.Frame):
     def __init__(self, parent, controller):
         tk.Frame.__init__(self, parent)
         label = tk.Label(self, text="Schedule", font="LARGE_FONT")
-        label.pack(pady=10, padx=10)
+        label.grid(row=0, column=0, columnspan=12)
 
+        # --Field labels--
+        id_label = tk.Label(self, text="ID")
+        date_label = tk.Label(self, text="Date")
+        phone_label = tk.Label(self, text="Phone")
+        location_label = tk.Label(self, text="Location")
+        address_label = tk.Label(self, text="Address")
+        cap_label = tk.Label(self, text="Capacity")
+        door_pay_label = tk.Label(self, text="Door Pay")
+        cover_charge_label = tk.Label(self, text="Cover Charge")
+
+        # --Form fields--
+        id_entry = tk.Entry(self)
+        date_entry = Entry(self)
+        phone_entry = tk.Entry(self)
+        location_entry = tk.Entry(self)
+        address_entry = tk.Entry(self)
+        cap_entry = tk.Entry(self)
+        door_pay_entry = tk.Entry(self)
+        cover_charge_entry = tk.Entry(self)
+
+        # --Buttons--
+        applyButton = tk.Button(self, text="Apply")
+        deleteButton = tk.Button(self, text="Delete")
+
+        # --Grid layout--
+        #ID
+        id_label.grid(row=1, column=0)
+        id_entry.grid(row=1, column=1)
+        #Date
+        date_label.grid(row=1, column=2)
+        date_entry.grid(row=1, column=3)
+        #Phone
+        phone_label.grid(row=1, column=4)
+        phone_entry.grid(row=1, column=5)
+        #Location
+        location_label.grid(row=2, column=0)
+        location_entry.grid(row=2, column=1)
+        #Address
+        address_label.grid(row=2, column=2)
+        address_entry.grid(row=2, column=3)
+        #Capacity
+        cap_label.grid(row=3, column=0)
+        cap_entry.grid(row=3, column=1)
+        #Door pay
+        door_pay_label.grid(row=3, column=2)
+        door_pay_entry.grid(row=3, column=3)
+        #Cover charge
+        cover_charge_label.grid(row=3, column=4)
+        cover_charge_entry.grid(row=3, column=5)
+        #Buttons
+        applyButton.grid(row=5, column=4)
+        deleteButton.grid(row=5, column=5)
 
 
 # Analysis Class
@@ -201,5 +305,5 @@ class AnalysisPage(tk.Frame):
 
 
 app = MainWindow()
-app.geometry("800x600")
+app.geometry("1200x720")
 app.mainloop()
