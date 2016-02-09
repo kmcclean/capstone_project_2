@@ -111,13 +111,13 @@ class MerchPage (tk.Frame):
         merch_label.grid(row=0, column=0, columnspan=4)
 
         # --Field labels--
-        id_label = tk.Label(text="ID")
-        type_label = tk.Label(text="Type")
-        desc_label = tk.Label(text="Description")
-        unit_cost_label = tk.Label(text="Unit Cost")
-        quant_label = tk.Label(text="Quantity")
-        price_label = tk.Label(text="Price")
-        total_sold_label = tk.Label(text="Total Sold")
+        id_label = tk.Label(self, text="ID")
+        type_label = tk.Label(self, text="Type")
+        desc_label = tk.Label(self, text="Description")
+        unit_cost_label = tk.Label(self, text="Unit Cost")
+        quant_label = tk.Label(self, text="Quantity")
+        price_label = tk.Label(self, text="Price")
+        total_sold_label = tk.Label(self, text="Total Sold")
 
         # # --Form fields--
         id_entry = tk.Entry(self)
@@ -131,31 +131,31 @@ class MerchPage (tk.Frame):
         # # --Grid Layouts--
         # #ID
         id_label.grid(row=1, column=2)
-        # id_entry.grid(row=1, column=3) # <--- when entries are added to the grid the program hangs on launch
+        id_entry.grid(row=1, column=3)
 
         # #Type
         type_label.grid(row=3, column=2)
-        # type_entry.grid(row=3, column=3)
+        type_entry.grid(row=3, column=3)
 
         # #Description
         desc_label.grid(row=3, column=5)
-        # desc_entry.grid(row=3, column=6, columnspan=3)
+        desc_entry.grid(row=3, column=6, columnspan=3)
 
         # #Unit Cost
         unit_cost_label.grid(row=5, column=2)
-        # unit_cost_entry.grid(row=5, column=3)
+        unit_cost_entry.grid(row=5, column=3)
 
         # #Quantity
         quant_label.grid(row=5, column=5)
-        # quant_entry.grid(row=5, column=6)
+        quant_entry.grid(row=5, column=6)
 
         # #Price
         price_label.grid(row=5, column=8)
-        # price_entry.grid(row=5, column=9)
+        price_entry.grid(row=5, column=9)
 
         # #TotalSold
         total_sold_label.grid(row=5, column=11)
-        # total_sold_entry.grid(row=5, column=12)
+        total_sold_entry.grid(row=5, column=12)
 
 
 
