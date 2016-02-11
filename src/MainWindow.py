@@ -199,19 +199,19 @@ class MerchPage (tk.Frame):
         merch_tree.column("desc", width=300)
         merch_tree.heading("desc", text="Description")
         #Unit Cost
-        merch_tree.column("unit_cost", width=100)
+        merch_tree.column("unit_cost", width=80)
         merch_tree.heading("unit_cost", text="Unit Cost")
         #Quantity
-        merch_tree.column("quant", width=100)
+        merch_tree.column("quant", width=80)
         merch_tree.heading("quant", text="Quantity")
         #Price
-        merch_tree.column("price", width=100)
+        merch_tree.column("price", width=80)
         merch_tree.heading("price", text="Price")
         #Total Sold
-        merch_tree.column("total_sold", width=100)
+        merch_tree.column("total_sold", width=80)
         merch_tree.heading("total_sold", text="Total Sold")
 
-        merch_tree.grid(row=10, column=2, columnspan=13)
+        merch_tree.grid(row=10, column=0, columnspan=13)
 
         # ** Use merch_tree.insert("", <linenumber>, text="merch_id", values=("field1", "field2", etc.))
 
@@ -220,8 +220,8 @@ class SalesPage (tk.Frame):
 
     def __init__(self, parent, controller):
         tk.Frame.__init__(self, parent)
-        label = tk.Label(self, text="New Sale", font="LARGE_FONT")
-        label.grid(row=0, column=0, columnspan=8)
+        label = tk.Label(self, text="Sales", font="LARGE_FONT")
+        label.grid(row=0, column=4)
 
         # --String variables--
         self.sale_id = StringVar()
@@ -312,29 +312,32 @@ class SalesPage (tk.Frame):
 
         #Treeview
         sales_tree = ttk.Treeview(self)
-        sales_tree["columns"] = ("merch_id", "type", "desc", "unit_cost", "quant", "price", "total_sold")
+        sales_tree["columns"] = ("merch_id", "tour_id", "item_sold", "desc", "quant", "subtotal", "total")
         #Sale ID
         # blank column
-        #Type
-        sales_tree.column("merch_id", width=100)
+        #Merch ID
+        sales_tree.column("merch_id", width=80)
         sales_tree.heading("merch_id", text="Merch ID")
+        #Tour ID
+        sales_tree.column("tour_id", width=80)
+        sales_tree.heading("tour_id", text="Tour ID")
+        #Item Sold
+        sales_tree.column("item_sold", width=150)
+        sales_tree.heading("item_sold", text="Item Sold")
         #Description
         sales_tree.column("desc", width=300)
         sales_tree.heading("desc", text="Description")
-        #Unit Cost
-        sales_tree.column("unit_cost", width=100)
-        sales_tree.heading("unit_cost", text="Unit Cost")
         #Quantity
-        sales_tree.column("quant", width=100)
+        sales_tree.column("quant", width=80)
         sales_tree.heading("quant", text="Quantity")
-        #Price
-        sales_tree.column("price", width=100)
-        sales_tree.heading("price", text="Price")
-        #Total Sold
-        sales_tree.column("total_sold", width=100)
-        sales_tree.heading("total_sold", text="Total Sold")
+        #Subtotal
+        sales_tree.column("subtotal", width=80)
+        sales_tree.heading("subtotal", text="Subtotal")
+        #Total
+        sales_tree.column("total", width=80)
+        sales_tree.heading("total", text="Total")
 
-        sales_tree.grid(row=10, column=2, columnspan=13)
+        sales_tree.grid(row=10, column=0, columnspan=13)
 
 
 # Schedule class
@@ -352,8 +355,8 @@ class SchedulePage (tk.Frame):
         self.date.set("date")
         self.phone = StringVar()
         self.phone.set("phone")
-        self.location = StringVar()
-        self.location.set("location")
+        self.venue = StringVar()
+        self.venue.set("venue")
         self.address = StringVar()
         self.address.set("address")
         self.capacity = StringVar()
@@ -367,7 +370,7 @@ class SchedulePage (tk.Frame):
         sched_id_label = tk.Label(self, text="Schedule ID")
         date_label = tk.Label(self, text="Date")
         phone_label = tk.Label(self, text="Phone")
-        location_label = tk.Label(self, text="Location")
+        venue_label = tk.Label(self, text="Venue")
         address_label = tk.Label(self, text="Address")
         cap_label = tk.Label(self, text="Capacity")
         door_pay_label = tk.Label(self, text="Door Pay")
@@ -383,9 +386,9 @@ class SchedulePage (tk.Frame):
         phone_entry = tk.Entry(self)
         phone_entry["textvariable"] = self.phone
         phone_entry.bind('<Key-Return>', MainWindow.getEntry)
-        location_entry = tk.Entry(self)
-        location_entry["textvariable"] = self.location
-        location_entry.bind('<Key-Return>', MainWindow.getEntry)
+        venue_entry = tk.Entry(self)
+        venue_entry["textvariable"] = self.location
+        venue_entry.bind('<Key-Return>', MainWindow.getEntry)
         address_entry = tk.Entry(self)
         address_entry["textvariable"] = self.address
         address_entry.bind('<Key-Return>', MainWindow.getEntry)
@@ -413,9 +416,9 @@ class SchedulePage (tk.Frame):
         #Phone
         phone_label.grid(row=1, column=4)
         phone_entry.grid(row=1, column=5)
-        #Location
-        location_label.grid(row=2, column=0)
-        location_entry.grid(row=2, column=1)
+        #Venue
+        venue_label.grid(row=2, column=0)
+        venue_entry.grid(row=2, column=1)
         #Address
         address_label.grid(row=2, column=2)
         address_entry.grid(row=2, column=3)
@@ -432,6 +435,34 @@ class SchedulePage (tk.Frame):
         applyButton.grid(row=5, column=4)
         deleteButton.grid(row=5, column=5)
 
+        #Treeview
+        schedule_tree = ttk.Treeview(self)
+        schedule_tree["columns"] = ("date", "phone", "venue", "address", "cap", "door_pay", "cover_charge")
+        #Schedule ID
+        # blank column
+        #Merch ID
+        schedule_tree.column("date", width=80)
+        schedule_tree.heading("date", text="Date")
+        #Tour ID
+        schedule_tree.column("phone", width=80)
+        schedule_tree.heading("phone", text="Phone")
+        #Item Sold
+        schedule_tree.column("venue", width=150)
+        schedule_tree.heading("venue", text="Venue")
+        #Description
+        schedule_tree.column("address", width=200)
+        schedule_tree.heading("address", text="Address")
+        #Quantity
+        schedule_tree.column("cap", width=80)
+        schedule_tree.heading("cap", text="Capacity")
+        #Subtotal
+        schedule_tree.column("door_pay", width=80)
+        schedule_tree.heading("door_pay", text="Door Pay")
+        #Total
+        schedule_tree.column("cover_charge", width=80)
+        schedule_tree.heading("cover_charge", text="Cover Charge")
+
+        schedule_tree.grid(row=10, column=0, columnspan=13)
 
 # Analysis Class
 class AnalysisPage(tk.Frame):
@@ -440,6 +471,40 @@ class AnalysisPage(tk.Frame):
         tk.Frame.__init__(self, parent)
         label = tk.Label(self, text="Analysis", font="LARGE_FONT")
         label.pack(pady=10, padx=10)
+
+
+        # Order items by units sold
+            # checkbox?
+
+        # Order items by gross sales
+
+        # Order items by net sales
+
+        #Treeview
+        analysis_tree = ttk.Treeview(self)
+        analysis_tree["columns"] = ("type", "desc", "unit_cost", "quant", "price", "total_sold")
+        #Merch ID
+        # blank column on left
+        #Type
+        analysis_tree.column("type", width=100)
+        analysis_tree.heading("type", text="Type")
+        #Description
+        analysis_tree.column("desc", width=300)
+        analysis_tree.heading("desc", text="Description")
+        #Unit Cost
+        analysis_tree.column("unit_cost", width=80)
+        analysis_tree.heading("unit_cost", text="Unit Cost")
+        #Quantity
+        analysis_tree.column("quant", width=80)
+        analysis_tree.heading("quant", text="Quantity")
+        #Price
+        analysis_tree.column("price", width=80)
+        analysis_tree.heading("price", text="Price")
+        #Total Sold
+        analysis_tree.column("total_sold", width=80)
+        analysis_tree.heading("total_sold", text="Total Sold")
+
+        analysis_tree.grid(row=10, column=0, columnspan=13)
 
         # # Canvas for graph
         # canvas = FigureCanvasTkAgg(f, self)
