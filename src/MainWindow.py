@@ -5,20 +5,21 @@ from tkinter import ttk
 from tkinter import *
 
 # For Analysis
-import matplotlib
-matplotlib.use("TkAgg")
-from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg, NavigationToolbar2TkAgg
-from matplotlib.figure import Figure
-import matplotlib.animation as animation
-from matplotlib import style
-from matplotlib import pyplot as plt
+# import matplotlib
+# matplotlib.use("TkAgg")
+# from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg, NavigationToolbar2TkAgg
+# from matplotlib.figure import Figure
+# import matplotlib.animation as animation
+# from matplotlib import style
+# from matplotlib import pyplot as plt
+
 
 LARGE_FONT = ("Verdana", 12)
 NORM_FONT = ("Veranda", 10)
 SMALL_FONT = ("Veranda", 8)
-style.use("ggplot")
-
-f = Figure()
+# style.use("ggplot")
+#
+# f = Figure()
 
 class MainWindow(tk.Tk):
 
@@ -113,7 +114,7 @@ class MerchPage (tk.Frame):
     def __init__(self, parent, controller):
         tk.Frame.__init__(self, parent)
         merch_label = tk.Label(self, text="Merchandise", font="LARGE_FONT")
-        merch_label.grid(row=0, column=0, columnspan=4)
+        merch_label.grid(row=0, column=7)
 
         # --String variables--
         self.merch_id = StringVar()
@@ -186,6 +187,33 @@ class MerchPage (tk.Frame):
         total_sold_label.grid(row=5, column=11)
         total_sold_entry.grid(row=5, column=12)
 
+        #Treeview
+        merch_tree = ttk.Treeview(self)
+        merch_tree["columns"] = ("type", "desc", "unit_cost", "quant", "price", "total_sold")
+        #Merch ID
+        # blank column on left
+        #Type
+        merch_tree.column("type", width=100)
+        merch_tree.heading("type", text="Type")
+        #Description
+        merch_tree.column("desc", width=300)
+        merch_tree.heading("desc", text="Description")
+        #Unit Cost
+        merch_tree.column("unit_cost", width=100)
+        merch_tree.heading("unit_cost", text="Unit Cost")
+        #Quantity
+        merch_tree.column("quant", width=100)
+        merch_tree.heading("quant", text="Quantity")
+        #Price
+        merch_tree.column("price", width=100)
+        merch_tree.heading("price", text="Price")
+        #Total Sold
+        merch_tree.column("total_sold", width=100)
+        merch_tree.heading("total_sold", text="Total Sold")
+
+        merch_tree.grid(row=10, column=2, columnspan=13)
+
+        # ** Use merch_tree.insert("", <linenumber>, text="merch_id", values=("field1", "field2", etc.))
 
 # Sales class
 class SalesPage (tk.Frame):
@@ -281,6 +309,32 @@ class SalesPage (tk.Frame):
 
         applyButton.grid(row=5, column=6)
         cancelButton.grid(row=5, column=7)
+
+        #Treeview
+        sales_tree = ttk.Treeview(self)
+        sales_tree["columns"] = ("merch_id", "type", "desc", "unit_cost", "quant", "price", "total_sold")
+        #Sale ID
+        # blank column
+        #Type
+        sales_tree.column("merch_id", width=100)
+        sales_tree.heading("merch_id", text="Merch ID")
+        #Description
+        sales_tree.column("desc", width=300)
+        sales_tree.heading("desc", text="Description")
+        #Unit Cost
+        sales_tree.column("unit_cost", width=100)
+        sales_tree.heading("unit_cost", text="Unit Cost")
+        #Quantity
+        sales_tree.column("quant", width=100)
+        sales_tree.heading("quant", text="Quantity")
+        #Price
+        sales_tree.column("price", width=100)
+        sales_tree.heading("price", text="Price")
+        #Total Sold
+        sales_tree.column("total_sold", width=100)
+        sales_tree.heading("total_sold", text="Total Sold")
+
+        sales_tree.grid(row=10, column=2, columnspan=13)
 
 
 # Schedule class
@@ -387,15 +441,15 @@ class AnalysisPage(tk.Frame):
         label = tk.Label(self, text="Analysis", font="LARGE_FONT")
         label.pack(pady=10, padx=10)
 
-        # Canvas for graph
-        canvas = FigureCanvasTkAgg(f, self)
-        canvas.show()
-        canvas.get_tk_widget().pack(side=tk.BOTTOM, fill=tk.X, expand=True)
-
-        #Toolbar
-        toolbar = NavigationToolbar2TkAgg(canvas, self)
-        toolbar.update()
-        canvas._tkcanvas.pack(side=tk.BOTTOM, fill=tk.BOTH, expand=True)
+        # # Canvas for graph
+        # canvas = FigureCanvasTkAgg(f, self)
+        # canvas.show()
+        # canvas.get_tk_widget().pack(side=tk.BOTTOM, fill=tk.X, expand=True)
+        #
+        # #Toolbar
+        # toolbar = NavigationToolbar2TkAgg(canvas, self)
+        # toolbar.update()
+        # canvas._tkcanvas.pack(side=tk.BOTTOM, fill=tk.BOTH, expand=True)
 
 
 app = MainWindow()
