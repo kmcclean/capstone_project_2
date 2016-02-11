@@ -4,7 +4,6 @@ import tkinter as tk
 from tkinter import ttk
 from tkinter import *
 from src.Controller import Controller
-from src.DBManager import DBManager
 
 # For Analysis
 # import matplotlib
@@ -29,10 +28,9 @@ class MainWindow(tk.Tk):
 
     def __init__(self, *args, **kwargs):
         tk.Tk.__init__(self, *args, **kwargs)
+        con.start_db_manager()
 
-        db_controller = self.get_controller()
-        db_controller.start_db_manager()
-
+        con.start_db_manager()
         tk.Tk.wm_title(self, "Inventory Manager")
 
         # Container
@@ -84,6 +82,8 @@ class MainWindow(tk.Tk):
         frame.tkraise() # <- raises to front of window
 
     def client_exit(self):
+        con.close_database()
+        print("Database closed.")
         exit()
 
     def get_entry(self, event):
@@ -225,12 +225,7 @@ class MerchPage (tk.Frame):
         merch_tree.grid(row=10, column=0, columnspan=13)
 
         # This adds the data from the database to the GUI.
-        merch_db_controller = MainWindow.get_controller(self)
-        merch_list = merch_db_controller.get_merch_info_for_merch_window()
-        merch_db_controller.show_all()
-
-        print ("Merch list: " + str(merch_list))
-
+        merch_list = con.get_merch_info_for_merch_window()
         for item in merch_list:
             merch_tree.insert("", 1, text=item[0], values=(item[1], item[2], item[3], item[4], item[5], item[6]))
 
@@ -359,6 +354,9 @@ class SalesPage (tk.Frame):
         sales_tree.heading("total", text="Total")
 
         sales_tree.grid(row=10, column=0, columnspan=13)
+        sales_list = con.get_sales_info_for_sales_window()
+        for item in sales_list:
+            sales_tree.insert("", 1, text=item[0], values=(item[1], item[2], item[3], item[4], item[5], item[6]))
 
 
 # Schedule class
@@ -484,6 +482,10 @@ class SchedulePage (tk.Frame):
         schedule_tree.heading("cover_charge", text="Cover Charge")
 
         schedule_tree.grid(row=10, column=0, columnspan=13)
+
+        schedule_list = con.get_sales_info_for_sales_window()
+        for item in schedule_list:
+            schedule_tree.insert("", 1, text=item[0], values=(item[1], item[2], item[3], item[4], item[5], item[6]))
 
 # Analysis Class
 class AnalysisPage(tk.Frame):

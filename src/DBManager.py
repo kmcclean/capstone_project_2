@@ -113,11 +113,12 @@ class DBManager():
                          [line_item_key, sales_key, merch_key, merch_sales_price, merch_unit_price])
 
     # This collects information from the merchandise table.
-    def get_merch(self):
-        self.cur.execute('select * from merchandise')
+    def get_table_data(self, table_name):
+        self.cur.execute('select * from ' + table_name)
+        return_list = []
         for row in self.cur:
-            print("get_merch row: " + str(row))
-        return self.cur
+            return_list.append(row)
+        return return_list
 
     # this gets the next available id for a given table.
     def get_next_id(self, table_name):

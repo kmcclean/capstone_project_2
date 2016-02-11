@@ -1,6 +1,7 @@
 __author__ = 'casey'
-from src.DBManager import DBManager
+
 from src.MainWindow import MainWindow
+from src.Controller import Controller
 class Main():
 
 
@@ -15,7 +16,6 @@ class Main():
         # db.show_best_units_sold_gross()
         # db.show_best_units_sold_net()
         # db.close_database()
-        print("Database closed.")
 
     def start_gui(self):
         mw = MainWindow()
