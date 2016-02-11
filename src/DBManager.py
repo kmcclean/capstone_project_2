@@ -115,6 +115,8 @@ class DBManager():
     # This collects information from the merchandise table.
     def get_merch(self):
         self.cur.execute('select * from merchandise')
+        for row in self.cur:
+            print("get_merch row: " + str(row))
         return self.cur
 
     # this gets the next available id for a given table.
@@ -190,7 +192,6 @@ class DBManager():
         for item in gross_list:
             print(item)
 
-
     def show_line_item_sales(self):
         self.cur.execute('select * from line_item_sales')
         for row in self.cur:
@@ -208,7 +209,6 @@ class DBManager():
         for row in self.cur:
             print(row)
         return self.cur
-
 
     def show_tour_schedule(self):
         self.cur.execute('select * from tour_schedule')

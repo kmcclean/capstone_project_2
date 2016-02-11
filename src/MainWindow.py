@@ -4,6 +4,7 @@ import tkinter as tk
 from tkinter import ttk
 from tkinter import *
 from src.Controller import Controller
+from src.DBManager import DBManager
 
 # For Analysis
 # import matplotlib
@@ -18,6 +19,8 @@ from src.Controller import Controller
 LARGE_FONT = ("Verdana", 12)
 NORM_FONT = ("Veranda", 10)
 SMALL_FONT = ("Veranda", 8)
+con = Controller()
+
 # style.use("ggplot")
 #
 # f = Figure()
@@ -26,6 +29,9 @@ class MainWindow(tk.Tk):
 
     def __init__(self, *args, **kwargs):
         tk.Tk.__init__(self, *args, **kwargs)
+
+        db_controller = self.get_controller()
+        db_controller.start_db_manager()
 
         tk.Tk.wm_title(self, "Inventory Manager")
 
@@ -80,8 +86,12 @@ class MainWindow(tk.Tk):
     def client_exit(self):
         exit()
 
-    def getEntry(self, event):
+    def get_entry(self, event):
         print("Entry received: ")
+
+    def get_controller(self):
+        c = Controller()
+        return c
 
 
 # Nav class
@@ -145,25 +155,25 @@ class MerchPage (tk.Frame):
         # # --Form fields--
         merch_id_entry = tk.Entry(self)
         merch_id_entry["textvariable"] = self.merch_id
-        merch_id_entry.bind('<Key-Return>', MainWindow.getEntry)
+        merch_id_entry.bind('<Key-Return>', MainWindow.get_entry)
         type_entry = Entry(self)
         type_entry["textvariable"] = self.type
-        type_entry.bind('<Key-Return>', MainWindow.getEntry)
+        type_entry.bind('<Key-Return>', MainWindow.get_entry)
         desc_entry = tk.Entry(self)
         desc_entry["textvariable"] = self.description
-        desc_entry.bind('<Key-Return>', MainWindow.getEntry)
+        desc_entry.bind('<Key-Return>', MainWindow.get_entry)
         unit_cost_entry = tk.Entry(self)
         unit_cost_entry["textvariable"] = self.unit_cost
-        unit_cost_entry.bind('<Key-Return>', MainWindow.getEntry)
+        unit_cost_entry.bind('<Key-Return>', MainWindow.get_entry)
         quant_entry = tk.Entry(self)
         quant_entry["textvariable"] = self.quantity
-        quant_entry.bind('<Key-Return>', MainWindow.getEntry)
+        quant_entry.bind('<Key-Return>', MainWindow.get_entry)
         price_entry = tk.Entry(self)
         price_entry["textvariable"] = self.price
-        price_entry.bind('<Key-Return>', MainWindow.getEntry)
+        price_entry.bind('<Key-Return>', MainWindow.get_entry)
         total_sold_entry = tk.Entry(self)
         total_sold_entry["textvariable"] = self.total_sold
-        total_sold_entry.bind('<Key-Return>', MainWindow.getEntry)
+        total_sold_entry.bind('<Key-Return>', MainWindow.get_entry)
 
         # --Grid Layouts--
         #ID
@@ -215,10 +225,14 @@ class MerchPage (tk.Frame):
         merch_tree.grid(row=10, column=0, columnspan=13)
 
         # This adds the data from the database to the GUI.
-        con = Controller()
-        merch_list = con.get_merch_info_for_merch_window()
+        merch_db_controller = MainWindow.get_controller(self)
+        merch_list = merch_db_controller.get_merch_info_for_merch_window()
+        merch_db_controller.show_all()
+
+        print ("Merch list: " + str(merch_list))
+
         for item in merch_list:
-            merch_tree.insert("", "end", values = (item[0], item[1], item[2], item[3], item[4], item[5], item[6]))
+            merch_tree.insert("", 1, text=item[0], values=(item[1], item[2], item[3], item[4], item[5], item[6]))
 
         # ** Use merch_tree.insert("", <linenumber>, text="merch_id", values=("field1", "field2", etc.))
 
@@ -261,28 +275,28 @@ class SalesPage (tk.Frame):
         # --Form fields--
         sale_id_entry = tk.Entry(self)
         sale_id_entry["textvariable"] = self.sale_id
-        sale_id_entry.bind('<Key-Return>', MainWindow.getEntry)
+        sale_id_entry.bind('<Key-Return>', MainWindow.get_entry)
         merch_id_entry = Entry(self)
         merch_id_entry["textvariable"] = self.merch_id
-        merch_id_entry.bind('<Key-Return>', MainWindow.getEntry)
+        merch_id_entry.bind('<Key-Return>', MainWindow.get_entry)
         tour_id_entry = tk.Entry(self)
         tour_id_entry["textvariable"] = self.tour_id
-        tour_id_entry.bind('<Key-Return>', MainWindow.getEntry)
+        tour_id_entry.bind('<Key-Return>', MainWindow.get_entry)
         item_sold_entry = tk.Entry(self)
         item_sold_entry["textvariable"] = self.item_sold
-        item_sold_entry.bind('<Key-Return>', MainWindow.getEntry)
+        item_sold_entry.bind('<Key-Return>', MainWindow.get_entry)
         description_entry = tk.Entry(self)
         description_entry["textvariable"] = self.description
-        description_entry.bind('<Key-Return>', MainWindow.getEntry)
+        description_entry.bind('<Key-Return>', MainWindow.get_entry)
         quantity_entry = tk.Entry(self)
         quantity_entry["textvariable"] = self.quantity
-        quantity_entry.bind('<Key-Return>', MainWindow.getEntry)
+        quantity_entry.bind('<Key-Return>', MainWindow.get_entry)
         subtotal_entry = tk.Entry(self)
         subtotal_entry["textvariable"] = self.subtotal
-        subtotal_entry.bind('<Key-Return>', MainWindow.getEntry)
+        subtotal_entry.bind('<Key-Return>', MainWindow.get_entry)
         total_entry = tk.Entry(self)
         total_entry["textvariable"] = self.total
-        total_entry.bind('<Key-Return>', MainWindow.getEntry)
+        total_entry.bind('<Key-Return>', MainWindow.get_entry)
 
         # --Buttons--
         applyButton = tk.Button(self, text="Apply")
@@ -386,28 +400,28 @@ class SchedulePage (tk.Frame):
         # --Form fields--
         sched_id_entry = tk.Entry(self)
         sched_id_entry["textvariable"] = self.schedule_id
-        sched_id_entry.bind('<Key-Return>', MainWindow.getEntry)
+        sched_id_entry.bind('<Key-Return>', MainWindow.get_entry)
         date_entry = Entry(self)
         date_entry["textvariable"] = self.date
-        date_entry.bind('<Key-Return>', MainWindow.getEntry)
+        date_entry.bind('<Key-Return>', MainWindow.get_entry)
         phone_entry = tk.Entry(self)
         phone_entry["textvariable"] = self.phone
-        phone_entry.bind('<Key-Return>', MainWindow.getEntry)
+        phone_entry.bind('<Key-Return>', MainWindow.get_entry)
         venue_entry = tk.Entry(self)
         venue_entry["textvariable"] = self.location
-        venue_entry.bind('<Key-Return>', MainWindow.getEntry)
+        venue_entry.bind('<Key-Return>', MainWindow.get_entry)
         address_entry = tk.Entry(self)
         address_entry["textvariable"] = self.address
-        address_entry.bind('<Key-Return>', MainWindow.getEntry)
+        address_entry.bind('<Key-Return>', MainWindow.get_entry)
         cap_entry = tk.Entry(self)
         cap_entry["textvariable"] = self.capacity
-        cap_entry.bind('<Key-Return>', MainWindow.getEntry)
+        cap_entry.bind('<Key-Return>', MainWindow.get_entry)
         door_pay_entry = tk.Entry(self)
         door_pay_entry["textvariable"] = self.door_pay
-        door_pay_entry.bind('<Key-Return>', MainWindow.getEntry)
+        door_pay_entry.bind('<Key-Return>', MainWindow.get_entry)
         cover_charge_entry = tk.Entry(self)
         cover_charge_entry["textvariable"] = self.cover_charge
-        cover_charge_entry.bind('<Key-Return>', MainWindow.getEntry)
+        cover_charge_entry.bind('<Key-Return>', MainWindow.get_entry)
 
         # --Buttons--
         applyButton = tk.Button(self, text="Apply")
