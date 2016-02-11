@@ -470,8 +470,7 @@ class AnalysisPage(tk.Frame):
     def __init__(self, parent, controller):
         tk.Frame.__init__(self, parent)
         label = tk.Label(self, text="Analysis", font="LARGE_FONT")
-        label.pack(pady=10, padx=10)
-
+        label.grid(row=0, column=5)
 
         # Order items by units sold
             # checkbox?
@@ -480,7 +479,7 @@ class AnalysisPage(tk.Frame):
 
         # Order items by net sales
 
-        #Treeview
+        # Treeview
         analysis_tree = ttk.Treeview(self)
         analysis_tree["columns"] = ("type", "desc", "unit_cost", "quant", "price", "total_sold")
         #Merch ID
@@ -504,7 +503,7 @@ class AnalysisPage(tk.Frame):
         analysis_tree.column("total_sold", width=80)
         analysis_tree.heading("total_sold", text="Total Sold")
 
-        analysis_tree.grid(row=10, column=0, columnspan=13)
+        analysis_tree.grid(row=5, column=1, columnspan=11)
 
         # # Canvas for graph
         # canvas = FigureCanvasTkAgg(f, self)
@@ -518,5 +517,5 @@ class AnalysisPage(tk.Frame):
 
 
 app = MainWindow()
-app.geometry("1200x720")
+app.geometry("1000x720")
 app.mainloop()
