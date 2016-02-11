@@ -3,6 +3,7 @@ __author__ = 'casey'
 import tkinter as tk
 from tkinter import ttk
 from tkinter import *
+from src.Controller import Controller
 
 # For Analysis
 # import matplotlib
@@ -212,6 +213,12 @@ class MerchPage (tk.Frame):
         merch_tree.heading("total_sold", text="Total Sold")
 
         merch_tree.grid(row=10, column=0, columnspan=13)
+
+        # This adds the data from the database to the GUI.
+        con = Controller()
+        merch_list = con.get_merch_info_for_merch_window()
+        for item in merch_list:
+            merch_tree.insert("", "end", values = (item[0], item[1], item[2], item[3], item[4], item[5], item[6]))
 
         # ** Use merch_tree.insert("", <linenumber>, text="merch_id", values=("field1", "field2", etc.))
 

@@ -10,9 +10,11 @@ class Main():
         db.startup_database()
         db.add_test_data()
 
+        db.show_all()
 
-        db.show_best_units_sold_gross()
-        db.show_best_units_sold_net()
+        #
+        # db.show_best_units_sold_gross()
+        # db.show_best_units_sold_net()
         db.close_database()
 
 

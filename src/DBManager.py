@@ -112,6 +112,11 @@ class DBManager():
         self.cur.execute('insert into line_item_sales values (?, ?, ?, ?, ?)',
                          [line_item_key, sales_key, merch_key, merch_sales_price, merch_unit_price])
 
+    # This collects information from the merchandise table.
+    def get_merch(self):
+        self.cur.execute('select * from merchandise')
+        return self.cur
+
     # this gets the next available id for a given table.
     def get_next_id(self, table_name):
         new_id = 1
