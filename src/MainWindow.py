@@ -199,7 +199,7 @@ class MerchPage (tk.Frame):
         # con = Controller()
         merch_list = db_controller.get_merch_info_for_merch_window()
         for item in merch_list:
-            merch_tree.insert("", 0, text=item[0], values=(item[1], item[2], item[3], item[4], item[5], item[6]))
+            merch_tree.insert("", 0, text=item[0], values=(item[1], item[2], item[3], item[4], item[5]))
 
         # ** Use merch_tree.insert("", <linenumber>, text="merch_id", values=("field1", "field2", etc.))
 
@@ -286,7 +286,7 @@ class SalesPage (tk.Frame):
 
         sales_list = db_controller.get_sales_info_for_sales_window()
         for sale in sales_list:
-            sales_tree.insert("", 0, text=sale[0], values=(sale[1], sale[2], sale[3], sale[4], sale[5], sale[6]))
+            sales_tree.insert("", 0, text=sale[0], values=(sale[1], sale[2], sale[3], sale[4]))
 
 
     def submitSalesEntry(self):

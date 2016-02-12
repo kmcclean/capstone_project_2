@@ -17,7 +17,6 @@ class Controller:
             item_list=[]
             item_list.append(item[0])
             item_list.append(item[1])
-            item_list.append("")
             item_list.append(item[3])
             item_list.append(item[4])
             item_list.append(item[2])
@@ -34,8 +33,6 @@ class Controller:
             item_list=[]
             item_list.append(item[0])
             item_list.append(item[1])
-            item_list.append("")
-            item_list.append("")
             item_list.append(item[2])
             item_list.append(item[4])
             item_list.append(item[3])
