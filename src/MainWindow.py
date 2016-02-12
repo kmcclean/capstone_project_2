@@ -93,7 +93,7 @@ class NavigationPage (tk.Frame):
     def __init__(self, parent, controller):
         tk.Frame.__init__(self, parent)
         label = tk.Label(self, text="Main Page", font="LARGE_FONT")
-        label.grid(row=0, column=0, columnspan=4)
+        label.grid(row=0, column=0)
 
         # Buttons
         merchButton = tk.Button(self, text="Merchandise",
@@ -106,10 +106,10 @@ class NavigationPage (tk.Frame):
                             command=lambda: controller.show_frame(AnalysisPage))
 
         # --Grid layout--
-        merchButton.grid(row=1, column=1)
-        salesButton.grid(row=1, column=2)
-        schedButton.grid(row=1, column=3)
-        analysisButton.grid(row=1, column=4)
+        merchButton.grid(row=1, column=2)
+        salesButton.grid(row=1, column=3)
+        schedButton.grid(row=1, column=4)
+        analysisButton.grid(row=1, column=5)
 
 
 # MerchPage class
@@ -138,7 +138,7 @@ class MerchPage (tk.Frame):
         unit_cost_label = tk.Label(self, text="Unit Cost", font="NORM_FONT")
         quant_label = tk.Label(self, text="Quantity", font="NORM_FONT")
         price_label = tk.Label(self, text="Price", font="NORM_FONT")
-        total_sold_label = tk.Label(self, text="Total Sold", font="NORM_FONT")
+        # total_sold_label = tk.Label(self, text="Total Sold", font="NORM_FONT")
 
         # # --Form fields--
         # merch_id_entry = tk.Entry(self, textvariable=self.merch_id)
@@ -146,7 +146,7 @@ class MerchPage (tk.Frame):
         unit_cost_entry = tk.Entry(self, textvariable=self.unit_cost)
         quant_entry = tk.Entry(self, textvariable=self.quantity)
         price_entry = tk.Entry(self, textvariable=self.price)
-        total_sold_entry = tk.Entry(self, textvariable=self.total_sold)
+        # total_sold_entry = tk.Entry(self, textvariable=self.total_sold)
 
         # --Buttons--
         submitButton = tk.Button(self, text="Submit", command=self.submitMerchEntry)
@@ -159,17 +159,17 @@ class MerchPage (tk.Frame):
         type_label.grid(row=1, column=2, sticky="e")
         type_entry.grid(row=1, column=3)
         #Unit Cost
-        unit_cost_label.grid(row=1, column=4, sticky="e")
-        unit_cost_entry.grid(row=1, column=5)
+        unit_cost_label.grid(row=3, column=2, sticky="e")
+        unit_cost_entry.grid(row=3, column=3)
         #Quantity
-        quant_label.grid(row=3, column=2, sticky="e")
-        quant_entry.grid(row=3, column=3)
+        quant_label.grid(row=3, column=4, sticky="e")
+        quant_entry.grid(row=3, column=5)
         #Price
-        price_label.grid(row=3, column=4, sticky="e")
-        price_entry.grid(row=3, column=5)
+        price_label.grid(row=3, column=6, sticky="e")
+        price_entry.grid(row=3, column=7)
         #TotalSold
-        total_sold_label.grid(row=3, column=6, sticky="e")
-        total_sold_entry.grid(row=3, column=7)
+        # total_sold_label.grid(row=3, column=6, sticky="e")
+        # total_sold_entry.grid(row=3, column=7)
 
         #Submit Button
         submitButton.grid(row=5, column=7, sticky="e")
@@ -464,5 +464,5 @@ class AnalysisPage(tk.Frame):
         # canvas._tkcanvas.pack(side=tk.BOTTOM, fill=tk.BOTH, expand=True)
 
 app = MainWindow()
-app.geometry("1100x500")
+app.geometry("900x500")
 app.mainloop()
