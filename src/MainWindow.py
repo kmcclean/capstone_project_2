@@ -483,9 +483,9 @@ class SchedulePage (tk.Frame):
 
         schedule_tree.grid(row=10, column=0, columnspan=13)
 
-        schedule_list = con.get_sales_info_for_sales_window()
+        schedule_list = con.get_tour_info_for_tour_window()
         for item in schedule_list:
-            schedule_tree.insert("", 1, text=item[0], values=(item[1], item[2], item[3], item[4], item[5], item[6]))
+            schedule_tree.insert("", 1, text=item[0], values=(item[1], item[2], item[3], item[4], item[5], item[6], item[7]))
 
 # Analysis Class
 class AnalysisPage(tk.Frame):
