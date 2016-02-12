@@ -25,9 +25,7 @@ db_controller = Controller()
 #
 # f = Figure()
 
-def setString(sv):
-        sv.set(sv)
-
+# Main Window
 class MainWindow(tk.Tk):
 
     def __init__(self, *args, **kwargs):
@@ -80,18 +78,18 @@ class MainWindow(tk.Tk):
 
         self.show_frame(NavigationPage)
 
+    # Show frame
     def show_frame(self, cont):
 
         frame = self.frames[cont]
         frame.tkraise() # <- raises to front of window
 
+    # Quit program
     def client_exit(self):
         exit()
 
 
-
-
-# Nav class
+# NavPage class
 class NavigationPage (tk.Frame):
 
     def __init__(self, parent, controller):
@@ -116,7 +114,7 @@ class NavigationPage (tk.Frame):
         analysisButton.grid(row=1, column=4)
 
 
-# Merch class
+# MerchPage class
 class MerchPage (tk.Frame):
 
     def __init__(self, parent, controller):
@@ -127,7 +125,6 @@ class MerchPage (tk.Frame):
         # --String variables--
         self.merch_id = StringVar()
         self.type = StringVar()
-        self.description = StringVar()
         self.unit_cost = StringVar()
         self.quantity = StringVar()
         self.price = StringVar()
@@ -136,7 +133,6 @@ class MerchPage (tk.Frame):
         # --Field labels--
         merch_id_label = tk.Label(self, text="ID")
         type_label = tk.Label(self, text="Type")
-        desc_label = tk.Label(self, text="Description")
         unit_cost_label = tk.Label(self, text="Unit Cost")
         quant_label = tk.Label(self, text="Quantity")
         price_label = tk.Label(self, text="Price")
@@ -145,7 +141,6 @@ class MerchPage (tk.Frame):
         # # --Form fields--
         merch_id_entry = tk.Entry(self, textvariable=self.merch_id)
         type_entry = Entry(self, textvariable=self.type)
-        desc_entry = tk.Entry(self, textvariable=self.description)
         unit_cost_entry = tk.Entry(self, textvariable=self.unit_cost)
         quant_entry = tk.Entry(self, textvariable=self.quantity)
         price_entry = tk.Entry(self, textvariable=self.price)
@@ -161,9 +156,6 @@ class MerchPage (tk.Frame):
         #Type
         type_label.grid(row=3, column=2)
         type_entry.grid(row=3, column=3)
-        #Description
-        desc_label.grid(row=3, column=5)
-        desc_entry.grid(row=3, column=6, columnspan=3)
         #Unit Cost
         unit_cost_label.grid(row=5, column=2)
         unit_cost_entry.grid(row=5, column=3)
@@ -179,15 +171,12 @@ class MerchPage (tk.Frame):
 
         #Treeview
         merch_tree = ttk.Treeview(self)
-        merch_tree["columns"] = ("type", "desc", "unit_cost", "quant", "price", "total_sold")
+        merch_tree["columns"] = ("type", "unit_cost", "quant", "price", "total_sold")
         #Merch ID
         # blank column on left
         #Type
         merch_tree.column("type", width=100)
         merch_tree.heading("type", text="Type")
-        #Description
-        merch_tree.column("desc", width=300)
-        merch_tree.heading("desc", text="Description")
         #Unit Cost
         merch_tree.column("unit_cost", width=80)
         merch_tree.heading("unit_cost", text="Unit Cost")
@@ -218,11 +207,11 @@ class MerchPage (tk.Frame):
 
         print(self.merch_id.get() +
               "\n" + self.type.get() +
-              "\n" + self.description.get() +
               "\n" + self.unit_cost.get() +
               "\n" + self.quantity.get() +
               "\n" + self.price.get() +
               "\n" + self.total_sold.get())
+
 
 # Sales class
 class SalesPage (tk.Frame):
@@ -235,30 +224,23 @@ class SalesPage (tk.Frame):
         # --String variables--
         self.sale_id = StringVar()
         self.tour_id = StringVar()
-        self.item_sold = StringVar()
-        self.description = StringVar()
         self.quantity = StringVar()
-        self.unit_total = StringVar()
+        self.total_units_cost = StringVar()
         self.total = StringVar()
 
         # --Field labels--
         sale_id_label = tk.Label(self, text="Sale ID")
         tour_id_label = tk.Label(self, text="Tour ID")
-        item_sold_label = tk.Label(self, text="Item Sold")
-        description_label = tk.Label(self, text="Description")
         quantity_label = tk.Label(self, text="Quantity")
-        unit_total_label = tk.Label(self, text="Subtotal")
+        total_units_cost_label = tk.Label(self, text="Unit Total")
         total_label = tk.Label(self, text="Total")
 
         # --Form fields--
         sale_id_entry = tk.Entry(self, textvariable=self.sale_id)
         tour_id_entry = tk.Entry(self, textvariable=self.tour_id)
-        item_sold_entry = tk.Entry(self, textvariable=self.item_sold)
-        description_entry = tk.Entry(self, textvariable=self.description)
         quantity_entry = tk.Entry(self, textvariable=self.quantity)
-        unit_total_entry = tk.Entry(self, textvariable=self.unit_total)
+        total_units_cost_entry = tk.Entry(self, textvariable=self.total_units_cost)
         total_entry = tk.Entry(self, textvariable=self.total)
-
 
         # --Buttons--
         submitButton = tk.Button(self, text="Submit", command=self.submitSalesEntry)
@@ -270,44 +252,32 @@ class SalesPage (tk.Frame):
         #Tour ID
         tour_id_label.grid(row=1, column=4)
         tour_id_entry.grid(row=1, column=5)
-        #Item sold
-        item_sold_label.grid(row=2, column=0)
-        item_sold_entry.grid(row=2, column=1)
-        #Description
-        description_label.grid(row=2, column=2)
-        description_entry.grid(row=2, column=3)
         #Quantity
         quantity_label.grid(row=2, column=4)
         quantity_entry.grid(row=2, column=5)
         #Subtotal
-        unit_total_label.grid(row=2, column=6)
-        unit_total_entry.grid(row=2, column=7)
+        total_units_cost_label.grid(row=1, column=6)
+        total_units_cost_entry.grid(row=1, column=7)
         #Total
-        total_label.grid(row=3, column=6)
-        total_entry.grid(row=3, column=7)
+        total_label.grid(row=2, column=6)
+        total_entry.grid(row=2, column=7)
 
         submitButton.grid(row=5, column=6)
 
         #Treeview
         sales_tree = ttk.Treeview(self)
-        sales_tree["columns"] = ("tour_id", "item_sold", "desc", "quant", "unit_total", "total")
+        sales_tree["columns"] = ("tour_id", "quant", "total_units_cost", "total")
         #Sale ID
         # blank column
         #Tour ID
         sales_tree.column("tour_id", width=80)
         sales_tree.heading("tour_id", text="Tour ID")
-        #Item Sold
-        sales_tree.column("item_sold", width=150)
-        sales_tree.heading("item_sold", text="Item Sold")
-        #Description
-        sales_tree.column("desc", width=300)
-        sales_tree.heading("desc", text="Description")
         #Quantity
         sales_tree.column("quant", width=80)
         sales_tree.heading("quant", text="Quantity")
-        #Subtotal
-        sales_tree.column("unit_total", width=80)
-        sales_tree.heading("unit_total", text="Unit Total")
+        #Total Units Cost
+        sales_tree.column("total_units_cost", width=80)
+        sales_tree.heading("total_units_cost", text="Unit Total")
         #Total
         sales_tree.column("total", width=80)
         sales_tree.heading("total", text="Total")
@@ -323,10 +293,8 @@ class SalesPage (tk.Frame):
 
         print(self.sale_id.get() +
               "\n" + self.tour_id.get() +
-              "\n" + self.item_sold.get() +
-              "\n" + self.description.get() +
               "\n" + self.quantity.get() +
-              "\n" + self.unit_total.get() +
+              "\n" + self.total_units_cost.get() +
               "\n" + self.total.get())
 
 
@@ -442,6 +410,7 @@ class SchedulePage (tk.Frame):
               "\n" + self.door_pay.get() +
               "\n" + self.cover_charge.get())
 
+
 # Analysis Class
 class AnalysisPage(tk.Frame):
 
@@ -493,7 +462,6 @@ class AnalysisPage(tk.Frame):
         # toolbar.update()
         # canvas._tkcanvas.pack(side=tk.BOTTOM, fill=tk.BOTH, expand=True)
 
-
 app = MainWindow()
-app.geometry("1000x720")
+app.geometry("1100x500")
 app.mainloop()
