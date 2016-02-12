@@ -31,6 +31,8 @@ def setString(sv):
 class MainWindow(tk.Tk):
 
     def __init__(self, *args, **kwargs):
+
+        db_controller.start_db_manager()
         tk.Tk.__init__(self, *args, **kwargs)
 
         tk.Tk.wm_title(self, "Inventory Manager")
@@ -208,7 +210,7 @@ class MerchPage (tk.Frame):
         # con = Controller()
         merch_list = db_controller.get_merch_info_for_merch_window()
         for item in merch_list:
-            merch_tree.insert("", "end", values = (item[0], item[1], item[2], item[3], item[4], item[5], item[6]))
+            merch_tree.insert("", 0, text=item[0], values=(item[1], item[2], item[3], item[4], item[5], item[6]))
 
         # ** Use merch_tree.insert("", <linenumber>, text="merch_id", values=("field1", "field2", etc.))
 
@@ -311,6 +313,11 @@ class SalesPage (tk.Frame):
         sales_tree.heading("total", text="Total")
 
         sales_tree.grid(row=10, column=0, columnspan=13)
+
+        sales_list = db_controller.get_sales_info_for_sales_window()
+        for sale in sales_list:
+            sales_tree.insert("", 0, text=sale[0], values=(sale[1], sale[2], sale[3], sale[4], sale[5], sale[6]))
+
 
     def submitSalesEntry(self):
 
@@ -420,6 +427,10 @@ class SchedulePage (tk.Frame):
         schedule_tree.heading("cover_charge", text="Cover Charge")
 
         schedule_tree.grid(row=10, column=0, columnspan=13)
+
+        tour_list = db_controller.get_tour_info_for_tour_window()
+        for date in tour_list:
+            schedule_tree.insert("", 0, text=date[0], values=(date[1], date[2], date[3], date[4], date[5], date[6], date[7]))
 
     def submitScheduleEntry(self):
 
