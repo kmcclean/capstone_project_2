@@ -4,7 +4,6 @@ import tkinter as tk
 from tkinter import ttk
 from tkinter import *
 from src.Controller import Controller
-from src.DBManager import DBManager
 
 # For Analysis
 # import matplotlib
@@ -22,8 +21,6 @@ SMALL_FONT = ("Veranda", 8)
 
 db_controller = Controller()
 
-con = Controller()
-
 # style.use("ggplot")
 #
 # f = Figure()
@@ -35,9 +32,6 @@ class MainWindow(tk.Tk):
 
     def __init__(self, *args, **kwargs):
         tk.Tk.__init__(self, *args, **kwargs)
-
-        db_controller = self.get_controller()
-        db_controller.start_db_manager()
 
         tk.Tk.wm_title(self, "Inventory Manager")
 
@@ -93,10 +87,6 @@ class MainWindow(tk.Tk):
         exit()
 
 
-
-    def get_controller(self):
-        c = Controller()
-        return c
 
 
 # Nav class
@@ -215,14 +205,10 @@ class MerchPage (tk.Frame):
 
 
         # This adds the data from the database to the GUI.
-        merch_db_controller = MainWindow.get_controller(self)
-        merch_list = merch_db_controller.get_merch_info_for_merch_window()
-        merch_db_controller.show_all()
-
-        print ("Merch list: " + str(merch_list))
-
+        # con = Controller()
+        merch_list = db_controller.get_merch_info_for_merch_window()
         for item in merch_list:
-            merch_tree.insert("", 1, text=item[0], values=(item[1], item[2], item[3], item[4], item[5], item[6]))
+            merch_tree.insert("", "end", values = (item[0], item[1], item[2], item[3], item[4], item[5], item[6]))
 
         # ** Use merch_tree.insert("", <linenumber>, text="merch_id", values=("field1", "field2", etc.))
 
@@ -347,21 +333,13 @@ class SchedulePage (tk.Frame):
 
         # --String variables--
         self.schedule_id = StringVar()
-        self.schedule_id.set("schedule id")
         self.date = StringVar()
-        self.date.set("date")
         self.phone = StringVar()
-        self.phone.set("phone")
         self.venue = StringVar()
-        self.venue.set("venue")
         self.address = StringVar()
-        self.address.set("address")
-        self.capacity = StringVar()
-        self.capacity.set("capacity")
+        self.cap = StringVar()
         self.door_pay = StringVar()
-        self.door_pay.set("door pay")
         self.cover_charge = StringVar()
-        self.cover_charge.set("cover charge")
 
         # --Field labels--
         sched_id_label = tk.Label(self, text="Schedule ID")
@@ -374,34 +352,17 @@ class SchedulePage (tk.Frame):
         cover_charge_label = tk.Label(self, text="Cover Charge")
 
         # --Form fields--
-        sched_id_entry = tk.Entry(self)
-        sched_id_entry["textvariable"] = self.schedule_id
-        # sched_id_entry.bind('<Key-Return>', MainWindow.getEntry)
-        date_entry = Entry(self)
-        date_entry["textvariable"] = self.date
-        # date_entry.bind('<Key-Return>', MainWindow.getEntry)
-        phone_entry = tk.Entry(self)
-        phone_entry["textvariable"] = self.phone
-        # phone_entry.bind('<Key-Return>', MainWindow.getEntry)
-        venue_entry = tk.Entry(self)
-        venue_entry["textvariable"] = self.location
-        # venue_entry.bind('<Key-Return>', MainWindow.getEntry)
-        address_entry = tk.Entry(self)
-       address_entry["textvariable"] = self.address
-        # address_entry.bind('<Key-Return>', MainWindow.getEntry)
-        cap_entry = tk.Entry(self)
-        cap_entry["textvariable"] = self.capacity
-        # cap_entry.bind('<Key-Return>', MainWindow.getEntry)
-        door_pay_entry = tk.Entry(self)
-        door_pay_entry["textvariable"] = self.door_pay
-        # door_pay_entry.bind('<Key-Return>', MainWindow.getEntry)
-        cover_charge_entry = tk.Entry(self)
-        cover_charge_entry["textvariable"] = self.cover_charge
-        # cover_charge_entry.bind('<Key-Return>', MainWindow.getEntry)
+        sched_id_entry = tk.Entry(self, textvariable=self.schedule_id)
+        date_entry = Entry(self, textvariable=self.date)
+        phone_entry = tk.Entry(self, textvariable=self.phone)
+        venue_entry = tk.Entry(self, textvariable=self.venue)
+        address_entry = tk.Entry(self, textvariable=self.address)
+        cap_entry = tk.Entry(self, textvariable=self.cap)
+        door_pay_entry = tk.Entry(self, textvariable=self.door_pay)
+        cover_charge_entry = tk.Entry(self, textvariable=self.cover_charge)
 
         # --Buttons--
-        applyButton = tk.Button(self, text="Apply")
-        deleteButton = tk.Button(self, text="Delete")
+        submitButton = tk.Button(self, text="Submit", command=self.submitScheduleEntry)
 
         # --Grid layout--
         #ID
@@ -429,8 +390,7 @@ class SchedulePage (tk.Frame):
         cover_charge_label.grid(row=3, column=4)
         cover_charge_entry.grid(row=3, column=5)
         #Buttons
-        applyButton.grid(row=5, column=4)
-        deleteButton.grid(row=5, column=5)
+        submitButton.grid(row=5, column=4)
 
         #Treeview
         schedule_tree = ttk.Treeview(self)
@@ -460,6 +420,16 @@ class SchedulePage (tk.Frame):
         schedule_tree.heading("cover_charge", text="Cover Charge")
 
         schedule_tree.grid(row=10, column=0, columnspan=13)
+
+    def submitScheduleEntry(self):
+
+        print(self.date.get() +
+              "\n" + self.phone.get() +
+              "\n" + self.venue.get() +
+              "\n" + self.address.get() +
+              "\n" + self.cap.get() +
+              "\n" + self.door_pay.get() +
+              "\n" + self.cover_charge.get())
 
 # Analysis Class
 class AnalysisPage(tk.Frame):
