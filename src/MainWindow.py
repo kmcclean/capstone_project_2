@@ -204,13 +204,23 @@ class MerchPage (tk.Frame):
         # ** Use merch_tree.insert("", <linenumber>, text="merch_id", values=("field1", "field2", etc.))
 
     def submitMerchEntry(self):
+        new_merch_list = []
+        new_merch_list.append(self.type.get())
+        new_merch_list.append(self.price.get())
+        new_merch_list.append(self.unit_cost.get())
+        new_merch_list.append(self.quantity.get())
 
-        print(self.merch_id.get() +
-              "\n" + self.type.get() +
-              "\n" + self.unit_cost.get() +
-              "\n" + self.quantity.get() +
-              "\n" + self.price.get() +
-              "\n" + self.total_sold.get())
+        if(db_controller.add_new_merch(new_merch_list)):
+            print("Merchandise Added.")
+        else:
+            print("Addition failed.")
+
+        # print(self.merch_id.get() +
+        #       "\n" + self.type.get() +
+        #       "\n" + self.unit_cost.get() +
+        #       "\n" + self.quantity.get() +
+        #       "\n" + self.price.get() +
+        #       "\n" + self.total_sold.get())
 
 
 # Sales class
@@ -401,15 +411,26 @@ class SchedulePage (tk.Frame):
             schedule_tree.insert("", 0, text=date[0], values=(date[1], date[2], date[3], date[4], date[5], date[6], date[7]))
 
     def submitScheduleEntry(self):
+        new_tour_date = []
+        new_tour_date.append(self.address.get())
+        new_tour_date.append("City")
+        new_tour_date.append("State")
+        new_tour_date.append(12345)
+        new_tour_date.append(self.venue.get())
+        new_tour_date.append(self.phone.get())
+        new_tour_date.append(self.date.get())
+        new_tour_date.append(self.cap.get())
+        new_tour_date.append(self.cover_charge.get())
+        new_tour_date.append(self.door_pay.get())
+        #self.cur.execute('create table if not exists tour_schedule(tour_id int,
+        # street_address text, city text, state text, zip int,
+        # venue_name text, phone text, tour_date blob, capacity int,
+        # cover_charge real, door_pay real, tickets_sold int)')
 
-        print(self.date.get() +
-              "\n" + self.phone.get() +
-              "\n" + self.venue.get() +
-              "\n" + self.address.get() +
-              "\n" + self.cap.get() +
-              "\n" + self.door_pay.get() +
-              "\n" + self.cover_charge.get())
-
+        if(db_controller.add_tour_date(new_tour_date)):
+            print("Tour Date Added.")
+        else:
+            print("Tour Date Addition Failed.")
 
 # Analysis Class
 class AnalysisPage(tk.Frame):

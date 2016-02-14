@@ -3,6 +3,12 @@ from src.DBManager import DBManager
 class Controller:
     db = DBManager()
 
+    def add_new_merch(self, new_merch_info):
+        return self.db.add_new_merchandise(new_merch_info)
+
+    def add_tour_date(self, tour_date_info):
+        return self.db.add_new_tour_date(tour_date_info)
+
     def start_db_manager(self):
         self.db = DBManager()
         self.db.startup_database()
