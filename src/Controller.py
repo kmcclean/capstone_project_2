@@ -1,5 +1,6 @@
 from src.DBManager import DBManager
 
+
 class Controller:
     db = DBManager()
 
@@ -11,14 +12,15 @@ class Controller:
 
     def start_db_manager(self):
         self.db = DBManager()
-        self.db.startup_database()
-        #self.db.add_test_data()
+        # self.db.drop_database()
+        # self.db.startup_database()
+        # self.db.add_test_data()
 
-    #This gets the information from the database and puts it into the form that will be needed by the
+    # This gets the information from the database and puts it into the form that will be needed by the merchandise GUI.
     def get_merch_info_for_merch_window(self):
         list_of_merch_tuples = self.db.get_table_data("merchandise")
         list_of_merch_list = []
-        #This puts the items into a list, organized by the way they'll be needed for the merchandise_screen.
+        # This puts the items into a list, organized by the way they'll be needed for the merchandise_screen.
         for item in list_of_merch_tuples:
             item_list=[]
             item_list.append(item[0])
@@ -34,7 +36,7 @@ class Controller:
     def get_sales_info_for_sales_window(self):
         list_of_sales_tuples = self.db.get_table_data("sales")
         list_of_sales_list = []
-        #This puts the items into a list, organized by the way they'll be needed for the sales_screen.
+        # This puts the items into a list, organized by the way they'll be needed for the sales_screen.
         for item in list_of_sales_tuples:
             item_list=[]
             item_list.append(item[0])
@@ -49,7 +51,7 @@ class Controller:
     def get_tour_info_for_tour_window(self):
         list_of_tour_tuples = self.db.get_table_data("tour_schedule")
         list_of_tour_list = []
-        #This puts the items into a list, organized by the way they'll be needed for the sales_screen.
+        # This puts the items into a list, organized by the way they'll be needed for the sales_screen.
         for item in list_of_tour_tuples:
             item_list=[]
             item_list.append(item[0])

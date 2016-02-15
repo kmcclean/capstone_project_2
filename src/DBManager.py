@@ -1,8 +1,8 @@
 import sqlite3
-from operator import itemgetter
 __author__ = 'casey & kevin'
 
-class DBManager():
+
+class DBManager:
 
     def __init__(self):
         db = sqlite3.connect("band_database")
@@ -13,12 +13,15 @@ class DBManager():
     # Handles access to the database
 
     # this is where the database starts up. It will create the four tables that are needed.
+
+    def drop_database(self):
+
+        self.cur.execute('drop table if exists merchandise')
+        self.cur.execute('drop table if exists sales')
+        self.cur.execute('drop table if exists line_item_sales')
+        self.cur.execute('drop table if exists tour_schedule')
+
     def startup_database(self):
-        #
-        # self.cur.execute('drop table if exists merchandise')
-        # self.cur.execute('drop table if exists sales')
-        # self.cur.execute('drop table if exists line_item_sales')
-        # self.cur.execute('drop table if exists tour_schedule')
 
         self.cur.execute('create table if not exists merchandise (merch_id int, merch_name text, sales_price real, unit_price real, inventory int, total_sold int)')
         self.cur.execute('create table if not exists sales(sale_id int, tour_id int, items_sold int, total_sales_price real, total_unit_price real)')
@@ -43,17 +46,21 @@ class DBManager():
                                (2, 4, 1, 14.99, 5.00),
                                (3, 5, 5, 17.00, 3.00)]
 
-        tour_table_test_data = [(1, "701 First Ave N", "Minneapolis", "MN", 55403, "First Avenue Main Room", "612-555-1111", "1-20-16", 1500, 20.00, 10.00, 800),
-                                (2, "621 Main Ave", "Fargo", "ND", 58102, "Fargo Cellar", "701-555-9796", "1-24-16", 500, 10.00, 5.00, 300),
-                                (3, "410 Something Street", "Rapid City", "IA", 11223, "Rapid City Roccoco", "123-456-7890", "1-27-16", 800, 10.00, 5.00, 400),
-                                (4, "Satan Street", "Madison", "WI", 45680, "The Worst Place in the World", "666-666-6666", "2-5-16", 900, 10.00, 4.00, 200),
-                                (5, "5th Street", "Chicago", "IL", 86753, "Chicago Theatre", "410-801-5538", "2-14-16", 1200, 12.00, 6.00, 600)]
+        tour_table_test_data = [(1, "701 First Ave N", "Minneapolis", "MN", 55403, "First Avenue Main Room",
+                                 "612-555-1111", "1-20-16", 1500, 20.00, 10.00, 800),
+                                (2, "621 Main Ave", "Fargo", "ND", 58102, "Fargo Cellar", "701-555-9796", "1-24-16",
+                                 500, 10.00, 5.00, 300),
+                                (3, "410 Something Street", "Rapid City", "IA", 11223, "Rapid City Rococo",
+                                 "123-456-7890", "1-27-16", 800, 10.00, 5.00, 400),
+                                (4, "Satan Street", "Madison", "WI", 45680, "The Worst Place in the World",
+                                 "666-666-6666", "2-5-16", 900, 10.00, 4.00, 200),
+                                (5, "5th Street", "Chicago", "IL", 86753, "Chicago Theatre", "410-801-5538",
+                                 "2-14-16", 1200, 12.00, 6.00, 600)]
 
         self.cur.executemany('insert into merchandise values (?, ?, ?, ?, ?, ?)', merch_test_data)
         self.cur.executemany('insert into sales values (?, ?, ?, ?, ?)', sales_test_data)
         self.cur.executemany('insert into line_item_sales values (?, ?, ?, ?, ?)', line_item_test_data)
         self.cur.executemany('insert into tour_schedule values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)', tour_table_test_data)
-
 
     # This create a new line of merchandise in the merchandise database.
     def add_new_merchandise(self, new_merch_info): # , name, sale_price, unit_price, amount):
@@ -140,7 +147,7 @@ class DBManager():
         except Exception:
             return False
 
-    # This collects information from the merchandise table.
+    # This collects information from the table.
     def get_table_data(self, table_name):
         self.cur.execute('select * from ' + table_name)
         return_list = []
