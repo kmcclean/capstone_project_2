@@ -4,7 +4,7 @@ import tkinter as tk
 from tkinter import ttk
 from tkinter import *
 from src.Controller import Controller
-from src.ErrorHandling import ErrorHandling
+
 # For Analysis
 # import matplotlib
 # matplotlib.use("TkAgg")
@@ -29,8 +29,6 @@ db_controller = Controller()
 class MainWindow(tk.Tk):
 
     def __init__(self, *args, **kwargs):
-
-        db_controller.start_db_manager()
         tk.Tk.__init__(self, *args, **kwargs)
 
         tk.Tk.wm_title(self, "Inventory Manager")
@@ -78,10 +76,6 @@ class MainWindow(tk.Tk):
 
         self.show_frame(NavigationPage)
 
-        db_controller.show_best_selling_units()
-        db_controller.show_best_gross_units()
-        db_controller.show_best_net()
-
     # Show frame
     def show_frame(self, cont):
 
@@ -90,11 +84,6 @@ class MainWindow(tk.Tk):
 
     # Quit program
     def client_exit(self):
-        if (db_controller.close_database()):
-            print("Database closed.")
-        else:
-            print("Database not closed.")
-        print("This is client_exit.")
         exit()
 
 
@@ -105,12 +94,6 @@ class NavigationPage (tk.Frame):
         tk.Frame.__init__(self, parent)
         label = tk.Label(self, text="Main Page", font="LARGE_FONT")
         label.grid(row=0, column=0)
-
-        #User
-        greet_str = "Welcome to Inventory Manager. \n" \
-                    "To get started, choose one of the buttons below, \n" \
-                    "or choose an option from the 'Navigation' menu"
-        greeting = tk.Label(self, text=greet_str, font="NORM_FONT")
 
         # Buttons
         merchButton = tk.Button(self, text="Merchandise",
@@ -123,11 +106,10 @@ class NavigationPage (tk.Frame):
                             command=lambda: controller.show_frame(AnalysisPage))
 
         # --Grid layout--
-        greeting.grid(row=1, column=1, columnspan=5)
-        merchButton.grid(row=2, column=2)
-        salesButton.grid(row=2, column=3)
-        schedButton.grid(row=2, column=4)
-        analysisButton.grid(row=2, column=5)
+        merchButton.grid(row=1, column=2)
+        salesButton.grid(row=1, column=3)
+        schedButton.grid(row=1, column=4)
+        analysisButton.grid(row=1, column=5)
 
 
 # MerchPage class
@@ -195,51 +177,46 @@ class MerchPage (tk.Frame):
         #Treeview
         #LabelFrame
         # merch_label_frame.grid(row=6, column=0, columnspan=13, rowspan=8)
-        self.merch_tree = ttk.Treeview(self)
-        self.merch_tree["columns"] = ("merch_id", "type", "unit_cost", "quant", "price", "total_sold")
+        merch_tree = ttk.Treeview(self)
+        merch_tree["columns"] = ("merch_id", "type", "unit_cost", "quant", "price", "total_sold")
         #Merch ID
-        self.merch_tree.column("merch_id", width=80)
-        self.merch_tree.heading("merch_id", text="Merch ID")
+        merch_tree.column("merch_id", width=80)
+        merch_tree.heading("merch_id", text="Merch ID")
         #Type
-        self.merch_tree.column("type", width=100)
-        self.merch_tree.heading("type", text="Type")
+        merch_tree.column("type", width=100)
+        merch_tree.heading("type", text="Type")
         #Unit Cost
-        self.merch_tree.column("unit_cost", width=80)
-        self.merch_tree.heading("unit_cost", text="Unit Cost")
+        merch_tree.column("unit_cost", width=80)
+        merch_tree.heading("unit_cost", text="Unit Cost")
         #Quantity
-        self.merch_tree.column("quant", width=80)
-        self.merch_tree.heading("quant", text="Quantity")
+        merch_tree.column("quant", width=80)
+        merch_tree.heading("quant", text="Quantity")
         #Price
-        self.merch_tree.column("price", width=80)
-        self.merch_tree.heading("price", text="Price")
+        merch_tree.column("price", width=80)
+        merch_tree.heading("price", text="Price")
         #Total Sold
-        self.merch_tree.column("total_sold", width=80)
-        self.merch_tree.heading("total_sold", text="Total Sold")
+        merch_tree.column("total_sold", width=80)
+        merch_tree.heading("total_sold", text="Total Sold")
 
-        self.merch_tree['show'] = 'headings'
-        self.merch_tree.grid(row=10, column=3, columnspan=7, sticky="ew")
+        merch_tree['show'] = 'headings'
+        merch_tree.grid(row=10, column=3, columnspan=7, sticky="ew")
 
         # This adds the data from the database to the GUI.
         # con = Controller()
         merch_list = db_controller.get_merch_info_for_merch_window()
         for item in merch_list:
-            self.merch_tree.insert("", 0, values=(item[0], item[1], item[2], item[3], item[4], item[5]))
+            merch_tree.insert("", "end", values=(item[0], item[1], item[2], item[3], item[4], item[5], item[6]))
 
         # ** Use merch_tree.insert("", <linenumber>, text="merch_id", values=("field1", "field2", etc.))
 
     def submitMerchEntry(self):
-        new_merch_list = []
-        new_merch_list.append(self.type.get())
-        new_merch_list.append(self.price.get())
-        new_merch_list.append(self.unit_cost.get())
-        new_merch_list.append(self.quantity.get())
 
-        results_list = db_controller.add_new_merch(new_merch_list)
-        if results_list[0] == True:
-            new_addition_to_list = results_list[1]
-            self.merch_tree.insert("", 0, values=(new_addition_to_list[0], new_addition_to_list[1], new_addition_to_list[2], new_addition_to_list[3], new_addition_to_list[4], new_addition_to_list[5]))
-        else:
-            print("Addition failed.")
+        print(self.merch_id.get() +
+              "\n" + self.type.get() +
+              "\n" + self.unit_cost.get() +
+              "\n" + self.quantity.get() +
+              "\n" + self.price.get() +
+              "\n" + self.total_sold.get())
 
 
 # Sales class
@@ -314,11 +291,6 @@ class SalesPage (tk.Frame):
 
         sales_tree['show'] = 'headings'
         sales_tree.grid(row=6, column=3, columnspan=7, sticky="ew")
-
-        sales_list = db_controller.get_sales_info_for_sales_window()
-        for sale in sales_list:
-            sales_tree.insert("", 0, values=(sale[0], sale[1], sale[2], sale[3], sale[4]))
-
 
     def submitSalesEntry(self):
 
@@ -418,8 +390,18 @@ class SchedulePage (tk.Frame):
 
         #Treeview
         schedule_tree = ttk.Treeview(self)
-        schedule_tree["columns"] = ("tour_id", "date", "phone", "venue", "address", "city", "state", "zip", "cap", "door_pay", "cover_charge")
-        #Schedule ID
+        schedule_tree["columns"] = ("tour_id",
+                                    "date",
+                                    "phone",
+                                    "venue",
+                                    "address",
+                                    "city",
+                                    "state",
+                                    "zip",
+                                    "cap",
+                                    "door_pay",
+                                    "cover_charge")
+        #Tour ID
         schedule_tree.column("tour_id", width=80)
         schedule_tree.heading("tour_id", text="Tour ID")
         #Date
@@ -440,7 +422,7 @@ class SchedulePage (tk.Frame):
         #State
         schedule_tree.column("state", width=60)
         schedule_tree.heading("state", text="State")
-        #Zip #aiudgoipj
+        #Zip
         schedule_tree.column("zip", width=80)
         schedule_tree.heading("zip", text="Zip Code")
         #Capacity
@@ -456,22 +438,7 @@ class SchedulePage (tk.Frame):
         schedule_tree['show'] = 'headings'
         schedule_tree.grid(row=6, column=3, columnspan=9, sticky="ew")
 
-        tour_list = db_controller.get_tour_info_for_tour_window()
-        for date in tour_list:
-            schedule_tree.insert("", 0, values=(date[0], date[1], date[2], date[3], date[4], date[5], date[6], date[7], date[8], date[9], date[0]))
-
     def submitScheduleEntry(self):
-
-        print(self.date.get() +
-              "\n" + self.phone.get() +
-              "\n" + self.venue.get() +
-              "\n" + self.address.get() +
-              "\n" + self.city.get() +
-              "\n" + self.state.get() +
-              "\n" + self.zip.get() +
-              "\n" + self.cap.get() +
-              "\n" + self.door_pay.get() +
-              "\n" + self.cover_charge.get())
 
         new_tour_date = []
         new_tour_date.append(self.address.get())
@@ -484,52 +451,25 @@ class SchedulePage (tk.Frame):
         new_tour_date.append(self.cap.get())
         new_tour_date.append(self.cover_charge.get())
         new_tour_date.append(self.door_pay.get())
+        #self.cur.execute('create table if not exists tour_schedule(tour_id int,
+        # street_address text, city text, state text, zip int,
+        # venue_name text, phone text, tour_date blob, capacity int,
+        # cover_charge real, door_pay real, tickets_sold int)')
 
-        results_list = []
-        results_list.append(self.test_new_tour_date(new_tour_date))
-        if results_list[0]:
-            if db_controller.add_tour_date(new_tour_date):
-                print("Tour Date Added.")
-            else:
-                print("Tour Date Addition Failed.")
+        if(db_controller.add_tour_date(new_tour_date)):
+            print("Tour Date Added.")
         else:
-            print(results_list[1])
+            print("Tour Date Addition Failed.")
 
-    def test_new_tour_date(self, new_date):
-        eh = ErrorHandling()
-        if eh.nonblank_string(new_date[0]) == False:
-            failure_list = [False, "The address field must be filled."]
-            return failure_list
-        elif eh.nonblank_string(new_date[1]) == False:
-            failure_list = [False, "The city field must be filled."]
-            return failure_list
-        elif eh.nonblank_string(new_date[2]) == False:
-            failure_list = [False, "The state field must be filled."]
-            return failure_list
-        elif eh.range_integer_input_checking(new_date[3], 5, 5) == False:
-            failure_list = [False, "The zip code field must be filled."]
-            return failure_list
-        elif eh.nonblank_string(new_date[4] == False):
-            failure_list = [False, "The venue field must be filled."]
-            return failure_list
-        elif eh.range_integer_input_checking(new_date[5], 10, 10) == False:
-            failure_list = [False, "The phone number field must be filled."]
-            return failure_list
-        elif eh.nonblank_string(new_date[6]) == False:
-            failure_list = [False, "The date field must be filled."]
-            return failure_list
-        elif eh.range_integer_input_checking(new_date[7], 0, 99999) == False:
-            failure_list = [False, "The capacity field must be filled."]
-            return failure_list
-        elif eh.float_check(new_date[8]) == False:
-            failure_list = [False, "The cover charge field must be filled."]
-            return failure_list
-        elif eh.float_check(new_date[9]) == False:
-            failure_list = [False, "The door pay field must be filled."]
-            return failure_list
-        else:
-            success_list = [True, "All input fields have been entered correctly."]
-            return success_list
+        print(self.date.get() +
+              "\n" + self.phone.get() +
+              "\n" + self.venue.get() +
+              "\n" + self.address.get() +
+              "\n" + self.cap.get() +
+              "\n" + self.door_pay.get() +
+              "\n" + self.cover_charge.get())
+
+
 
 # Analysis Class
 class AnalysisPage(tk.Frame):
