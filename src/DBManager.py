@@ -10,10 +10,15 @@ class DBManager:
 
         self.db = db
         self.cur = cur
-    # Handles access to the database
+
+    # This tests to see if the table exists.
+    def table_check(self):
+        a = self.cur.execute("SELECT name from sqlite_master WHERE type = 'table'")
+        print("These are the tables that exist.")
+        for row in a:
+            print(row)
 
     # this is where the database starts up. It will create the four tables that are needed.
-
     def drop_database(self):
 
         self.cur.execute('drop table if exists merchandise')
@@ -21,6 +26,7 @@ class DBManager:
         self.cur.execute('drop table if exists line_item_sales')
         self.cur.execute('drop table if exists tour_schedule')
 
+    # Handles access to the database
     def startup_database(self):
 
         self.cur.execute('create table if not exists merchandise (merch_id int, merch_name text, sales_price real, unit_price real, inventory int, total_sold int)')
@@ -121,7 +127,11 @@ class DBManager:
 
     # this closes the database.
     def close_database(self):
-        self.db.close()
+        try:
+            self.db.close()
+            return True
+        except Exception:
+            return False
 
     # this creates a new line item.
     def create_line_item(self, sales_key, merch_key, merch_sales_price, merch_unit_price):
@@ -151,6 +161,7 @@ class DBManager:
     def get_table_data(self, table_name):
         self.cur.execute('select * from ' + table_name)
         return_list = []
+        print("Getting data for table " + table_name)
         for row in self.cur:
             return_list.append(row)
         return return_list

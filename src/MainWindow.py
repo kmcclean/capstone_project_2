@@ -86,6 +86,11 @@ class MainWindow(tk.Tk):
 
     # Quit program
     def client_exit(self):
+        if (db_controller.close_database()):
+            print("Database closed.")
+        else:
+            print("Database not closed.")
+        print("This is client_exit.")
         exit()
 
 
@@ -434,10 +439,7 @@ class SchedulePage (tk.Frame):
         new_tour_date.append(self.cap.get())
         new_tour_date.append(self.cover_charge.get())
         new_tour_date.append(self.door_pay.get())
-        #self.cur.execute('create table if not exists tour_schedule(tour_id int,
-        # street_address text, city text, state text, zip int,
-        # venue_name text, phone text, tour_date blob, capacity int,
-        # cover_charge real, door_pay real, tickets_sold int)')
+        db_controller.add_tour_date(new_tour_date)
 
         if(db_controller.add_tour_date(new_tour_date)):
             print("Tour Date Added.")
