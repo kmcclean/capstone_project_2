@@ -14,6 +14,7 @@ from src.Controller import Controller
 # from matplotlib import style
 # from matplotlib import pyplot as plt
 
+
 LARGE_FONT = ("Verdana", 6)
 NORM_FONT = ("Veranda", 12)
 SMALL_FONT = ("Veranda", 8)
@@ -28,6 +29,8 @@ db_controller = Controller()
 class MainWindow(tk.Tk):
 
     def __init__(self, *args, **kwargs):
+
+        db_controller.start_db_manager()
         tk.Tk.__init__(self, *args, **kwargs)
 
         tk.Tk.wm_title(self, "Inventory Manager")
@@ -75,6 +78,10 @@ class MainWindow(tk.Tk):
 
         self.show_frame(NavigationPage)
 
+        db_controller.show_best_selling_units()
+        db_controller.show_best_gross_units()
+        db_controller.show_best_net()
+
     # Show frame
     def show_frame(self, cont):
 
@@ -83,6 +90,11 @@ class MainWindow(tk.Tk):
 
     # Quit program
     def client_exit(self):
+        if (db_controller.close_database()):
+            print("Database closed.")
+        else:
+            print("Database not closed.")
+        print("This is client_exit.")
         exit()
 
 
@@ -121,6 +133,7 @@ class MerchPage (tk.Frame):
         # self.root = Tk()
 
         # merch_label_frame = LabelFrame(self.root, text="This is a LabelFrame")
+
 
         # --String variables--
         self.merch_id = StringVar()
@@ -175,30 +188,37 @@ class MerchPage (tk.Frame):
         #Treeview
         #LabelFrame
         # merch_label_frame.grid(row=6, column=0, columnspan=13, rowspan=8)
-        self.merch_tree = ttk.Treeview(self)
-        self.merch_tree["columns"] = ("merch_id", "type", "unit_cost", "quant", "price", "total_sold")
+        merch_tree = ttk.Treeview(self)
+        merch_tree["columns"] = ("merch_id", "type", "unit_cost", "quant", "price", "total_sold")
         #Merch ID
-        self.merch_tree.column("merch_id", width=80)
-        self.merch_tree.heading("merch_id", text="Merch ID")
+        merch_tree.column("merch_id", width=80)
+        merch_tree.heading("merch_id", text="Merch ID")
         #Type
-        self.merch_tree.column("type", width=100)
-        self.merch_tree.heading("type", text="Type")
+        merch_tree.column("type", width=100)
+        merch_tree.heading("type", text="Type")
         #Unit Cost
-        self.merch_tree.column("unit_cost", width=80)
-        self.merch_tree.heading("unit_cost", text="Unit Cost")
+        merch_tree.column("unit_cost", width=80)
+        merch_tree.heading("unit_cost", text="Unit Cost")
         #Quantity
-        self.merch_tree.column("quant", width=80)
-        self.merch_tree.heading("quant", text="Quantity")
+        merch_tree.column("quant", width=80)
+        merch_tree.heading("quant", text="Quantity")
         #Price
-        self.merch_tree.column("price", width=80)
-        self.merch_tree.heading("price", text="Price")
+        merch_tree.column("price", width=80)
+        merch_tree.heading("price", text="Price")
         #Total Sold
-        self.merch_tree.column("total_sold", width=80)
-        self.merch_tree.heading("total_sold", text="Total Sold")
+        merch_tree.column("total_sold", width=80)
+        merch_tree.heading("total_sold", text="Total Sold")
 
-        self.merch_tree['show'] = 'headings'
-        self.merch_tree.grid(row=10, column=3, columnspan=7, sticky="ew")
+        merch_tree['show'] = 'headings'
+        merch_tree.grid(row=10, column=3, columnspan=7, sticky="ew")
 
+        # This adds the data from the database to the GUI.
+        # con = Controller()
+        merch_list = db_controller.get_merch_info_for_merch_window()
+        for item in merch_list:
+            merch_tree.insert("", 0, values=(item[0], item[1], item[2], item[3], item[4], item[5]))
+
+        # ** Use merch_tree.insert("", <linenumber>, text="merch_id", values=("field1", "field2", etc.))
 
     def submitMerchEntry(self):
         new_merch_list = []
@@ -212,10 +232,12 @@ class MerchPage (tk.Frame):
         else:
             print("Addition failed.")
 
-        # This adds the data from the database to the GUI.
-        merch_list = db_controller.get_merch_info_for_merch_window()
-        for item in merch_list:
-            self.merch_tree.insert("", "end", values=(item[0], item[1], item[2], item[3], item[4], item[5]))
+        # print(self.merch_id.get() +
+        #       "\n" + self.type.get() +
+        #       "\n" + self.unit_cost.get() +
+        #       "\n" + self.quantity.get() +
+        #       "\n" + self.price.get() +
+        #       "\n" + self.total_sold.get())
 
 
 # Sales class
@@ -270,26 +292,31 @@ class SalesPage (tk.Frame):
         submitButton.grid(row=3, column=7, sticky="e")
 
         #Treeview
-        self.sales_tree = ttk.Treeview(self)
-        self.sales_tree["columns"] = ("sales_id", "tour_id", "quant", "total_units_cost", "total")
+        sales_tree = ttk.Treeview(self)
+        sales_tree["columns"] = ("sales_id", "tour_id", "quant", "total_units_cost", "total")
         #Sale ID
-        self.sales_tree.column("sales_id", width=80)
-        self.sales_tree.heading("sales_id", text="Sales ID")
+        sales_tree.column("sales_id", width=80)
+        sales_tree.heading("sales_id", text="Sales ID")
         #Tour ID
-        self.sales_tree.column("tour_id", width=100)
-        self.sales_tree.heading("tour_id", text="Tour ID")
+        sales_tree.column("tour_id", width=100)
+        sales_tree.heading("tour_id", text="Tour ID")
         #Quantity
-        self.sales_tree.column("quant", width=100)
-        self.sales_tree.heading("quant", text="Quantity")
+        sales_tree.column("quant", width=100)
+        sales_tree.heading("quant", text="Quantity")
         #Total Units Cost
-        self.sales_tree.column("total_units_cost", width=100)
-        self.sales_tree.heading("total_units_cost", text="Total Units Cost")
+        sales_tree.column("total_units_cost", width=100)
+        sales_tree.heading("total_units_cost", text="Total Units Cost")
         #Total
-        self.sales_tree.column("total", width=100)
-        self.sales_tree.heading("total", text="Total")
+        sales_tree.column("total", width=100)
+        sales_tree.heading("total", text="Total")
 
-        self.sales_tree['show'] = 'headings'
-        self.sales_tree.grid(row=6, column=3, columnspan=7, sticky="ew")
+        sales_tree['show'] = 'headings'
+        sales_tree.grid(row=6, column=3, columnspan=7, sticky="ew")
+
+        sales_list = db_controller.get_sales_info_for_sales_window()
+        for sale in sales_list:
+            sales_tree.insert("", 0, values=(sale[0], sale[1], sale[2], sale[3], sale[4]))
+
 
     def submitSalesEntry(self):
 
@@ -311,12 +338,9 @@ class SchedulePage (tk.Frame):
         # --String variables--
         self.schedule_id = StringVar()
         self.date = StringVar()
+        self.phone = StringVar()
         self.venue = StringVar()
         self.address = StringVar()
-        self.city = StringVar()
-        self.state = StringVar()
-        self.zip = StringVar()
-        self.phone = StringVar()
         self.cap = StringVar()
         self.door_pay = StringVar()
         self.cover_charge = StringVar()
@@ -324,12 +348,9 @@ class SchedulePage (tk.Frame):
         # --Field labels--
         # sched_id_label = tk.Label(self, text="Schedule ID", font="NORM_FONT")
         date_label = tk.Label(self, text="Date", font="NORM_FONT")
+        phone_label = tk.Label(self, text="Phone", font="NORM_FONT")
         venue_label = tk.Label(self, text="Venue", font="NORM_FONT")
         address_label = tk.Label(self, text="Address", font="NORM_FONT")
-        city_label = tk.Label(self, text="City", font="NORM_FONT")
-        state_label = tk.Label(self, text="State", font="NORM_FONT")
-        zip_label = tk.Label(self, text="Zip", font="NORM_FONT")
-        phone_label = tk.Label(self, text="Phone", font="NORM_FONT")
         cap_label = tk.Label(self, text="Capacity", font="NORM_FONT")
         door_pay_label = tk.Label(self, text="Door Pay", font="NORM_FONT")
         cover_charge_label = tk.Label(self, text="Cover Charge", font="NORM_FONT")
@@ -337,12 +358,9 @@ class SchedulePage (tk.Frame):
         # --Form fields--
         # sched_id_entry = tk.Entry(self, textvariable=self.schedule_id)
         date_entry = Entry(self, textvariable=self.date)
+        phone_entry = tk.Entry(self, textvariable=self.phone)
         venue_entry = tk.Entry(self, textvariable=self.venue)
         address_entry = tk.Entry(self, textvariable=self.address)
-        city_entry = tk.Entry(self, textvariable=self.city)
-        state_entry = tk.Entry(self, textvariable=self.state)
-        zip_entry = tk.Entry(self, textvariable=self.zip)
-        phone_entry = tk.Entry(self, textvariable=self.phone)
         cap_entry = tk.Entry(self, textvariable=self.cap)
         door_pay_entry = tk.Entry(self, textvariable=self.door_pay)
         cover_charge_entry = tk.Entry(self, textvariable=self.cover_charge)
@@ -358,92 +376,69 @@ class SchedulePage (tk.Frame):
         date_label.grid(row=1, column=2, sticky="e")
         date_entry.grid(row=1, column=3)
         #Venue
-        venue_label.grid(row=1, column=4, sticky="e")
-        venue_entry.grid(row=1, column=5)
+        venue_label.grid(row=2, column=2, sticky="e")
+        venue_entry.grid(row=2, column=3)
         #Address
-        address_label.grid(row=2, column=2, sticky="e")
-        address_entry.grid(row=2, column=3)
-        #City
-        city_label.grid(row=2, column=4, sticky="e")
-        city_entry.grid(row=2, column=5)
-        #State
-        state_label.grid(row=2, column=6, sticky="e")
-        state_entry.grid(row=2, column=7)
-        #Zip
-        zip_label.grid(row=2, column=8, sticky="e")
-        zip_entry.grid(row=2, column=9)
+        address_label.grid(row=2, column=4, sticky="e")
+        address_entry.grid(row=2, column=5)
         #Phone
-        phone_label.grid(row=3, column=2, sticky="e")
-        phone_entry.grid(row=3, column=3)
+        phone_label.grid(row=2, column=6, sticky="e")
+        phone_entry.grid(row=2, column=7)
         #Capacity
-        cap_label.grid(row=3, column=4, sticky="e")
-        cap_entry.grid(row=3, column=5)
+        cap_label.grid(row=3, column=2, sticky="e")
+        cap_entry.grid(row=3, column=3)
         #Door pay
-        door_pay_label.grid(row=3, column=6, sticky="e")
-        door_pay_entry.grid(row=3, column=7)
+        door_pay_label.grid(row=3, column=4, sticky="e")
+        door_pay_entry.grid(row=3, column=5)
         #Cover charge
-        cover_charge_label.grid(row=3, column=8, sticky="e")
-        cover_charge_entry.grid(row=3, column=9)
+        cover_charge_label.grid(row=3, column=6, sticky="e")
+        cover_charge_entry.grid(row=3, column=7)
         #Buttons
-        submitButton.grid(row=5, column=9, sticky="e")
+        submitButton.grid(row=5, column=7, sticky="e")
 
         #Treeview
-        self.schedule_tree = ttk.Treeview(self)
-        self.schedule_tree["columns"] = ("tour_id",
-                                    "date",
-                                    "phone",
-                                    "venue",
-                                    "address",
-                                    "city",
-                                    "state",
-                                    "zip",
-                                    "cap",
-                                    "door_pay",
-                                    "cover_charge")
+        schedule_tree = ttk.Treeview(self)
+        schedule_tree["columns"] = ("tour_id", "date", "phone", "venue", "address", "cap", "door_pay", "cover_charge")
+        #Schedule ID
+        schedule_tree.column("tour_id", width=80)
+        schedule_tree.heading("tour_id", text="Tour ID")
+        #Merch ID
+        schedule_tree.column("date", width=80)
+        schedule_tree.heading("date", text="Date")
         #Tour ID
-        self.schedule_tree.column("tour_id", width=80)
-        self.schedule_tree.heading("tour_id", text="Tour ID")
-        #Date
-        self.schedule_tree.column("date", width=80)
-        self.schedule_tree.heading("date", text="Date")
-        #Phone
-        self.schedule_tree.column("phone", width=80)
-        self.schedule_tree.heading("phone", text="Phone")
-        #Venue
-        self.schedule_tree.column("venue", width=100)
-        self.schedule_tree.heading("venue", text="Venue")
-        #Address
-        self.schedule_tree.column("address", width=150)
-        self.schedule_tree.heading("address", text="Address")
-        #City
-        self.schedule_tree.column("city", width=100)
-        self.schedule_tree.heading("city", text="City")
-        #State
-        self.schedule_tree.column("state", width=60)
-        self.schedule_tree.heading("state", text="State")
-        #Zip
-        self.schedule_tree.column("zip", width=80)
-        self.schedule_tree.heading("zip", text="Zip Code")
-        #Capacity
-        self.schedule_tree.column("cap", width=60)
-        self.schedule_tree.heading("cap", text="Capacity")
-        #Door Pay
-        self.schedule_tree.column("door_pay", width=60)
-        self.schedule_tree.heading("door_pay", text="Door Pay")
-        #Cover Charge
-        self.schedule_tree.column("cover_charge", width=70)
-        self.schedule_tree.heading("cover_charge", text="Cover Charge")
+        schedule_tree.column("phone", width=80)
+        schedule_tree.heading("phone", text="Phone")
+        #Item Sold
+        schedule_tree.column("venue", width=100)
+        schedule_tree.heading("venue", text="Venue")
+        #Description
+        schedule_tree.column("address", width=150)
+        schedule_tree.heading("address", text="Address")
+        #Quantity
+        schedule_tree.column("cap", width=60)
+        schedule_tree.heading("cap", text="Capacity")
+        #Subtotal
+        schedule_tree.column("door_pay", width=60)
+        schedule_tree.heading("door_pay", text="Door Pay")
+        #Total
+        schedule_tree.column("cover_charge", width=70)
+        schedule_tree.heading("cover_charge", text="Cover Charge")
 
-        self.schedule_tree['show'] = 'headings'
-        self.schedule_tree.grid(row=6, column=3, columnspan=9, sticky="ew")
+        schedule_tree['show'] = 'headings'
+        schedule_tree.grid(row=6, column=3, columnspan=7, sticky="ew")
+
+        tour_list = db_controller.get_tour_info_for_tour_window()
+        for date in tour_list:
+            schedule_tree.insert("", 0, values=(date[0], date[1], date[2], date[3], date[4], date[5], date[6], date[7]))
 
     def submitScheduleEntry(self):
 
+
         new_tour_date = []
         new_tour_date.append(self.address.get())
-        new_tour_date.append(self.city.get())
-        new_tour_date.append(self.state.get())
-        new_tour_date.append(self.zip.get())
+        new_tour_date.append("City")
+        new_tour_date.append("State")
+        new_tour_date.append(12345)
         new_tour_date.append(self.venue.get())
         new_tour_date.append(self.phone.get())
         new_tour_date.append(self.date.get())
@@ -452,22 +447,9 @@ class SchedulePage (tk.Frame):
         new_tour_date.append(self.door_pay.get())
 
         if(db_controller.add_tour_date(new_tour_date)):
-            db_controller.add_tour_date(new_tour_date)
             print("Tour Date Added.")
         else:
             print("Tour Date Addition Failed.")
-
-        print(self.date.get() +
-              "\n" + self.phone.get() +
-              "\n" + self.venue.get() +
-              "\n" + self.address.get() +
-              "\n" + self.city.get() +
-              "\n" + self.state.get() +
-              "\n" + self.zip.get() +
-              "\n" + self.cap.get() +
-              "\n" + self.door_pay.get() +
-              "\n" + self.cover_charge.get())
-
 
 # Analysis Class
 class AnalysisPage(tk.Frame):
@@ -477,58 +459,49 @@ class AnalysisPage(tk.Frame):
         label = tk.Label(self, text="Analysis", font="LARGE_FONT")
         label.grid(row=0, column=0)
 
-        var = IntVar()
-
         # Order items by units sold
-        self.units_sold_radio = Radiobutton(self,
-                                       text="Display Units Sold",
-                                       variable=var,
-                                       value=1,
-                                       command=lambda: db_controller.show_best_selling_units())
+            # checkbox?
 
         # Order items by gross sales
-        self.gross_sales_radio = Radiobutton(self,
-                                       text="Display Gross Sales",
-                                       variable=var,
-                                       value=2,
-                                       command=lambda: db_controller.show_best_gross_units())
 
         # Order items by net sales
-        self.net_sales_radio = Radiobutton(self,
-                                       text="Display Net Sales",
-                                       variable=var,
-                                       value=3,
-                                       command=lambda: db_controller.show_best_net())
 
         # Treeview
-        self.analysis_tree = ttk.Treeview(self)
-        self.analysis_tree["columns"] = ("type", "desc", "unit_cost", "quant", "price", "total_sold")
+        analysis_tree = ttk.Treeview(self)
+        analysis_tree["columns"] = ("type", "desc", "unit_cost", "quant", "price", "total_sold")
         #Merch ID
         # blank column on left
         #Type
-        self.analysis_tree.column("type", width=100)
-        self.analysis_tree.heading("type", text="Type")
+        analysis_tree.column("type", width=100)
+        analysis_tree.heading("type", text="Type")
         #Description
-        self.analysis_tree.column("desc", width=300)
-        self.analysis_tree.heading("desc", text="Description")
+        analysis_tree.column("desc", width=300)
+        analysis_tree.heading("desc", text="Description")
         #Unit Cost
-        self.analysis_tree.column("unit_cost", width=80)
-        self.analysis_tree.heading("unit_cost", text="Unit Cost")
+        analysis_tree.column("unit_cost", width=80)
+        analysis_tree.heading("unit_cost", text="Unit Cost")
         #Quantity
-        self.analysis_tree.column("quant", width=80)
-        self.analysis_tree.heading("quant", text="Quantity")
+        analysis_tree.column("quant", width=80)
+        analysis_tree.heading("quant", text="Quantity")
         #Price
-        self.analysis_tree.column("price", width=80)
-        self.analysis_tree.heading("price", text="Price")
+        analysis_tree.column("price", width=80)
+        analysis_tree.heading("price", text="Price")
         #Total Sold
-        self.analysis_tree.column("total_sold", width=80)
-        self.analysis_tree.heading("total_sold", text="Total Sold")
+        analysis_tree.column("total_sold", width=80)
+        analysis_tree.heading("total_sold", text="Total Sold")
 
-        self.units_sold_radio.grid(row=1, column=3, sticky="w")
-        self.gross_sales_radio.grid(row=2, column=3, sticky="w")
-        self.net_sales_radio.grid(row=3, column=3, sticky="w")
-        self.analysis_tree.grid(row=5, column=3, columnspan=7, sticky="ew")
+        analysis_tree.grid(row=5, column=3, columnspan=7, sticky="ew")
+
+        # # Canvas for graph
+        # canvas = FigureCanvasTkAgg(f, self)
+        # canvas.show()
+        # canvas.get_tk_widget().pack(side=tk.BOTTOM, fill=tk.X, expand=True)
+        #
+        # #Toolbar
+        # toolbar = NavigationToolbar2TkAgg(canvas, self)
+        # toolbar.update()
+        # canvas._tkcanvas.pack(side=tk.BOTTOM, fill=tk.BOTH, expand=True)
 
 app = MainWindow()
-app.geometry("1160x500")
+app.geometry("900x500")
 app.mainloop()
