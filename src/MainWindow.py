@@ -439,7 +439,6 @@ class SchedulePage (tk.Frame):
         new_tour_date.append(self.cap.get())
         new_tour_date.append(self.cover_charge.get())
         new_tour_date.append(self.door_pay.get())
-        db_controller.add_tour_date(new_tour_date)
 
         if(db_controller.add_tour_date(new_tour_date)):
             print("Tour Date Added.")
