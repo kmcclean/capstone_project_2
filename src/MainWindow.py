@@ -322,7 +322,7 @@ class SalesPage (tk.Frame):
 
         sales_list = db_controller.get_sales_info_for_sales_window()
         for sale in sales_list:
-            sales_tree.insert("", 0, values=(sale[0], sale[1], sale[2], sale[3], sale[4]))
+            self.sales_tree.insert("", 0, values=(sale[0], sale[1], sale[2], sale[3], sale[4]))
 
 
     def submitSalesEntry(self):
