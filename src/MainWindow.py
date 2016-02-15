@@ -462,16 +462,16 @@ class SchedulePage (tk.Frame):
 
     def submitScheduleEntry(self):
 
-        print(self.date.get() +
-              "\n" + self.phone.get() +
-              "\n" + self.venue.get() +
-              "\n" + self.address.get() +
-              "\n" + self.city.get() +
-              "\n" + self.state.get() +
-              "\n" + self.zip.get() +
-              "\n" + self.cap.get() +
-              "\n" + self.door_pay.get() +
-              "\n" + self.cover_charge.get())
+        # print(self.date.get() +
+        #       "\n" + self.phone.get() +
+        #       "\n" + self.venue.get() +
+        #       "\n" + self.address.get() +
+        #       "\n" + self.city.get() +
+        #       "\n" + self.state.get() +
+        #       "\n" + self.zip.get() +
+        #       "\n" + self.cap.get() +
+        #       "\n" + self.door_pay.get() +
+        #       "\n" + self.cover_charge.get())
 
         new_tour_date = []
         new_tour_date.append(self.address.get())
@@ -485,15 +485,16 @@ class SchedulePage (tk.Frame):
         new_tour_date.append(self.cover_charge.get())
         new_tour_date.append(self.door_pay.get())
 
-        results_list = []
-        results_list.append(self.test_new_tour_date(new_tour_date))
+        print("Variable new_tour_date: " + str(new_tour_date))
+        results_list = self.test_new_tour_date(new_tour_date)
+        print("variable results_list: " + str(results_list))
         if results_list[0]:
             if db_controller.add_tour_date(new_tour_date):
                 print("Tour Date Added.")
             else:
                 print("Tour Date Addition Failed.")
         else:
-            print(results_list[1])
+            print("Tour addition failed.")
 
     def test_new_tour_date(self, new_date):
         eh = ErrorHandling()
