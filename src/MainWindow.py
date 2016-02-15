@@ -106,6 +106,12 @@ class NavigationPage (tk.Frame):
         label = tk.Label(self, text="Main Page", font="LARGE_FONT")
         label.grid(row=0, column=0)
 
+        #User
+        greet_str = "Welcome to Inventory Manager. \n" \
+                    "To get started, choose one of the buttons below, \n" \
+                    "or choose an option from the 'Navigation' menu"
+        greeting = tk.Label(self, text=greet_str, font="NORM_FONT")
+
         # Buttons
         merchButton = tk.Button(self, text="Merchandise",
                             command=lambda: controller.show_frame(MerchPage))
@@ -117,10 +123,11 @@ class NavigationPage (tk.Frame):
                             command=lambda: controller.show_frame(AnalysisPage))
 
         # --Grid layout--
-        merchButton.grid(row=1, column=2)
-        salesButton.grid(row=1, column=3)
-        schedButton.grid(row=1, column=4)
-        analysisButton.grid(row=1, column=5)
+        greeting.grid(row=1, column=1, columnspan=5)
+        merchButton.grid(row=2, column=2)
+        salesButton.grid(row=2, column=3)
+        schedButton.grid(row=2, column=4)
+        analysisButton.grid(row=2, column=5)
 
 
 # MerchPage class
@@ -338,9 +345,12 @@ class SchedulePage (tk.Frame):
         # --String variables--
         self.schedule_id = StringVar()
         self.date = StringVar()
-        self.phone = StringVar()
         self.venue = StringVar()
         self.address = StringVar()
+        self.city = StringVar()
+        self.state = StringVar()
+        self.zip = StringVar()
+        self.phone = StringVar()
         self.cap = StringVar()
         self.door_pay = StringVar()
         self.cover_charge = StringVar()
@@ -348,9 +358,12 @@ class SchedulePage (tk.Frame):
         # --Field labels--
         # sched_id_label = tk.Label(self, text="Schedule ID", font="NORM_FONT")
         date_label = tk.Label(self, text="Date", font="NORM_FONT")
-        phone_label = tk.Label(self, text="Phone", font="NORM_FONT")
         venue_label = tk.Label(self, text="Venue", font="NORM_FONT")
         address_label = tk.Label(self, text="Address", font="NORM_FONT")
+        city_label = tk.Label(self, text="City", font="NORM_FONT")
+        state_label = tk.Label(self, text="State", font="NORM_FONT")
+        zip_label = tk.Label(self, text="Zip", font="NORM_FONT")
+        phone_label = tk.Label(self, text="Phone", font="NORM_FONT")
         cap_label = tk.Label(self, text="Capacity", font="NORM_FONT")
         door_pay_label = tk.Label(self, text="Door Pay", font="NORM_FONT")
         cover_charge_label = tk.Label(self, text="Cover Charge", font="NORM_FONT")
@@ -358,9 +371,12 @@ class SchedulePage (tk.Frame):
         # --Form fields--
         # sched_id_entry = tk.Entry(self, textvariable=self.schedule_id)
         date_entry = Entry(self, textvariable=self.date)
-        phone_entry = tk.Entry(self, textvariable=self.phone)
         venue_entry = tk.Entry(self, textvariable=self.venue)
         address_entry = tk.Entry(self, textvariable=self.address)
+        city_entry = tk.Entry(self, textvariable=self.city)
+        state_entry = tk.Entry(self, textvariable=self.state)
+        zip_entry = tk.Entry(self, textvariable=self.zip)
+        phone_entry = tk.Entry(self, textvariable=self.phone)
         cap_entry = tk.Entry(self, textvariable=self.cap)
         door_pay_entry = tk.Entry(self, textvariable=self.door_pay)
         cover_charge_entry = tk.Entry(self, textvariable=self.cover_charge)
@@ -376,25 +392,34 @@ class SchedulePage (tk.Frame):
         date_label.grid(row=1, column=2, sticky="e")
         date_entry.grid(row=1, column=3)
         #Venue
-        venue_label.grid(row=2, column=2, sticky="e")
-        venue_entry.grid(row=2, column=3)
+        venue_label.grid(row=1, column=4, sticky="e")
+        venue_entry.grid(row=1, column=5)
         #Address
-        address_label.grid(row=2, column=4, sticky="e")
-        address_entry.grid(row=2, column=5)
+        address_label.grid(row=2, column=2, sticky="e")
+        address_entry.grid(row=2, column=3)
+        #City
+        city_label.grid(row=2, column=4, sticky="e")
+        city_entry.grid(row=2, column=5)
+        #State
+        state_label.grid(row=2, column=6, sticky="e")
+        state_entry.grid(row=2, column=7)
+        #Zip
+        zip_label.grid(row=2, column=8, sticky="e")
+        zip_entry.grid(row=2, column=9)
         #Phone
-        phone_label.grid(row=2, column=6, sticky="e")
-        phone_entry.grid(row=2, column=7)
+        phone_label.grid(row=3, column=2, sticky="e")
+        phone_entry.grid(row=3, column=3)
         #Capacity
-        cap_label.grid(row=3, column=2, sticky="e")
-        cap_entry.grid(row=3, column=3)
+        cap_label.grid(row=3, column=4, sticky="e")
+        cap_entry.grid(row=3, column=5)
         #Door pay
-        door_pay_label.grid(row=3, column=4, sticky="e")
-        door_pay_entry.grid(row=3, column=5)
+        door_pay_label.grid(row=3, column=6, sticky="e")
+        door_pay_entry.grid(row=3, column=7)
         #Cover charge
-        cover_charge_label.grid(row=3, column=6, sticky="e")
-        cover_charge_entry.grid(row=3, column=7)
+        cover_charge_label.grid(row=3, column=8, sticky="e")
+        cover_charge_entry.grid(row=3, column=9)
         #Buttons
-        submitButton.grid(row=5, column=7, sticky="e")
+        submitButton.grid(row=5, column=9, sticky="e")
 
         #Treeview
         schedule_tree = ttk.Treeview(self)
@@ -402,30 +427,39 @@ class SchedulePage (tk.Frame):
         #Schedule ID
         schedule_tree.column("tour_id", width=80)
         schedule_tree.heading("tour_id", text="Tour ID")
-        #Merch ID
+        #Date
         schedule_tree.column("date", width=80)
         schedule_tree.heading("date", text="Date")
-        #Tour ID
+        #Phone
         schedule_tree.column("phone", width=80)
         schedule_tree.heading("phone", text="Phone")
-        #Item Sold
+        #Venue
         schedule_tree.column("venue", width=100)
         schedule_tree.heading("venue", text="Venue")
-        #Description
+        #Address
         schedule_tree.column("address", width=150)
         schedule_tree.heading("address", text="Address")
-        #Quantity
+        #City
+        schedule_tree.column("city", width=100)
+        schedule_tree.heading("city", text="City")
+        #State
+        schedule_tree.column("state", width=60)
+        schedule_tree.heading("state", text="State")
+        #Zip #aiudgoipj
+        schedule_tree.column("zip", width=80)
+        schedule_tree.heading("zip", text="Zip Code")
+        #Capacity
         schedule_tree.column("cap", width=60)
         schedule_tree.heading("cap", text="Capacity")
-        #Subtotal
+        #Door Pay
         schedule_tree.column("door_pay", width=60)
         schedule_tree.heading("door_pay", text="Door Pay")
-        #Total
+        #Cover Charge
         schedule_tree.column("cover_charge", width=70)
         schedule_tree.heading("cover_charge", text="Cover Charge")
 
         schedule_tree['show'] = 'headings'
-        schedule_tree.grid(row=6, column=3, columnspan=7, sticky="ew")
+        schedule_tree.grid(row=6, column=3, columnspan=9, sticky="ew")
 
         tour_list = db_controller.get_tour_info_for_tour_window()
         for date in tour_list:
@@ -433,12 +467,22 @@ class SchedulePage (tk.Frame):
 
     def submitScheduleEntry(self):
 
+        print(self.date.get() +
+              "\n" + self.phone.get() +
+              "\n" + self.venue.get() +
+              "\n" + self.address.get() +
+              "\n" + self.city.get() +
+              "\n" + self.state.get() +
+              "\n" + self.zip.get() +
+              "\n" + self.cap.get() +
+              "\n" + self.door_pay.get() +
+              "\n" + self.cover_charge.get())
 
         new_tour_date = []
         new_tour_date.append(self.address.get())
-        new_tour_date.append("City")
-        new_tour_date.append("State")
-        new_tour_date.append(12345)
+        new_tour_date.append(self.city.get())
+        new_tour_date.append(self.state.get())
+        new_tour_date.append(self.zip.get())
         new_tour_date.append(self.venue.get())
         new_tour_date.append(self.phone.get())
         new_tour_date.append(self.date.get())
@@ -503,5 +547,5 @@ class AnalysisPage(tk.Frame):
         # canvas._tkcanvas.pack(side=tk.BOTTOM, fill=tk.BOTH, expand=True)
 
 app = MainWindow()
-app.geometry("900x500")
+app.geometry("1160x500")
 app.mainloop()
