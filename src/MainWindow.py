@@ -423,7 +423,7 @@ class SchedulePage (tk.Frame):
 
         #Treeview
         schedule_tree = ttk.Treeview(self)
-        schedule_tree["columns"] = ("tour_id", "date", "phone", "venue", "address", "cap", "door_pay", "cover_charge")
+        schedule_tree["columns"] = ("tour_id", "date", "phone", "venue", "address", "city", "state", "zip", "cap", "door_pay", "cover_charge")
         #Schedule ID
         schedule_tree.column("tour_id", width=80)
         schedule_tree.heading("tour_id", text="Tour ID")
@@ -463,7 +463,7 @@ class SchedulePage (tk.Frame):
 
         tour_list = db_controller.get_tour_info_for_tour_window()
         for date in tour_list:
-            schedule_tree.insert("", 0, values=(date[0], date[1], date[2], date[3], date[4], date[5], date[6], date[7]))
+            schedule_tree.insert("", 0, values=(date[0], date[1], date[2], date[3], date[4], date[5], date[6], date[7], date[8], date[9], date[0]))
 
     def submitScheduleEntry(self):
 
