@@ -109,8 +109,7 @@ class DBManager():
                               new_tour_date[4], new_tour_date[5], new_tour_date[6], new_tour_date[7], new_tour_date[8], new_tour_date[9], 0])
             self.show_tour_schedule()
             return True
-        except Exception as e:
-            print(e)
+        except Exception:
             return False
 
     # this closes the database.
@@ -122,6 +121,24 @@ class DBManager():
         line_item_key = self.get_next_id("line_item_sales")
         self.cur.execute('insert into line_item_sales values (?, ?, ?, ?, ?)',
                          [line_item_key, sales_key, merch_key, merch_sales_price, merch_unit_price])
+
+    def delete_sale(self, sales_id):
+        try:
+
+            items_sold_list = self.cur.execute('select merch_id from line_item_sales where sales_id = ?', sales_id)
+            for item_id in items_sold_list:
+                item_info = self.cur.execute('select * from merchandise where merch_id = ?', item_id)
+                inventory = item_info[4]
+                total_sold = item_info[5]
+                inventory += 1
+                total_sold -= 1
+                self.cur.execute('update merchandise set inventory = ?, total_sold = ? where merch_id = ?', [inventory, total_sold, item_id])
+
+            self.cur.execute('delete from sales where sales_id = ?', sales_id)
+            self.cur.execute('delete from line_item_sales where sales_id = ?', sales_id)
+
+        except Exception:
+            return False
 
     # This collects information from the merchandise table.
     def get_table_data(self, table_name):
@@ -136,7 +153,7 @@ class DBManager():
         new_id = 1
         self.cur.execute("SELECT * FROM " + table_name)
         for row in self.cur:
-            new_id += 1
+            new_id += row[0] + 1
         return new_id
 
     def show_all(self):

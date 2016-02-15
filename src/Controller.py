@@ -12,7 +12,7 @@ class Controller:
     def start_db_manager(self):
         self.db = DBManager()
         self.db.startup_database()
-        self.db.add_test_data()
+        #self.db.add_test_data()
 
     #This gets the information from the database and puts it into the form that will be needed by the
     def get_merch_info_for_merch_window(self):
