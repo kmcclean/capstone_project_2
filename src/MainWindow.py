@@ -78,6 +78,10 @@ class MainWindow(tk.Tk):
 
         self.show_frame(NavigationPage)
 
+        db_controller.show_best_selling_units()
+        db_controller.show_best_gross_units()
+        db_controller.show_best_net()
+
     # Show frame
     def show_frame(self, cont):
 
@@ -465,6 +469,8 @@ class SchedulePage (tk.Frame):
             schedule_tree.insert("", 0, values=(date[0], date[1], date[2], date[3], date[4], date[5], date[6], date[7]))
 
     def submitScheduleEntry(self):
+
+
         new_tour_date = []
         new_tour_date.append(self.address.get())
         new_tour_date.append(self.city.get())

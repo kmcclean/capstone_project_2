@@ -20,7 +20,6 @@ class DBManager:
 
     # this is where the database starts up. It will create the four tables that are needed.
     def drop_database(self):
-
         self.cur.execute('drop table if exists merchandise')
         self.cur.execute('drop table if exists sales')
         self.cur.execute('drop table if exists line_item_sales')
@@ -72,7 +71,7 @@ class DBManager:
     def add_new_merchandise(self, new_merch_info): # , name, sale_price, unit_price, amount):
         try:
             key_id = self.get_next_id("merchandise")
-            self.cur.execute('insert into merchandise values (?, ?, ?, ?, ?, ?)', [key_id, new_merch_info[0], new_merch_info[1], new_merch_info[2], new_merch_info[3], 0])# name, sale_price, unit_price, amount, 0])
+            self.cur.execute('insert into merchandise values (?, ?, ?, ?, ?, ?)', [key_id, new_merch_info[0], new_merch_info[1], new_merch_info[2], new_merch_info[3], 0])
             self.show_merchandise()
             return True
 
@@ -122,7 +121,8 @@ class DBManager:
                               new_tour_date[4], new_tour_date[5], new_tour_date[6], new_tour_date[7], new_tour_date[8], new_tour_date[9], 0])
             self.show_tour_schedule()
             return True
-        except Exception:
+        except Exception as e:
+            print(e)
             return False
 
     # this closes the database.
@@ -200,6 +200,8 @@ class DBManager:
         print("Ordered by Best Selling")
         for item in best_selling_list:
             print(item[2])
+
+        return best_selling_list
 
     # this function takes the number of items sold for each unit, multiplies by the sales_price of each unit, and...
     # then sorts by the gross value of the sales.
