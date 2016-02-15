@@ -195,35 +195,35 @@ class MerchPage (tk.Frame):
         #Treeview
         #LabelFrame
         # merch_label_frame.grid(row=6, column=0, columnspan=13, rowspan=8)
-        merch_tree = ttk.Treeview(self)
-        merch_tree["columns"] = ("merch_id", "type", "unit_cost", "quant", "price", "total_sold")
+        self.merch_tree = ttk.Treeview(self)
+        self.merch_tree["columns"] = ("merch_id", "type", "unit_cost", "quant", "price", "total_sold")
         #Merch ID
-        merch_tree.column("merch_id", width=80)
-        merch_tree.heading("merch_id", text="Merch ID")
+        self.merch_tree.column("merch_id", width=80)
+        self.merch_tree.heading("merch_id", text="Merch ID")
         #Type
-        merch_tree.column("type", width=100)
-        merch_tree.heading("type", text="Type")
+        self.merch_tree.column("type", width=100)
+        self.merch_tree.heading("type", text="Type")
         #Unit Cost
-        merch_tree.column("unit_cost", width=80)
-        merch_tree.heading("unit_cost", text="Unit Cost")
+        self.merch_tree.column("unit_cost", width=80)
+        self.merch_tree.heading("unit_cost", text="Unit Cost")
         #Quantity
-        merch_tree.column("quant", width=80)
-        merch_tree.heading("quant", text="Quantity")
+        self.merch_tree.column("quant", width=80)
+        self.merch_tree.heading("quant", text="Quantity")
         #Price
-        merch_tree.column("price", width=80)
-        merch_tree.heading("price", text="Price")
+        self.merch_tree.column("price", width=80)
+        self.merch_tree.heading("price", text="Price")
         #Total Sold
-        merch_tree.column("total_sold", width=80)
-        merch_tree.heading("total_sold", text="Total Sold")
+        self.merch_tree.column("total_sold", width=80)
+        self.merch_tree.heading("total_sold", text="Total Sold")
 
-        merch_tree['show'] = 'headings'
-        merch_tree.grid(row=10, column=3, columnspan=7, sticky="ew")
+        self.merch_tree['show'] = 'headings'
+        self.merch_tree.grid(row=10, column=3, columnspan=7, sticky="ew")
 
         # This adds the data from the database to the GUI.
         # con = Controller()
         merch_list = db_controller.get_merch_info_for_merch_window()
         for item in merch_list:
-            merch_tree.insert("", 0, values=(item[0], item[1], item[2], item[3], item[4], item[5]))
+            self.merch_tree.insert("", 0, values=(item[0], item[1], item[2], item[3], item[4], item[5]))
 
         # ** Use merch_tree.insert("", <linenumber>, text="merch_id", values=("field1", "field2", etc.))
 
@@ -233,8 +233,11 @@ class MerchPage (tk.Frame):
         new_merch_list.append(self.price.get())
         new_merch_list.append(self.unit_cost.get())
         new_merch_list.append(self.quantity.get())
-        if(db_controller.add_new_merch(new_merch_list)):
-            print("Merchandise Added.")
+
+        results_list = db_controller.add_new_merch(new_merch_list)
+        if results_list[0] == True:
+            new_addition_to_list = results_list[1]
+            self.merch_tree.insert("", 0, values=(new_addition_to_list[0], new_addition_to_list[1], new_addition_to_list[2], new_addition_to_list[3], new_addition_to_list[4], new_addition_to_list[5]))
         else:
             print("Addition failed.")
 

@@ -73,10 +73,20 @@ class DBManager:
             key_id = self.get_next_id("merchandise")
             self.cur.execute('insert into merchandise values (?, ?, ?, ?, ?, ?)', [key_id, new_merch_info[0], new_merch_info[1], new_merch_info[2], new_merch_info[3], 0])
             self.show_merchandise()
-            return True
+            key_id_tuple = (key_id, )
+            self.cur.execute('select * from merchandise where merch_id = ? ', key_id_tuple)
+            new_item_list = []
+            for row in self.cur:
+                print("Row: " + str(row))
+                for column in row:
+                    new_item_list.append(column)
+            return_list = [True, new_item_list]
+            return return_list
 
-        except Exception:
-            return False
+        except Exception as e:
+            print(e)
+            return_list = [False, None]
+            return return_list
 
     # This adds a new sale to the tables. It does so by first creating the necessary number of line items
     # (individual products come in as a list). It then uses these to to build the individual sales list.
@@ -161,7 +171,7 @@ class DBManager:
     def get_table_data(self, table_name):
         self.cur.execute('select * from ' + table_name)
         return_list = []
-        print("Getting data for table " + table_name)
+        # print("Getting data for table " + table_name)
         for row in self.cur:
             return_list.append(row)
         return return_list
@@ -197,9 +207,9 @@ class DBManager:
         # procedure taken from StackOverFlow: http://stackoverflow.com/questions/3121979/how-to-sort-list-tuple-of-lists-tuples
         best_selling_list = sorted(best_selling_list, key=lambda tup:tup[5], reverse= True)
 
-        print("Ordered by Best Selling")
-        for item in best_selling_list:
-            print(item[2])
+        # print("Ordered by Best Selling")
+        # for item in best_selling_list:
+        #     print(item[2])
 
         return best_selling_list
 
@@ -219,8 +229,8 @@ class DBManager:
         # procedure taken from StackOverFlow: http://stackoverflow.com/questions/3121979/how-to-sort-list-tuple-of-lists-tuples
         gross_list = sorted(gross_list, key=lambda tup:tup[1], reverse= True)
 
-        for item in gross_list:
-            print(item)
+        # for item in gross_list:
+        #     print(item)
 
         return gross_list
 
@@ -240,8 +250,8 @@ class DBManager:
         # procedure taken from StackOverFlow: http://stackoverflow.com/questions/3121979/how-to-sort-list-tuple-of-lists-tuples
         net_list = sorted(net_list, key=lambda tup:tup[1], reverse= True)
 
-        for item in net_list:
-            print(item)
+        # for item in net_list:
+        #     print(item)
 
         return net_list
 

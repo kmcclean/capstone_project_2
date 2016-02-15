@@ -7,7 +7,8 @@ class Controller:
     an = Analyzer()
 
     def add_new_merch(self, new_merch_info):
-        return self.db.add_new_merchandise(new_merch_info)
+        a = self.db.add_new_merchandise(new_merch_info)
+        return a
 
     def add_tour_date(self, tour_date_info):
         return self.db.add_new_tour_date(tour_date_info)
@@ -18,8 +19,8 @@ class Controller:
         self.db.startup_database()
         self.db.add_test_data()
 
-        self.db.show_all()
-        self.db.table_check()
+        # self.db.show_all()
+        # self.db.table_check()
 
     # This gets the information from the database and puts it into the form that will be needed by the merchandise GUI.
     def get_merch_info_for_merch_window(self):
