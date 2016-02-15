@@ -1,9 +1,8 @@
 __author__ = 'casey & kevin'
 
-
 class Analyzer:
 
-    def best_units(self, best_selling_list):
+    def best_units_total(self, best_selling_list):
         f = open("best_selling_merch.txt", "w")
         for item in best_selling_list:
             f.write(str(item))

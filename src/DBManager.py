@@ -211,7 +211,7 @@ class DBManager:
 
         for item in self.cur:
             units_sold = item[5]
-            sales_price = item [2]
+            sales_price = item[2]
             total_sales = units_sold * sales_price
             new_item = (item, total_sales)
             gross_list.append(new_item)
