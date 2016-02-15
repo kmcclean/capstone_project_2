@@ -451,10 +451,6 @@ class SchedulePage (tk.Frame):
         new_tour_date.append(self.cap.get())
         new_tour_date.append(self.cover_charge.get())
         new_tour_date.append(self.door_pay.get())
-        #self.cur.execute('create table if not exists tour_schedule(tour_id int,
-        # street_address text, city text, state text, zip int,
-        # venue_name text, phone text, tour_date blob, capacity int,
-        # cover_charge real, door_pay real, tickets_sold int)')
 
         if(db_controller.add_tour_date(new_tour_date)):
             print("Tour Date Added.")
@@ -465,10 +461,12 @@ class SchedulePage (tk.Frame):
               "\n" + self.phone.get() +
               "\n" + self.venue.get() +
               "\n" + self.address.get() +
+              "\n" + self.city.get() +
+              "\n" + self.state.get() +
+              "\n" + self.zip.get() +
               "\n" + self.cap.get() +
               "\n" + self.door_pay.get() +
               "\n" + self.cover_charge.get())
-
 
 
 # Analysis Class
