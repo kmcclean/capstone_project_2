@@ -14,7 +14,6 @@ from src.Controller import Controller
 # from matplotlib import style
 # from matplotlib import pyplot as plt
 
-
 LARGE_FONT = ("Verdana", 6)
 NORM_FONT = ("Veranda", 12)
 SMALL_FONT = ("Veranda", 8)
