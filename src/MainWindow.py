@@ -445,7 +445,7 @@ class SchedulePage (tk.Frame):
         #State
         schedule_tree.column("state", width=60)
         schedule_tree.heading("state", text="State")
-        #Zip #
+        #Zip #aiudgoipj
         schedule_tree.column("zip", width=80)
         schedule_tree.heading("zip", text="Zip Code")
         #Capacity
