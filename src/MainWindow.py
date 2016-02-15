@@ -199,7 +199,6 @@ class MerchPage (tk.Frame):
         self.merch_tree['show'] = 'headings'
         self.merch_tree.grid(row=10, column=3, columnspan=7, sticky="ew")
 
-        # ** Use merch_tree.insert("", <linenumber>, text="merch_id", values=("field1", "field2", etc.))
 
     def submitMerchEntry(self):
         new_merch_list = []
