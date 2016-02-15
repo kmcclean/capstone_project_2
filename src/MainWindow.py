@@ -78,6 +78,10 @@ class MainWindow(tk.Tk):
 
         self.show_frame(NavigationPage)
 
+        db_controller.show_best_selling_units()
+        db_controller.show_best_gross_units()
+        db_controller.show_best_net()
+
     # Show frame
     def show_frame(self, cont):
 
@@ -86,6 +90,11 @@ class MainWindow(tk.Tk):
 
     # Quit program
     def client_exit(self):
+        if (db_controller.close_database()):
+            print("Database closed.")
+        else:
+            print("Database not closed.")
+        print("This is client_exit.")
         exit()
 
 
@@ -423,6 +432,8 @@ class SchedulePage (tk.Frame):
             schedule_tree.insert("", 0, values=(date[0], date[1], date[2], date[3], date[4], date[5], date[6], date[7]))
 
     def submitScheduleEntry(self):
+
+
         new_tour_date = []
         new_tour_date.append(self.address.get())
         new_tour_date.append("City")
@@ -434,10 +445,6 @@ class SchedulePage (tk.Frame):
         new_tour_date.append(self.cap.get())
         new_tour_date.append(self.cover_charge.get())
         new_tour_date.append(self.door_pay.get())
-        #self.cur.execute('create table if not exists tour_schedule(tour_id int,
-        # street_address text, city text, state text, zip int,
-        # venue_name text, phone text, tour_date blob, capacity int,
-        # cover_charge real, door_pay real, tickets_sold int)')
 
         if(db_controller.add_tour_date(new_tour_date)):
             print("Tour Date Added.")
