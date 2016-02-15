@@ -29,6 +29,8 @@ db_controller = Controller()
 class MainWindow(tk.Tk):
 
     def __init__(self, *args, **kwargs):
+
+        db_controller.start_db_manager()
         tk.Tk.__init__(self, *args, **kwargs)
 
         tk.Tk.wm_title(self, "Inventory Manager")
@@ -76,6 +78,10 @@ class MainWindow(tk.Tk):
 
         self.show_frame(NavigationPage)
 
+        db_controller.show_best_selling_units()
+        db_controller.show_best_gross_units()
+        db_controller.show_best_net()
+
     # Show frame
     def show_frame(self, cont):
 
@@ -84,6 +90,11 @@ class MainWindow(tk.Tk):
 
     # Quit program
     def client_exit(self):
+        if (db_controller.close_database()):
+            print("Database closed.")
+        else:
+            print("Database not closed.")
+        print("This is client_exit.")
         exit()
 
 
@@ -212,18 +223,28 @@ class MerchPage (tk.Frame):
         # con = Controller()
         merch_list = db_controller.get_merch_info_for_merch_window()
         for item in merch_list:
-            merch_tree.insert("", "end", values=(item[0], item[1], item[2], item[3], item[4], item[5], item[6]))
+            merch_tree.insert("", 0, values=(item[0], item[1], item[2], item[3], item[4], item[5]))
 
         # ** Use merch_tree.insert("", <linenumber>, text="merch_id", values=("field1", "field2", etc.))
 
     def submitMerchEntry(self):
+        new_merch_list = []
+        new_merch_list.append(self.type.get())
+        new_merch_list.append(self.price.get())
+        new_merch_list.append(self.unit_cost.get())
+        new_merch_list.append(self.quantity.get())
 
-        print(self.merch_id.get() +
-              "\n" + self.type.get() +
-              "\n" + self.unit_cost.get() +
-              "\n" + self.quantity.get() +
-              "\n" + self.price.get() +
-              "\n" + self.total_sold.get())
+        if(db_controller.add_new_merch(new_merch_list)):
+            print("Merchandise Added.")
+        else:
+            print("Addition failed.")
+
+        # print(self.merch_id.get() +
+        #       "\n" + self.type.get() +
+        #       "\n" + self.unit_cost.get() +
+        #       "\n" + self.quantity.get() +
+        #       "\n" + self.price.get() +
+        #       "\n" + self.total_sold.get())
 
 
 # Sales class
@@ -299,6 +320,11 @@ class SalesPage (tk.Frame):
         sales_tree['show'] = 'headings'
         sales_tree.grid(row=6, column=3, columnspan=7, sticky="ew")
 
+        sales_list = db_controller.get_sales_info_for_sales_window()
+        for sale in sales_list:
+            sales_tree.insert("", 0, values=(sale[0], sale[1], sale[2], sale[3], sale[4]))
+
+
     def submitSalesEntry(self):
 
         print(self.sale_id.get() +
@@ -319,12 +345,12 @@ class SchedulePage (tk.Frame):
         # --String variables--
         self.schedule_id = StringVar()
         self.date = StringVar()
-        self.phone = StringVar()
         self.venue = StringVar()
         self.address = StringVar()
         self.city = StringVar()
         self.state = StringVar()
         self.zip = StringVar()
+        self.phone = StringVar()
         self.cap = StringVar()
         self.door_pay = StringVar()
         self.cover_charge = StringVar()
@@ -336,7 +362,7 @@ class SchedulePage (tk.Frame):
         address_label = tk.Label(self, text="Address", font="NORM_FONT")
         city_label = tk.Label(self, text="City", font="NORM_FONT")
         state_label = tk.Label(self, text="State", font="NORM_FONT")
-        zip_label = tk.Label(self, text="Zip Code", font="NORM_FONT")
+        zip_label = tk.Label(self, text="Zip", font="NORM_FONT")
         phone_label = tk.Label(self, text="Phone", font="NORM_FONT")
         cap_label = tk.Label(self, text="Capacity", font="NORM_FONT")
         door_pay_label = tk.Label(self, text="Door Pay", font="NORM_FONT")
@@ -397,18 +423,8 @@ class SchedulePage (tk.Frame):
 
         #Treeview
         schedule_tree = ttk.Treeview(self)
-        schedule_tree["columns"] = ("tour_id",
-                                    "date",
-                                    "phone",
-                                    "venue",
-                                    "address",
-                                    "city",
-                                    "state",
-                                    "zip",
-                                    "cap",
-                                    "door_pay",
-                                    "cover_charge")
-        #Tour ID
+        schedule_tree["columns"] = ("tour_id", "date", "phone", "venue", "address", "cap", "door_pay", "cover_charge")
+        #Schedule ID
         schedule_tree.column("tour_id", width=80)
         schedule_tree.heading("tour_id", text="Tour ID")
         #Date
@@ -427,23 +443,27 @@ class SchedulePage (tk.Frame):
         schedule_tree.column("city", width=100)
         schedule_tree.heading("city", text="City")
         #State
-        schedule_tree.column("state", width=40)
+        schedule_tree.column("state", width=60)
         schedule_tree.heading("state", text="State")
         #Zip
-        schedule_tree.column("zip", width=60)
-        schedule_tree.heading("zip", text="Zip")
-        #Quantity
+        schedule_tree.column("zip", width=80)
+        schedule_tree.heading("zip", text="Zip Code")
+        #Capacity
         schedule_tree.column("cap", width=60)
         schedule_tree.heading("cap", text="Capacity")
-        #Subtotal
+        #Door Pay
         schedule_tree.column("door_pay", width=60)
         schedule_tree.heading("door_pay", text="Door Pay")
-        #Total
+        #Cover Charge
         schedule_tree.column("cover_charge", width=70)
         schedule_tree.heading("cover_charge", text="Cover Charge")
 
         schedule_tree['show'] = 'headings'
         schedule_tree.grid(row=6, column=3, columnspan=9, sticky="ew")
+
+        tour_list = db_controller.get_tour_info_for_tour_window()
+        for date in tour_list:
+            schedule_tree.insert("", 0, values=(date[0], date[1], date[2], date[3], date[4], date[5], date[6], date[7]))
 
     def submitScheduleEntry(self):
 
@@ -458,6 +478,22 @@ class SchedulePage (tk.Frame):
               "\n" + self.door_pay.get() +
               "\n" + self.cover_charge.get())
 
+        new_tour_date = []
+        new_tour_date.append(self.address.get())
+        new_tour_date.append(self.city.get())
+        new_tour_date.append(self.state.get())
+        new_tour_date.append(self.zip.get())
+        new_tour_date.append(self.venue.get())
+        new_tour_date.append(self.phone.get())
+        new_tour_date.append(self.date.get())
+        new_tour_date.append(self.cap.get())
+        new_tour_date.append(self.cover_charge.get())
+        new_tour_date.append(self.door_pay.get())
+
+        if(db_controller.add_tour_date(new_tour_date)):
+            print("Tour Date Added.")
+        else:
+            print("Tour Date Addition Failed.")
 
 # Analysis Class
 class AnalysisPage(tk.Frame):
