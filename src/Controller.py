@@ -26,6 +26,7 @@ class Controller:
         list_of_merch_tuples = self.db.get_table_data("merchandise")
         list_of_merch_list = []
 
+        #
         # This puts the items into a list, organized by the way they'll be needed for the merchandise_screen.
         for item in list_of_merch_tuples:
             item_list=[]
