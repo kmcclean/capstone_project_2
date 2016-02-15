@@ -1,5 +1,6 @@
 __author__ = 'casey & kevin'
 
+
 class Analyzer:
 
     def best_units_total(self, best_selling_list):

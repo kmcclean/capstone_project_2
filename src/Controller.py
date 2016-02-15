@@ -80,17 +80,15 @@ class Controller:
 
     def show_best_selling_units(self):
         best_selling = self.db.show_best_units_sold()
-        print("Best Selling.")
-        print(best_selling)
         self.an.best_units_total(best_selling)
 
     def show_best_gross_units(self):
         best_gross = self.db.show_best_units_sold_gross()
-        self.an.best_units_gross(best_gross)
+        # self.an.best_units_gross(best_gross)
 
     def show_best_net(self):
         best_net = self.db.show_best_units_sold_net()
-        self.an.best_units_net(best_net)
+        # self.an.best_units_net(best_net)
 
     def close_database(self):
         return self.db.close_database()
