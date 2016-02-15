@@ -462,24 +462,6 @@ class SchedulePage (tk.Frame):
         schedule_tree['show'] = 'headings'
         schedule_tree.grid(row=6, column=3, columnspan=9, sticky="ew")
 
-<<<<<<< Temporary merge branch 1
-    def submitScheduleEntry(self):
-
-        print(self.date.get() +
-              "\n" + self.phone.get() +
-              "\n" + self.venue.get() +
-              "\n" + self.address.get() +
-              "\n" + self.city.get() +
-              "\n" + self.state.get() +
-              "\n" + self.zip.get() +
-              "\n" + self.cap.get() +
-              "\n" + self.door_pay.get() +
-              "\n" + self.cover_charge.get())
-=======
-        tour_list = db_controller.get_tour_info_for_tour_window()
-        for date in tour_list:
-            schedule_tree.insert("", 0, values=(date[0], date[1], date[2], date[3], date[4], date[5], date[6], date[7]))
->>>>>>> Temporary merge branch 2
 
     def submitScheduleEntry(self):
         new_tour_date = []
