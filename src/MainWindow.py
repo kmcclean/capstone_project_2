@@ -4,7 +4,7 @@ import tkinter as tk
 from tkinter import ttk
 from tkinter import *
 from src.Controller import Controller
-
+from src.ErrorHandling import ErrorHandling
 # For Analysis
 # import matplotlib
 # matplotlib.use("TkAgg")
@@ -233,18 +233,10 @@ class MerchPage (tk.Frame):
         new_merch_list.append(self.price.get())
         new_merch_list.append(self.unit_cost.get())
         new_merch_list.append(self.quantity.get())
-
         if(db_controller.add_new_merch(new_merch_list)):
             print("Merchandise Added.")
         else:
             print("Addition failed.")
-
-        # print(self.merch_id.get() +
-        #       "\n" + self.type.get() +
-        #       "\n" + self.unit_cost.get() +
-        #       "\n" + self.quantity.get() +
-        #       "\n" + self.price.get() +
-        #       "\n" + self.total_sold.get())
 
 
 # Sales class
@@ -490,10 +482,51 @@ class SchedulePage (tk.Frame):
         new_tour_date.append(self.cover_charge.get())
         new_tour_date.append(self.door_pay.get())
 
-        if(db_controller.add_tour_date(new_tour_date)):
-            print("Tour Date Added.")
+        results_list = []
+        results_list.append(self.test_new_tour_date(new_tour_date))
+        if results_list[0]:
+            if db_controller.add_tour_date(new_tour_date):
+                print("Tour Date Added.")
+            else:
+                print("Tour Date Addition Failed.")
         else:
-            print("Tour Date Addition Failed.")
+            print(results_list[1])
+
+    def test_new_tour_date(self, new_date):
+        eh = ErrorHandling()
+        if eh.nonblank_string(new_date[0]) == False:
+            failure_list = [False, "The address field must be filled."]
+            return failure_list
+        elif eh.nonblank_string(new_date[1]) == False:
+            failure_list = [False, "The city field must be filled."]
+            return failure_list
+        elif eh.nonblank_string(new_date[2]) == False:
+            failure_list = [False, "The state field must be filled."]
+            return failure_list
+        elif eh.range_integer_input_checking(new_date[3], 5, 5) == False:
+            failure_list = [False, "The zip code field must be filled."]
+            return failure_list
+        elif eh.nonblank_string(new_date[4] == False):
+            failure_list = [False, "The venue field must be filled."]
+            return failure_list
+        elif eh.range_integer_input_checking(new_date[5], 10, 10) == False:
+            failure_list = [False, "The phone number field must be filled."]
+            return failure_list
+        elif eh.nonblank_string(new_date[6]) == False:
+            failure_list = [False, "The date field must be filled."]
+            return failure_list
+        elif eh.range_integer_input_checking(new_date[7], 0, 99999) == False:
+            failure_list = [False, "The capacity field must be filled."]
+            return failure_list
+        elif eh.float_check(new_date[8]) == False:
+            failure_list = [False, "The cover charge field must be filled."]
+            return failure_list
+        elif eh.float_check(new_date[9]) == False:
+            failure_list = [False, "The door pay field must be filled."]
+            return failure_list
+        else:
+            success_list = [True, "All input fields have been entered correctly."]
+            return success_list
 
 # Analysis Class
 class AnalysisPage(tk.Frame):

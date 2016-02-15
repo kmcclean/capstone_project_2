@@ -222,10 +222,12 @@ class DBManager:
         for item in gross_list:
             print(item)
 
+        return gross_list
+
     #this function shows the net value of each item sold, and then reports it back.
     def show_best_units_sold_net(self):
         self.cur.execute('select * from merchandise')
-        gross_list = []
+        net_list = []
 
         for item in self.cur:
             units_sold = item[5]
@@ -233,13 +235,15 @@ class DBManager:
             unit_cost = item[3]
             net_sales = (units_sold * sales_price) - (units_sold * unit_cost)
             new_item = (item, net_sales)
-            gross_list.append(new_item)
+            net_list.append(new_item)
 
         # procedure taken from StackOverFlow: http://stackoverflow.com/questions/3121979/how-to-sort-list-tuple-of-lists-tuples
-        gross_list = sorted(gross_list, key=lambda tup:tup[1], reverse= True)
+        net_list = sorted(net_list, key=lambda tup:tup[1], reverse= True)
 
-        for item in gross_list:
+        for item in net_list:
             print(item)
+
+        return net_list
 
     def show_line_item_sales(self):
         self.cur.execute('select * from line_item_sales')
