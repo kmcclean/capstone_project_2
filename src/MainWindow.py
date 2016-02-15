@@ -512,16 +512,6 @@ class AnalysisPage(tk.Frame):
 
         analysis_tree.grid(row=5, column=3, columnspan=7, sticky="ew")
 
-        # # Canvas for graph
-        # canvas = FigureCanvasTkAgg(f, self)
-        # canvas.show()
-        # canvas.get_tk_widget().pack(side=tk.BOTTOM, fill=tk.X, expand=True)
-        #
-        # #Toolbar
-        # toolbar = NavigationToolbar2TkAgg(canvas, self)
-        # toolbar.update()
-        # canvas._tkcanvas.pack(side=tk.BOTTOM, fill=tk.BOTH, expand=True)
-
 app = MainWindow()
 app.geometry("1160x500")
 app.mainloop()
