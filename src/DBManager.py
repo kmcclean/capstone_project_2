@@ -92,7 +92,6 @@ class DBManager:
     # Finally it reduces the  number from the merchandise by an appropriate amount.
     def add_new_sale(self, units_sold_id_list, tour_id):
         try:
-
             sales_key = self.get_next_id("sales")
             total_sales = 0
             total_cost = 0
@@ -129,9 +128,16 @@ class DBManager:
                              [tour_id, new_tour_date[0], new_tour_date[1], new_tour_date[2], new_tour_date[3],
                               new_tour_date[4], new_tour_date[5], new_tour_date[6], new_tour_date[7], new_tour_date[8], new_tour_date[9], 0])
             self.show_tour_schedule()
-            return True
+            tour_id_tuple = (tour_id, )
+            self.cur.execute('select * from tour_schedule where tour_id = ?', tour_id_tuple)
+            new_tour_date_list = []
+            for row in self.cur:
+                for column in row:
+                    new_tour_date_list.append(column)
+            return_list = [True, new_tour_date_list]
+            return return_list
         except Exception as e:
-            print(e)
+            return [False, None]
             return False
 
     # this closes the database.
@@ -180,7 +186,8 @@ class DBManager:
         new_id = 1
         self.cur.execute("SELECT * FROM " + table_name)
         for row in self.cur:
-            new_id += row[0] + 1
+            print("get_next_it row: " + str(row))
+            new_id = row[0] + 1
         return new_id
 
     def show_all(self):

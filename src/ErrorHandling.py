@@ -25,6 +25,17 @@ class ErrorHandling:
                 print("The entry needs to be an integer.")
                 return False
 
+    def variable_length_checking(self, check_text, required_length):
+        try:
+            a = len(check_text)
+            if a == required_length:
+                return True
+            else:
+                return False
+        except ValueError:
+            print("The entry needs to be an integer.")
+            return False
+
 
     # this checks to make sure the truth of the number being within the range provided.
     def range_provided_truth_check(self, test_number, low, high):

@@ -495,7 +495,14 @@ class SchedulePage (tk.Frame):
         results_list = []
         results_list.append(self.test_new_tour_date(new_tour_date))
         if results_list[0]:
-            if db_controller.add_tour_date(new_tour_date):
+            new_tour_date_gui_info = db_controller.add_tour_date(new_tour_date)
+            if new_tour_date_gui_info[0]:
+                new_tour_date_gui_list = new_tour_date_gui_info[1]
+                self.schedule_tree.insert("", 0, values=(new_tour_date_gui_list[0], new_tour_date_gui_list[1],
+                                                      new_tour_date_gui_list[2], new_tour_date_gui_list[3],
+                                                      new_tour_date_gui_list[4], new_tour_date_gui_list[5],
+                                                      new_tour_date_gui_list[6], new_tour_date_gui_list[7],
+                                                      new_tour_date_gui_list[9], new_tour_date_gui_list[10]))
                 print("Tour Date Added.")
             else:
                 print("Tour Date Addition Failed.")
@@ -510,16 +517,16 @@ class SchedulePage (tk.Frame):
         elif eh.nonblank_string(new_date[1]) == False:
             failure_list = [False, "The city field must be filled."]
             return failure_list
-        elif eh.nonblank_string(new_date[2]) == False:
-            failure_list = [False, "The state field must be filled."]
+        elif eh.variable_length_checking(new_date[2], 2) == False:
+            failure_list = [False, "The state field must be with a state abbreviation."]
             return failure_list
-        elif eh.range_integer_input_checking(new_date[3], 5, 5) == False:
+        elif eh.variable_length_checking(new_date[3], 5) == False:
             failure_list = [False, "The zip code field must be filled."]
             return failure_list
         elif eh.nonblank_string(new_date[4] == False):
             failure_list = [False, "The venue field must be filled."]
             return failure_list
-        elif eh.range_integer_input_checking(new_date[5], 10, 10) == False:
+        elif eh.variable_length_checking(new_date[5], 10) == False:
             failure_list = [False, "The phone number field must be filled."]
             return failure_list
         elif eh.nonblank_string(new_date[6]) == False:
@@ -598,6 +605,16 @@ class AnalysisPage(tk.Frame):
         gross_sales_radio.grid(row=3, column=3, sticky="w")
         net_sales_radio.grid(row=4, column=3, sticky="w")
         self.analysis_tree.grid(row=5, column=3, columnspan=7, sticky="ew")
+
+        # # Canvas for graph
+        # canvas = FigureCanvasTkAgg(f, self)
+        # canvas.show()
+        # canvas.get_tk_widget().pack(side=tk.BOTTOM, fill=tk.X, expand=True)
+        #
+        # #Toolbar
+        # toolbar = NavigationToolbar2TkAgg(canvas, self)
+        # toolbar.update()
+        # canvas._tkcanvas.pack(side=tk.BOTTOM, fill=tk.BOTH, expand=True)
 
 app = MainWindow()
 app.geometry("1160x500")
