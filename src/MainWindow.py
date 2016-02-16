@@ -528,7 +528,7 @@ class SchedulePage (tk.Frame):
         elif eh.variable_length_checking(new_date[3], 5) == False:
             failure_list = [False, "The zip code field must be filled."]
             return failure_list
-        elif eh.nonblank_string(new_date[4] == False):
+        elif eh.nonblank_string(new_date[4]) == False:
             failure_list = [False, "The venue field must be filled."]
             return failure_list
         elif eh.variable_length_checking(new_date[5], 10) == False:
