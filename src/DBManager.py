@@ -92,7 +92,6 @@ class DBManager:
     # Finally it reduces the  number from the merchandise by an appropriate amount.
     def add_new_sale(self, units_sold_id_list, tour_id):
         try:
-
             sales_key = self.get_next_id("sales")
             total_sales = 0
             total_cost = 0
@@ -180,7 +179,8 @@ class DBManager:
         new_id = 1
         self.cur.execute("SELECT * FROM " + table_name)
         for row in self.cur:
-            new_id += row[0] + 1
+            print("get_next_it row: " + str(row))
+            new_id = row[0] + 1
         return new_id
 
     def show_all(self):
