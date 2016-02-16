@@ -315,11 +315,6 @@ class SalesPage (tk.Frame):
         sales_tree['show'] = 'headings'
         sales_tree.grid(row=6, column=3, columnspan=7, sticky="ew")
 
-        sales_list = db_controller.get_sales_info_for_sales_window()
-        for sale in sales_list:
-            sales_tree.insert("", 0, values=(sale[0], sale[1], sale[2], sale[3], sale[4]))
-
-
     def submitSalesEntry(self):
 
         print(self.sale_id.get() +
@@ -418,8 +413,18 @@ class SchedulePage (tk.Frame):
 
         #Treeview
         schedule_tree = ttk.Treeview(self)
-        schedule_tree["columns"] = ("tour_id", "date", "phone", "venue", "address", "city", "state", "zip", "cap", "door_pay", "cover_charge")
-        #Schedule ID
+        schedule_tree["columns"] = ("tour_id",
+                                    "date",
+                                    "phone",
+                                    "venue",
+                                    "address",
+                                    "city",
+                                    "state",
+                                    "zip",
+                                    "cap",
+                                    "door_pay",
+                                    "cover_charge")
+        #Tour ID
         schedule_tree.column("tour_id", width=80)
         schedule_tree.heading("tour_id", text="Tour ID")
         #Date
@@ -440,7 +445,7 @@ class SchedulePage (tk.Frame):
         #State
         schedule_tree.column("state", width=60)
         schedule_tree.heading("state", text="State")
-        #Zip #aiudgoipj
+        #Zip
         schedule_tree.column("zip", width=80)
         schedule_tree.heading("zip", text="Zip Code")
         #Capacity
@@ -461,17 +466,6 @@ class SchedulePage (tk.Frame):
             schedule_tree.insert("", 0, values=(date[0], date[1], date[2], date[3], date[4], date[5], date[6], date[7], date[8], date[9], date[0]))
 
     def submitScheduleEntry(self):
-
-        # print(self.date.get() +
-        #       "\n" + self.phone.get() +
-        #       "\n" + self.venue.get() +
-        #       "\n" + self.address.get() +
-        #       "\n" + self.city.get() +
-        #       "\n" + self.state.get() +
-        #       "\n" + self.zip.get() +
-        #       "\n" + self.cap.get() +
-        #       "\n" + self.door_pay.get() +
-        #       "\n" + self.cover_charge.get())
 
         new_tour_date = []
         new_tour_date.append(self.address.get())
@@ -531,6 +525,16 @@ class SchedulePage (tk.Frame):
         else:
             success_list = [True, "All input fields have been entered correctly."]
             return success_list
+
+        print(self.date.get() +
+              "\n" + self.phone.get() +
+              "\n" + self.venue.get() +
+              "\n" + self.address.get() +
+              "\n" + self.cap.get() +
+              "\n" + self.door_pay.get() +
+              "\n" + self.cover_charge.get())
+
+
 
 # Analysis Class
 class AnalysisPage(tk.Frame):
