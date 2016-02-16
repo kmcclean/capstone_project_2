@@ -16,8 +16,8 @@ import tkinter.messagebox
 # from matplotlib import pyplot as plt
 
 
-LARGE_FONT = ("Verdana", 6)
-NORM_FONT = ("Veranda", 12)
+LARGE_FONT = ("Verdana", 12)
+NORM_FONT = ("Veranda", 10)
 SMALL_FONT = ("Veranda", 8)
 
 db_controller = Controller()
@@ -85,7 +85,6 @@ class MainWindow(tk.Tk):
 
     # Show frame
     def show_frame(self, cont):
-
         frame = self.frames[cont]
         frame.tkraise() # <- raises to front of window
 
