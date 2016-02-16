@@ -480,7 +480,9 @@ class SchedulePage (tk.Frame):
 
         tour_list = db_controller.get_tour_info_for_tour_window()
         for date in tour_list:
-            self.schedule_tree.insert("", 0, values=(date[0], date[1], date[2], date[3], date[4], date[5], date[6], date[7], date[8], date[9], date[0]))
+            self.schedule_tree.insert("", 0, values=(date[0], date[1], date[2], date[3],
+                                                     date[4], date[5], date[6], date[7],
+                                                     date[8], date[9], date[10]))
 
     def submitScheduleEntry(self):
 
