@@ -4,7 +4,7 @@ import tkinter as tk
 from tkinter import ttk
 from tkinter import *
 from src.Controller import Controller
-
+from src.ErrorHandling import ErrorHandling
 # For Analysis
 # import matplotlib
 # matplotlib.use("TkAgg")
@@ -234,8 +234,10 @@ class MerchPage (tk.Frame):
         new_merch_list.append(self.unit_cost.get())
         new_merch_list.append(self.quantity.get())
 
-        if(db_controller.add_new_merch(new_merch_list)):
-            print("Merchandise Added.")
+        results_list = db_controller.add_new_merch(new_merch_list)
+        if results_list[0] == True:
+            new_addition_to_list = results_list[1]
+            self.merch_tree.insert("", 0, values=(new_addition_to_list[0], new_addition_to_list[1], new_addition_to_list[2], new_addition_to_list[3], new_addition_to_list[4], new_addition_to_list[5]))
         else:
             print("Addition failed.")
 
@@ -345,12 +347,12 @@ class SchedulePage (tk.Frame):
         # --String variables--
         self.schedule_id = StringVar()
         self.date = StringVar()
-        self.phone = StringVar()
         self.venue = StringVar()
         self.address = StringVar()
         self.city = StringVar()
         self.state = StringVar()
         self.zip = StringVar()
+        self.phone = StringVar()
         self.cap = StringVar()
         self.door_pay = StringVar()
         self.cover_charge = StringVar()
@@ -358,12 +360,11 @@ class SchedulePage (tk.Frame):
         # --Field labels--
         # sched_id_label = tk.Label(self, text="Schedule ID", font="NORM_FONT")
         date_label = tk.Label(self, text="Date", font="NORM_FONT")
-        phone_label = tk.Label(self, text="Phone", font="NORM_FONT")
         venue_label = tk.Label(self, text="Venue", font="NORM_FONT")
         address_label = tk.Label(self, text="Address", font="NORM_FONT")
         city_label = tk.Label(self, text="City", font="NORM_FONT")
         state_label = tk.Label(self, text="State", font="NORM_FONT")
-        zip_label = tk.Label(self, text="Zip Code", font="NORM_FONT")
+        zip_label = tk.Label(self, text="Zip", font="NORM_FONT")
         phone_label = tk.Label(self, text="Phone", font="NORM_FONT")
         cap_label = tk.Label(self, text="Capacity", font="NORM_FONT")
         door_pay_label = tk.Label(self, text="Door Pay", font="NORM_FONT")
@@ -372,7 +373,6 @@ class SchedulePage (tk.Frame):
         # --Form fields--
         # sched_id_entry = tk.Entry(self, textvariable=self.schedule_id)
         date_entry = Entry(self, textvariable=self.date)
-        phone_entry = tk.Entry(self, textvariable=self.phone)
         venue_entry = tk.Entry(self, textvariable=self.venue)
         address_entry = tk.Entry(self, textvariable=self.address)
         city_entry = tk.Entry(self, textvariable=self.city)
@@ -460,6 +460,16 @@ class SchedulePage (tk.Frame):
 
     def submitScheduleEntry(self):
 
+        # print(self.date.get() +
+        #       "\n" + self.phone.get() +
+        #       "\n" + self.venue.get() +
+        #       "\n" + self.address.get() +
+        #       "\n" + self.city.get() +
+        #       "\n" + self.state.get() +
+        #       "\n" + self.zip.get() +
+        #       "\n" + self.cap.get() +
+        #       "\n" + self.door_pay.get() +
+        #       "\n" + self.cover_charge.get())
 
         new_tour_date = []
         new_tour_date.append(self.address.get())
@@ -473,11 +483,51 @@ class SchedulePage (tk.Frame):
         new_tour_date.append(self.cover_charge.get())
         new_tour_date.append(self.door_pay.get())
 
-        if(db_controller.add_tour_date(new_tour_date)):
-            print("Tour Date Added.")
+        results_list = []
+        results_list.append(self.test_new_tour_date(new_tour_date))
+        if results_list[0]:
+            if db_controller.add_tour_date(new_tour_date):
+                print("Tour Date Added.")
+            else:
+                print("Tour Date Addition Failed.")
         else:
-            print("Tour Date Addition Failed.")
+            print(results_list[1])
 
+    def test_new_tour_date(self, new_date):
+        eh = ErrorHandling()
+        if eh.nonblank_string(new_date[0]) == False:
+            failure_list = [False, "The address field must be filled."]
+            return failure_list
+        elif eh.nonblank_string(new_date[1]) == False:
+            failure_list = [False, "The city field must be filled."]
+            return failure_list
+        elif eh.nonblank_string(new_date[2]) == False:
+            failure_list = [False, "The state field must be filled."]
+            return failure_list
+        elif eh.range_integer_input_checking(new_date[3], 5, 5) == False:
+            failure_list = [False, "The zip code field must be filled."]
+            return failure_list
+        elif eh.nonblank_string(new_date[4] == False):
+            failure_list = [False, "The venue field must be filled."]
+            return failure_list
+        elif eh.range_integer_input_checking(new_date[5], 10, 10) == False:
+            failure_list = [False, "The phone number field must be filled."]
+            return failure_list
+        elif eh.nonblank_string(new_date[6]) == False:
+            failure_list = [False, "The date field must be filled."]
+            return failure_list
+        elif eh.range_integer_input_checking(new_date[7], 0, 99999) == False:
+            failure_list = [False, "The capacity field must be filled."]
+            return failure_list
+        elif eh.float_check(new_date[8]) == False:
+            failure_list = [False, "The cover charge field must be filled."]
+            return failure_list
+        elif eh.float_check(new_date[9]) == False:
+            failure_list = [False, "The door pay field must be filled."]
+            return failure_list
+        else:
+            success_list = [True, "All input fields have been entered correctly."]
+            return success_list
 
 # Analysis Class
 class AnalysisPage(tk.Frame):

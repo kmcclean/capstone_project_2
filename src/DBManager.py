@@ -77,7 +77,6 @@ class DBManager:
             self.cur.execute('select * from merchandise where merch_id = ? ', key_id_tuple)
             new_item_list = []
             for row in self.cur:
-                print("Row: " + str(row))
                 for column in row:
                     new_item_list.append(column)
             return_list = [True, new_item_list]

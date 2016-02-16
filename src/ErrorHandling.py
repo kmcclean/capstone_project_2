@@ -6,14 +6,6 @@ class ErrorHandling:
         else:
             return True
 
-    # This does a simple check to make sure that the entry is non-blank.
-    def is_nonblank_string_truth_check(self, test_text):
-            if test_text is not "":
-                return True
-            else:
-                print("Blank entries are not accepted.")
-                return False
-
     def float_check(self, test_text):
         try:
             check = float(test_text)
@@ -23,14 +15,16 @@ class ErrorHandling:
 
     # This is used when an integer between a certain range is required.
     def range_integer_input_checking(self, check_text, low, high):
-        a = False
-        while a == False:
             try:
-                check = int(input(check_text))
-                a = self.range_provided_truth_check(check, low, high)
+                a = int(check_text)
+                if a >= low and a <= high:
+                    return True
+                else:
+                    return False
             except ValueError:
                 print("The entry needs to be an integer.")
-        return check
+                return False
+
 
     # this checks to make sure the truth of the number being within the range provided.
     def range_provided_truth_check(self, test_number, low, high):
