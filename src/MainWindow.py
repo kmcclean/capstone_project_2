@@ -6,14 +6,6 @@ from tkinter import *
 from src.Controller import Controller
 from src.ErrorHandling import ErrorHandling
 import tkinter.messagebox
-# For Analysis
-# import matplotlib
-# matplotlib.use("TkAgg")
-# from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg, NavigationToolbar2TkAgg
-# from matplotlib.figure import Figure
-# import matplotlib.animation as animation
-# from matplotlib import style
-# from matplotlib import pyplot as plt
 
 
 LARGE_FONT = ("Verdana", 6)
@@ -22,11 +14,6 @@ SMALL_FONT = ("Veranda", 8)
 
 db_controller = Controller()
 
-# style.use("ggplot")
-#
-# f = Figure()
-
-# Main Window
 class MainWindow(tk.Tk):
 
     def __init__(self, *args, **kwargs):
@@ -36,16 +23,16 @@ class MainWindow(tk.Tk):
 
         tk.Tk.wm_title(self, "Inventory Manager")
 
-        # Container
+        # creates the tKinter Container
         container = tk.Frame(self)
         container.pack(side="top", fill="both", expand=True)
         container.grid_rowconfigure(0, weight=1)
         container.grid_columnconfigure(0, weight=1)
 
-        # --Menu--
+        # sets up the menu --Menu--
         mainMenu = tk.Menu(container)
 
-        # --File submenu--
+        # sets up the File submenu. --File submenu--
         file = tk.Menu(mainMenu)
         file.add_command(label="Save")
         file.add_command(label="Exit", command=self.client_exit)
@@ -79,10 +66,6 @@ class MainWindow(tk.Tk):
 
         self.show_frame(NavigationPage)
 
-        db_controller.show_best_selling_units()
-        db_controller.show_best_gross_units()
-        db_controller.show_best_net()
-
     # Show frame
     def show_frame(self, cont):
 
@@ -95,7 +78,6 @@ class MainWindow(tk.Tk):
             print("Database closed.")
         else:
             print("Database not closed.")
-        print("This is client_exit.")
         exit()
 
 
@@ -138,10 +120,8 @@ class MerchPage (tk.Frame):
         tk.Frame.__init__(self, parent)
         merch_label = tk.Label(self, text="Merchandise", font="LARGE_FONT")
         merch_label.grid(row=0, column=0)
-        # self.root = Tk()
 
-        # merch_label_frame = LabelFrame(self.root, text="This is a LabelFrame")
-
+        # these are the variables which are associated with the input boxes on the Merchandise page.
         # --String variables--
         self.merch_id = StringVar()
         self.type = StringVar()
@@ -151,28 +131,22 @@ class MerchPage (tk.Frame):
         self.total_sold = StringVar()
 
         # --Field labels--
-        # merch_id_label = tk.Label(self, text="ID", font="NORM_FONT")
         type_label = tk.Label(self, text="Type", font="NORM_FONT")
         unit_cost_label = tk.Label(self, text="Unit Cost", font="NORM_FONT")
         quant_label = tk.Label(self, text="Quantity", font="NORM_FONT")
         price_label = tk.Label(self, text="Price", font="NORM_FONT")
-        # total_sold_label = tk.Label(self, text="Total Sold", font="NORM_FONT")
 
         # # --Form fields--
-        # merch_id_entry = tk.Entry(self, textvariable=self.merch_id)
         type_entry = Entry(self, textvariable=self.type)
         unit_cost_entry = tk.Entry(self, textvariable=self.unit_cost)
         quant_entry = tk.Entry(self, textvariable=self.quantity)
         price_entry = tk.Entry(self, textvariable=self.price)
-        # total_sold_entry = tk.Entry(self, textvariable=self.total_sold)
 
         # --Buttons--
         submitButton = tk.Button(self, text="Submit", command=self.submitMerchEntry)
 
         # --Grid Layouts--
         #ID
-        # merch_id_label.grid(row=1, column=2, sticky="e")
-        # merch_id_entry.grid(row=1, column=3)
         #Type
         type_label.grid(row=1, column=2, sticky="e")
         type_entry.grid(row=1, column=3)
@@ -186,15 +160,12 @@ class MerchPage (tk.Frame):
         price_label.grid(row=3, column=6, sticky="e")
         price_entry.grid(row=3, column=7)
         #TotalSold
-        # total_sold_label.grid(row=3, column=6, sticky="e")
-        # total_sold_entry.grid(row=3, column=7)
 
         #Submit Button
         submitButton.grid(row=5, column=7, sticky="e")
 
         #Treeview
         #LabelFrame
-        # merch_label_frame.grid(row=6, column=0, columnspan=13, rowspan=8)
         self.merch_tree = ttk.Treeview(self)
         self.merch_tree["columns"] = ("merch_id", "type", "unit_cost", "quant", "price", "total_sold")
         #Merch ID
@@ -220,21 +191,26 @@ class MerchPage (tk.Frame):
         self.merch_tree.grid(row=10, column=3, columnspan=7, sticky="ew")
 
         # This adds the data from the database to the GUI.
-        # con = Controller()
         merch_list = db_controller.get_merch_info_for_merch_window()
         for item in merch_list:
             self.merch_tree.insert("", 0, values=(item[0], item[1], item[2], item[3], item[4], item[5]))
 
-        # ** Use merch_tree.insert("", <linenumber>, text="merch_id", values=("field1", "field2", etc.))
-
+    #When the submit button for the Merchandise entry is pressed, this function is activated.
     def submitMerchEntry(self):
+
+        #this creates a new list of the data from the Merchandise page in order to properly create a new entry in the database.
         new_merch_list = []
         new_merch_list.append(self.type.get())
         new_merch_list.append(self.price.get())
         new_merch_list.append(self.unit_cost.get())
         new_merch_list.append(self.quantity.get())
 
+        # This runs the data through the test results function, which sends back a list where the first item is either...
+        # True or False, and the second is a string statement.
         merch_test_results = self.merch_list_testing(new_merch_list)
+
+        # if the first item in merch_test_results is true. This statement adds the information to the database, and then
+        # takes that information and uses it to update the tKinter Tree.
         if merch_test_results[0]:
             results_list = db_controller.add_new_merch(new_merch_list)
             if results_list[0] == True:
@@ -246,6 +222,8 @@ class MerchPage (tk.Frame):
         else:
             self.alert_errors(merch_test_results[1])
 
+    # This function is to check the data provided in the Merchandise screen. It runs it through error handling to make...
+    # sure everything is entered properly.
     def merch_list_testing(self, merch_list):
         eh = ErrorHandling()
         if eh.nonblank_string(merch_list[0]) == False:
@@ -264,7 +242,8 @@ class MerchPage (tk.Frame):
             success_list = [True, "All input fields have been entered correctly."]
             return success_list
 
-    #Error messagebox
+    # This creates an alert box to warn people if they have entered anything incorrectly. It uses the string provided...
+    # by the merch_list_testing method.
     def alert_errors(self, string):
         tk.messagebox.showinfo("Input Error", string)
 
@@ -285,14 +264,12 @@ class SalesPage (tk.Frame):
         self.total = StringVar()
 
         # --Field labels--
-        # sale_id_label = tk.Label(self, text="Sale ID", font="NORM_FONT")
         tour_id_label = tk.Label(self, text="Tour ID", font="NORM_FONT")
         quantity_label = tk.Label(self, text="Quantity", font="NORM_FONT")
         total_units_cost_label = tk.Label(self, text="Total Units Cost", font="NORM_FONT")
         total_label = tk.Label(self, text="Total", font="NORM_FONT")
 
         # --Form fields--
-        # sale_id_entry = tk.Entry(self, textvariable=self.sale_id)
         tour_id_entry = tk.Entry(self, textvariable=self.tour_id)
         quantity_entry = tk.Entry(self, textvariable=self.quantity)
         total_units_cost_entry = tk.Entry(self, textvariable=self.total_units_cost)
@@ -301,10 +278,6 @@ class SalesPage (tk.Frame):
         # --Buttons--
         submitButton = tk.Button(self, text="Submit", command=self.submitSalesEntry)
 
-        # --Grid layout--
-        #Sale ID
-        # sale_id_label.grid(row=1, column=2, sticky="e")
-        # sale_id_entry.grid(row=1, column=3)
         #Tour ID
         tour_id_label.grid(row=1, column=2, sticky="e")
         tour_id_entry.grid(row=1, column=3)
@@ -342,6 +315,7 @@ class SalesPage (tk.Frame):
         self.sales_tree['show'] = 'headings'
         self.sales_tree.grid(row=6, column=3, columnspan=7, sticky="ew")
 
+        #This get the database of sales and puts them into the screen.
         sales_list = db_controller.get_sales_info_for_sales_window()
         for sale in sales_list:
             self.sales_tree.insert("", 0, values=(sale[0], sale[1], sale[2], sale[3], sale[4]))
@@ -412,8 +386,6 @@ class SchedulePage (tk.Frame):
 
         # --Grid layout--
         #ID
-        # sched_id_label.grid(row=1, column=2, sticky="e")
-        # sched_id_entry.grid(row=1, column=3)
         #Date
         date_label.grid(row=1, column=2, sticky="e")
         date_entry.grid(row=1, column=3)
@@ -493,8 +465,10 @@ class SchedulePage (tk.Frame):
                                                      date[4], date[5], date[6], date[7],
                                                      date[8], date[9], date[10]))
 
+    #when the submit button on the schedule page is pressed, this is updated.
     def submitScheduleEntry(self):
 
+        # This takes the data from the schedule page and puts it into a list that is checked to confirm all the data is correct.
         new_tour_date = []
         new_tour_date.append(self.address.get())
         new_tour_date.append(self.city.get())
@@ -507,8 +481,12 @@ class SchedulePage (tk.Frame):
         new_tour_date.append(self.cover_charge.get())
         new_tour_date.append(self.door_pay.get())
 
+        # This tests the new tour date info and makes sure it is entered correctly.
         results_list = self.test_new_tour_date(new_tour_date)
 
+        # if the test_new_tour_date method returns true as the first item in the list, this then
+        # adds the new data to the database. It then gets the information back from the database in order to add it to
+        # the tKinter tree.
         if results_list[0]:
             new_tour_date_gui_info = db_controller.add_tour_date(new_tour_date)
             if new_tour_date_gui_info[0]:
@@ -519,12 +497,14 @@ class SchedulePage (tk.Frame):
                                                       new_tour_date_gui_list[3], new_tour_date_gui_list[4],
                                                       new_tour_date_gui_list[8], new_tour_date_gui_list[10],
                                                          new_tour_date_gui_list[9]))
-                print("Tour Date Added.")
             else:
-                print("Tour Date Addition Failed.")
+                self.alert_errors("Tour Date Addition Failed.")
         else:
             self.alert_errors(results_list[1])
 
+    # this checks to make sure that data provided for a new tour date meets the specifications of needed by the database.
+    # this returns a list, with the first item being either True or False and the second being a statement. The statement
+    # is only used if the first item is False.
     def test_new_tour_date(self, new_date):
         eh = ErrorHandling()
         if eh.nonblank_string(new_date[0]) == False:
@@ -561,7 +541,8 @@ class SchedulePage (tk.Frame):
             success_list = [True, "All input fields have been entered correctly."]
             return success_list
 
-    #Error messagebox
+    # This provides and error telling the user whenever there is an error. It uses the string provided by the
+    # test_new_tour_date method.
     def alert_errors(self, string):
         tk.messagebox.showinfo("Input Error", string)
 
@@ -623,16 +604,6 @@ class AnalysisPage(tk.Frame):
         gross_sales_radio.grid(row=3, column=3, sticky="w")
         net_sales_radio.grid(row=4, column=3, sticky="w")
         self.analysis_tree.grid(row=5, column=3, columnspan=7, sticky="ew")
-
-        # # Canvas for graph
-        # canvas = FigureCanvasTkAgg(f, self)
-        # canvas.show()
-        # canvas.get_tk_widget().pack(side=tk.BOTTOM, fill=tk.X, expand=True)
-        #
-        # #Toolbar
-        # toolbar = NavigationToolbar2TkAgg(canvas, self)
-        # toolbar.update()
-        # canvas._tkcanvas.pack(side=tk.BOTTOM, fill=tk.BOTH, expand=True)
 
 app = MainWindow()
 app.geometry("1160x500")

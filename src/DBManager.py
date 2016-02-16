@@ -186,7 +186,6 @@ class DBManager:
         new_id = 1
         self.cur.execute("SELECT * FROM " + table_name)
         for row in self.cur:
-            print("get_next_it row: " + str(row))
             new_id = row[0] + 1
         return new_id
 
