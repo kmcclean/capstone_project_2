@@ -7,8 +7,7 @@ class Controller:
     an = Analyzer()
 
     def add_new_merch(self, new_merch_info):
-        a = self.db.add_new_merchandise(new_merch_info)
-        return a
+        return self.db.add_new_merchandise(new_merch_info)
 
     def add_tour_date(self, tour_date_info):
         return self.db.add_new_tour_date(tour_date_info)
