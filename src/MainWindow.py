@@ -98,6 +98,13 @@ class MainWindow(tk.Tk):
         print("This is client_exit.")
         exit()
 
+    #Error messagebox
+    # def alert_errors(self, string):
+    #     label = Label(self)
+    #     tk.messagebox.showwarning("Input Error")
+    #     label.config(text=string)
+
+
 
 # NavPage class
 class NavigationPage (tk.Frame):
@@ -248,6 +255,12 @@ class MerchPage (tk.Frame):
         #       "\n" + self.price.get() +
         #       "\n" + self.total_sold.get())
 
+    #Error messagebox
+    def alert_errors(self, string):
+        label = Label(self)
+        tk.messagebox.showwarning("Input Error")
+        label.config(text=string)
+
 
 # Sales class
 class SalesPage (tk.Frame):
@@ -334,6 +347,12 @@ class SalesPage (tk.Frame):
               "\n" + self.quantity.get() +
               "\n" + self.total_units_cost.get() +
               "\n" + self.total.get())
+
+    #Error messagebox
+    def alert_errors(self, string):
+        label = Label(self)
+        tk.messagebox.showwarning("Input Error")
+        label.config(text=string)
 
 
 # Schedule class
@@ -492,8 +511,8 @@ class SchedulePage (tk.Frame):
         new_tour_date.append(self.cover_charge.get())
         new_tour_date.append(self.door_pay.get())
 
-        results_list = []
-        results_list.append(self.test_new_tour_date(new_tour_date))
+        results_list = self.test_new_tour_date(new_tour_date)
+
         if results_list[0]:
             new_tour_date_gui_info = db_controller.add_tour_date(new_tour_date)
             if new_tour_date_gui_info[0]:
@@ -507,7 +526,8 @@ class SchedulePage (tk.Frame):
             else:
                 print("Tour Date Addition Failed.")
         else:
-            print(results_list[1])
+
+            self.alert_errors(results_list[1])
 
     def test_new_tour_date(self, new_date):
         eh = ErrorHandling()
@@ -523,7 +543,7 @@ class SchedulePage (tk.Frame):
         elif eh.variable_length_checking(new_date[3], 5) == False:
             failure_list = [False, "The zip code field must be filled."]
             return failure_list
-        elif eh.nonblank_string(new_date[4] == False):
+        elif eh.nonblank_string(new_date[4]) == False:
             failure_list = [False, "The venue field must be filled."]
             return failure_list
         elif eh.variable_length_checking(new_date[5], 10) == False:
@@ -531,22 +551,28 @@ class SchedulePage (tk.Frame):
             return failure_list
         elif eh.nonblank_string(new_date[6]) == False:
             failure_list = [False, "The date field must be filled."]
+
             return failure_list
         elif eh.range_integer_input_checking(new_date[7], 0, 99999) == False:
             failure_list = [False, "The capacity field must be filled."]
+
             return failure_list
         elif eh.float_check(new_date[8]) == False:
             failure_list = [False, "The cover charge field must be filled."]
+
             return failure_list
         elif eh.float_check(new_date[9]) == False:
             failure_list = [False, "The door pay field must be filled."]
+
             return failure_list
         else:
             success_list = [True, "All input fields have been entered correctly."]
             return success_list
 
-    def alert_errors(self):
-        tk.messagebox.showwarning("Please make sure you are entering the right formats into fields")
+    #Error messagebox
+    def alert_errors(self, string):
+        tk.messagebox.showinfo("Input Error", string)
+
 
 # Analysis Class
 class AnalysisPage(tk.Frame):
