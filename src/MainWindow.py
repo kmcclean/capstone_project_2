@@ -5,6 +5,7 @@ from tkinter import ttk
 from tkinter import *
 from src.Controller import Controller
 from src.ErrorHandling import ErrorHandling
+import tkinter.messagebox
 # For Analysis
 # import matplotlib
 # matplotlib.use("TkAgg")
@@ -106,7 +107,7 @@ class NavigationPage (tk.Frame):
         label = tk.Label(self, text="Main Page", font="LARGE_FONT")
         label.grid(row=0, column=0)
 
-        #User
+        #User greeting
         greet_str = "Welcome to Inventory Manager. \n" \
                     "To get started, choose one of the buttons below, \n" \
                     "or choose an option from the 'Navigation' menu"
@@ -140,7 +141,6 @@ class MerchPage (tk.Frame):
         # self.root = Tk()
 
         # merch_label_frame = LabelFrame(self.root, text="This is a LabelFrame")
-
 
         # --String variables--
         self.merch_id = StringVar()
@@ -537,6 +537,9 @@ class SchedulePage (tk.Frame):
         else:
             success_list = [True, "All input fields have been entered correctly."]
             return success_list
+
+    def alert_errors(self):
+        tk.messagebox.showwarning("Please make sure you are entering the right formats into fields")
 
 # Analysis Class
 class AnalysisPage(tk.Frame):
