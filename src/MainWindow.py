@@ -425,29 +425,38 @@ class SchedulePage (tk.Frame):
 
         #Treeview
         self.schedule_tree = ttk.Treeview(self)
-        self.schedule_tree["columns"] = ("tour_id", "date", "phone", "venue", "address", "cap", "door_pay", "cover_charge")
-        #Schedule ID
+        self.schedule_tree["columns"] = ("tour_id", "date", "phone", "venue", "address", "city", "state", "zip", "cap", "door_pay", "cover_charge")
+        #Tour ID
         self.schedule_tree.column("tour_id", width=80)
         self.schedule_tree.heading("tour_id", text="Tour ID")
-        #Merch ID
+        #Date
         self.schedule_tree.column("date", width=80)
         self.schedule_tree.heading("date", text="Date")
-        #Tour ID
+        #Phone
         self.schedule_tree.column("phone", width=80)
         self.schedule_tree.heading("phone", text="Phone")
-        #Item Sold
+        #Venue
         self.schedule_tree.column("venue", width=100)
         self.schedule_tree.heading("venue", text="Venue")
-        #Description
+        #Address
         self.schedule_tree.column("address", width=150)
         self.schedule_tree.heading("address", text="Address")
-        #Quantity
+        #City
+        self.schedule_tree.column("city", width=100)
+        self.schedule_tree.heading("city", text="City")
+        #State
+        self.schedule_tree.column("state", width=60)
+        self.schedule_tree.heading("state", text="State")
+        #Zip
+        self.schedule_tree.column("zip", width=80)
+        self.schedule_tree.heading("zip", text="Zip Code")
+        #Capacity
         self.schedule_tree.column("cap", width=60)
         self.schedule_tree.heading("cap", text="Capacity")
-        #Subtotal
+        #Door Pay
         self.schedule_tree.column("door_pay", width=60)
         self.schedule_tree.heading("door_pay", text="Door Pay")
-        #Total
+        #Cover Charge
         self.schedule_tree.column("cover_charge", width=70)
         self.schedule_tree.heading("cover_charge", text="Cover Charge")
 
@@ -537,12 +546,25 @@ class AnalysisPage(tk.Frame):
         label = tk.Label(self, text="Analysis", font="LARGE_FONT")
         label.grid(row=0, column=0)
 
+        var = IntVar()
         # Order items by units sold
-            # checkbox?
-
+        units_sold_radio = Radiobutton(self,
+                                       text="Save Units Sold to file",
+                                       variable=var,
+                                       value=1,
+                                       command=lambda: db_controller.show_best_selling_units())
         # Order items by gross sales
-
+        gross_sales_radio = Radiobutton(self,
+                                       text="Save Gross Sales to file",
+                                       variable=var,
+                                       value=2,
+                                       command=lambda: db_controller.show_best_gross_units())
         # Order items by net sales
+        net_sales_radio = Radiobutton(self,
+                                       text="Save Net Sales to file",
+                                       variable=var,
+                                       value=3,
+                                       command=lambda: db_controller.show_best_net())
 
         # Treeview
         self.analysis_tree = ttk.Treeview(self)
@@ -568,6 +590,10 @@ class AnalysisPage(tk.Frame):
         self.analysis_tree.column("total_sold", width=80)
         self.analysis_tree.heading("total_sold", text="Total Sold")
 
+        #--Grid Layout--
+        units_sold_radio.grid(row=2, column=3, sticky="w")
+        gross_sales_radio.grid(row=3, column=3, sticky="w")
+        net_sales_radio.grid(row=4, column=3, sticky="w")
         self.analysis_tree.grid(row=5, column=3, columnspan=7, sticky="ew")
 
 app = MainWindow()
