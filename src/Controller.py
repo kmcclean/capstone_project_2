@@ -22,8 +22,8 @@ class Controller:
         self.db.startup_database()
         self.db.add_test_data()
 
-        self.db.show_all()
-        self.db.table_check()
+        # self.db.show_all()
+        # self.db.table_check()
 
     # This gets the information from the database and puts it into the form that will be needed by the merchandise GUI.
     def get_merch_info_for_merch_window(self):
