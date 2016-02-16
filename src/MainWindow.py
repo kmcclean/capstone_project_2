@@ -242,8 +242,9 @@ class MerchPage (tk.Frame):
                 self.merch_tree.insert("", 0, values=(new_addition_to_list[0], new_addition_to_list[1], new_addition_to_list[2], new_addition_to_list[3], new_addition_to_list[4], new_addition_to_list[5]))
             else:
                 print("Addition failed.")
+
         else:
-            print(merch_test_results[1])
+            self.alert_errors(merch_test_results[1])
 
     def merch_list_testing(self, merch_list):
         eh = ErrorHandling()
@@ -265,9 +266,7 @@ class MerchPage (tk.Frame):
 
     #Error messagebox
     def alert_errors(self, string):
-        label = Label(self)
-        tk.messagebox.showwarning("Input Error")
-        label.config(text=string)
+        tk.messagebox.showinfo("Input Error", string)
 
 
 # Sales class
@@ -358,9 +357,7 @@ class SalesPage (tk.Frame):
 
     #Error messagebox
     def alert_errors(self, string):
-        label = Label(self)
-        tk.messagebox.showwarning("Input Error")
-        label.config(text=string)
+        tk.messagebox.showinfo("Input Error", string)
 
 
 # Schedule class
@@ -524,7 +521,6 @@ class SchedulePage (tk.Frame):
             else:
                 print("Tour Date Addition Failed.")
         else:
-
             self.alert_errors(results_list[1])
 
     def test_new_tour_date(self, new_date):
@@ -549,7 +545,6 @@ class SchedulePage (tk.Frame):
             return failure_list
         elif eh.nonblank_string(new_date[6]) == False:
             failure_list = [False, "The date field must be filled."]
-
             return failure_list
         elif eh.range_integer_input_checking(new_date[7], 0, 99999) == False:
             failure_list = [False, "The capacity field must be filled."]
