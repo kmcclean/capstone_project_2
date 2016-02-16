@@ -135,7 +135,7 @@ class MerchPage (tk.Frame):
         quant_label = tk.Label(self, text="Quantity", font="NORM_FONT")
         price_label = tk.Label(self, text="Price", font="NORM_FONT")
 
-        # # --Form fields--
+        # --Form fields--
         type_entry = Entry(self, textvariable=self.type)
         unit_cost_entry = tk.Entry(self, textvariable=self.unit_cost)
         quant_entry = tk.Entry(self, textvariable=self.quantity)
@@ -145,7 +145,6 @@ class MerchPage (tk.Frame):
         submitButton = tk.Button(self, text="Submit", command=self.submitMerchEntry)
 
         # --Grid Layouts--
-        #ID
         #Type
         type_label.grid(row=1, column=2, sticky="e")
         type_entry.grid(row=1, column=3)
@@ -355,7 +354,6 @@ class SchedulePage (tk.Frame):
         self.cover_charge = StringVar()
 
         # --Field labels--
-        # sched_id_label = tk.Label(self, text="Schedule ID", font="NORM_FONT")
         date_label = tk.Label(self, text="Date", font="NORM_FONT")
         venue_label = tk.Label(self, text="Venue", font="NORM_FONT")
         address_label = tk.Label(self, text="Address", font="NORM_FONT")
@@ -368,7 +366,6 @@ class SchedulePage (tk.Frame):
         cover_charge_label = tk.Label(self, text="Cover Charge", font="NORM_FONT")
 
         # --Form fields--
-        # sched_id_entry = tk.Entry(self, textvariable=self.schedule_id)
         date_entry = Entry(self, textvariable=self.date)
         venue_entry = tk.Entry(self, textvariable=self.venue)
         address_entry = tk.Entry(self, textvariable=self.address)
@@ -384,7 +381,6 @@ class SchedulePage (tk.Frame):
         submitButton = tk.Button(self, text="Submit", command=self.submitScheduleEntry)
 
         # --Grid layout--
-        #ID
         #Date
         date_label.grid(row=1, column=2, sticky="e")
         date_entry.grid(row=1, column=3)
@@ -577,8 +573,6 @@ class AnalysisPage(tk.Frame):
         # Treeview
         self.analysis_tree = ttk.Treeview(self)
         self.analysis_tree["columns"] = ("type", "desc", "unit_cost", "quant", "price", "total_sold")
-        #Merch ID
-        # blank column on left
         #Type
         self.analysis_tree.column("type", width=100)
         self.analysis_tree.heading("type", text="Type")
