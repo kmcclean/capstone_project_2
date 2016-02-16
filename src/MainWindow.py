@@ -98,13 +98,6 @@ class MainWindow(tk.Tk):
         print("This is client_exit.")
         exit()
 
-    #Error messagebox
-    # def alert_errors(self, string):
-    #     label = Label(self)
-    #     tk.messagebox.showwarning("Input Error")
-    #     label.config(text=string)
-
-
 
 # NavPage class
 class NavigationPage (tk.Frame):
@@ -241,19 +234,34 @@ class MerchPage (tk.Frame):
         new_merch_list.append(self.unit_cost.get())
         new_merch_list.append(self.quantity.get())
 
-        results_list = db_controller.add_new_merch(new_merch_list)
-        if results_list[0] == True:
-            new_addition_to_list = results_list[1]
-            self.merch_tree.insert("", 0, values=(new_addition_to_list[0], new_addition_to_list[1], new_addition_to_list[2], new_addition_to_list[3], new_addition_to_list[4], new_addition_to_list[5]))
+        merch_test_results = self.merch_list_testing(new_merch_list)
+        if merch_test_results[0]:
+            results_list = db_controller.add_new_merch(new_merch_list)
+            if results_list[0] == True:
+                new_addition_to_list = results_list[1]
+                self.merch_tree.insert("", 0, values=(new_addition_to_list[0], new_addition_to_list[1], new_addition_to_list[2], new_addition_to_list[3], new_addition_to_list[4], new_addition_to_list[5]))
+            else:
+                print("Addition failed.")
         else:
-            print("Addition failed.")
+            print(merch_test_results[1])
 
-        # print(self.merch_id.get() +
-        #       "\n" + self.type.get() +
-        #       "\n" + self.unit_cost.get() +
-        #       "\n" + self.quantity.get() +
-        #       "\n" + self.price.get() +
-        #       "\n" + self.total_sold.get())
+    def merch_list_testing(self, merch_list):
+        eh = ErrorHandling()
+        if eh.nonblank_string(merch_list[0]) == False:
+            failure_list = [False, "The type field must be filled."]
+            return failure_list
+        elif eh.float_check_range(merch_list[1], 0, float('inf')) == False:
+            failure_list = [False, "The price field must be an number."]
+            return failure_list
+        elif eh.float_check_range(merch_list[2], 0, float('inf')) == False:
+            failure_list = [False, "The unit cost must be a positive number."]
+            return failure_list
+        elif eh.range_integer_input_checking(merch_list[3], 0, float('inf')) == False:
+            failure_list = [False, "The quanitity must be a positive number."]
+            return failure_list
+        else:
+            success_list = [True, "All input fields have been entered correctly."]
+            return success_list
 
     #Error messagebox
     def alert_errors(self, string):
@@ -484,20 +492,9 @@ class SchedulePage (tk.Frame):
 
         tour_list = db_controller.get_tour_info_for_tour_window()
         for date in tour_list:
-            self.schedule_tree.insert("", 0, values=(date[0], date[1], date[2], date[3], date[4], date[5], date[6], date[7]))
+            self.schedule_tree.insert("", 0, values=(date[0], date[1], date[2], date[3], date[4], date[5], date[6], date[7], date[8], date[9], date[10]))
 
     def submitScheduleEntry(self):
-
-        # print(self.date.get() +
-        #       "\n" + self.phone.get() +
-        #       "\n" + self.venue.get() +
-        #       "\n" + self.address.get() +
-        #       "\n" + self.city.get() +
-        #       "\n" + self.state.get() +
-        #       "\n" + self.zip.get() +
-        #       "\n" + self.cap.get() +
-        #       "\n" + self.door_pay.get() +
-        #       "\n" + self.cover_charge.get())
 
         new_tour_date = []
         new_tour_date.append(self.address.get())
@@ -517,11 +514,12 @@ class SchedulePage (tk.Frame):
             new_tour_date_gui_info = db_controller.add_tour_date(new_tour_date)
             if new_tour_date_gui_info[0]:
                 new_tour_date_gui_list = new_tour_date_gui_info[1]
-                self.schedule_tree.insert("", 0, values=(new_tour_date_gui_list[0], new_tour_date_gui_list[1],
-                                                      new_tour_date_gui_list[2], new_tour_date_gui_list[3],
-                                                      new_tour_date_gui_list[4], new_tour_date_gui_list[5],
-                                                      new_tour_date_gui_list[6], new_tour_date_gui_list[7],
-                                                      new_tour_date_gui_list[9], new_tour_date_gui_list[10]))
+                self.schedule_tree.insert("", 0, values=(new_tour_date_gui_list[0], new_tour_date_gui_list[7],
+                                                      new_tour_date_gui_list[6], new_tour_date_gui_list[5],
+                                                      new_tour_date_gui_list[1], new_tour_date_gui_list[2],
+                                                      new_tour_date_gui_list[3], new_tour_date_gui_list[4],
+                                                      new_tour_date_gui_list[8], new_tour_date_gui_list[10],
+                                                         new_tour_date_gui_list[9]))
                 print("Tour Date Added.")
             else:
                 print("Tour Date Addition Failed.")
@@ -555,15 +553,12 @@ class SchedulePage (tk.Frame):
             return failure_list
         elif eh.range_integer_input_checking(new_date[7], 0, 99999) == False:
             failure_list = [False, "The capacity field must be filled."]
-
             return failure_list
-        elif eh.float_check(new_date[8]) == False:
-            failure_list = [False, "The cover charge field must be filled."]
-
+        elif eh.float_check_range(new_date[8], 0, float('inf')) == False:
+            failure_list = [False, "The cover charge field must be a positive integer."]
             return failure_list
-        elif eh.float_check(new_date[9]) == False:
+        elif eh.float_check_range(new_date[9], 0, float('inf')) == False:
             failure_list = [False, "The door pay field must be filled."]
-
             return failure_list
         else:
             success_list = [True, "All input fields have been entered correctly."]

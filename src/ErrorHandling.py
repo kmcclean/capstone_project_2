@@ -6,12 +6,23 @@ class ErrorHandling:
         else:
             return True
 
-    def float_check(self, test_text):
+    def float_check_range(self, check_text, low, high):
+            try:
+                a = float(check_text)
+                if a >= low and a <= high:
+                    return True
+                else:
+                    return False
+            except ValueError:
+                print("The entry needs to be a float.")
+                return False
+    def int_check(self, test_text):
         try:
-            check = float(test_text)
+            check = int(test_text)
             return True
         except ValueError:
             return False
+
 
     # This is used when an integer between a certain range is required.
     def range_integer_input_checking(self, check_text, low, high):
