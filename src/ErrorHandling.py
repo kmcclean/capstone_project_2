@@ -18,7 +18,7 @@ class ErrorHandling:
                 else:
                     return False
             except ValueError:
-                print("The entry needs to be a float.")
+                # print("The entry needs to be a float.")
                 return False
 
     # checks for int
@@ -39,7 +39,7 @@ class ErrorHandling:
                 else:
                     return False
             except ValueError:
-                print("The entry needs to be an integer.")
+                # print("The entry needs to be an integer.")
                 return False
 
     # checks to make sure string is valid length
@@ -51,7 +51,7 @@ class ErrorHandling:
             else:
                 return False
         except ValueError:
-            print("The entry needs to be " + str(required_length) + " characters long.")
+            # print("The entry needs to be " + str(required_length) + " characters long.")
             return False
 
 
@@ -60,5 +60,5 @@ class ErrorHandling:
         if test_number >= low and test_number <= high:
             return True
         else:
-            print("Choose a number between " + str(low) + " and " + str(high))
+            # print("Choose a number between " + str(low) + " and " + str(high))
             return False

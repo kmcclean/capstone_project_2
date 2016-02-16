@@ -72,7 +72,7 @@ class DBManager:
         try:
             key_id = self.get_next_id("merchandise")
             self.cur.execute('insert into merchandise values (?, ?, ?, ?, ?, ?)', [key_id, new_merch_info[0], new_merch_info[1], new_merch_info[2], new_merch_info[3], 0])
-            self.show_merchandise()
+            #self.show_merchandise()
             key_id_tuple = (key_id, )
             self.cur.execute('select * from merchandise where merch_id = ? ', key_id_tuple)
             new_item_list = []
@@ -114,7 +114,7 @@ class DBManager:
                 total_sales_count += 1
 
             self.cur.execute('insert into sales values (?, ?, ?, ?, ?)', [sales_key, tour_id, total_sales_count, total_sales, total_cost])
-            self.show_sales()
+            #self.show_sales()
             return True
 
         except Exception:
@@ -128,7 +128,7 @@ class DBManager:
             self.cur.execute('insert into tour_schedule values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)',
                              [tour_id, new_tour_date[0], new_tour_date[1], new_tour_date[2], new_tour_date[3],
                               new_tour_date[4], new_tour_date[5], new_tour_date[6], new_tour_date[7], new_tour_date[8], new_tour_date[9], 0])
-            self.show_tour_schedule()
+            #self.show_tour_schedule()
             tour_id_tuple = (tour_id, )
             self.cur.execute('select * from tour_schedule where tour_id = ?', tour_id_tuple)
             new_tour_date_list = []
