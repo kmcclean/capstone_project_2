@@ -1,20 +1,21 @@
 from src.DBManager import DBManager
 from src.Analyzer import Analyzer
 
+__author__ = 'casey & kevin'
 
 class Controller:
     db = DBManager()
     an = Analyzer()
 
-    #add new merch info database
+    # add new merch info database
     def add_new_merch(self, new_merch_info):
         return self.db.add_new_merchandise(new_merch_info)
 
-    #add new tour date to database
+    # add new tour date to database
     def add_tour_date(self, tour_date_info):
         return self.db.add_new_tour_date(tour_date_info)
 
-    #start db
+    # start db
     def start_db_manager(self):
         self.db = DBManager()
         self.db.drop_database()
@@ -42,7 +43,7 @@ class Controller:
 
         return list_of_merch_list
 
-    #display sales info in SalesPage (not implemented)
+    # display sales info in SalesPage (not implemented)
     def get_sales_info_for_sales_window(self):
         list_of_sales_tuples = self.db.get_table_data("sales")
         list_of_sales_list = []
@@ -86,21 +87,21 @@ class Controller:
     def show_all(self):
         self.db.show_all()
 
-    #call best_units_total
+    # call best_units_total
     def show_best_selling_units(self):
         best_selling = self.db.show_best_units_sold()
         self.an.best_units_total(best_selling)
 
-    #call best_units_gross
+    # call best_units_gross
     def show_best_gross_units(self):
         best_gross = self.db.show_best_units_sold_gross()
         self.an.best_units_gross(best_gross)
 
-    #call best_units_net
+    # call best_units_net
     def show_best_net(self):
         best_net = self.db.show_best_units_sold_net()
         self.an.best_units_net(best_net)
 
-    #close db
+    # close db
     def close_database(self):
         return self.db.close_database()

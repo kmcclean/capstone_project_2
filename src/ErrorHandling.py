@@ -1,3 +1,5 @@
+__author__ = 'casey & kevin'
+
 class ErrorHandling:
 
     # checks to make sure string is not blank

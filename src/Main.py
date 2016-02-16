@@ -1,4 +1,4 @@
-__author__ = 'casey'
+__author__ = 'casey & kevin'
 
 from src.MainWindow import MainWindow
 class Main():
