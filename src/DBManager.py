@@ -120,6 +120,7 @@ class DBManager:
         except Exception:
             return False
 
+    #takes data from MerchPage entries and adds them to the database
     def add_new_tour_date(self, new_tour_date): # street_address, city, state, zip, tour_date, capacity, cover_charge, door_charge):
 
         try:
@@ -154,6 +155,7 @@ class DBManager:
         self.cur.execute('insert into line_item_sales values (?, ?, ?, ?, ?)',
                          [line_item_key, sales_key, merch_key, merch_sales_price, merch_unit_price])
 
+    # delete sale (not implemented)
     def delete_sale(self, sales_id):
         try:
 
@@ -186,9 +188,11 @@ class DBManager:
         new_id = 1
         self.cur.execute("SELECT * FROM " + table_name)
         for row in self.cur:
+            # print("get_next_it row: " + str(row))
             new_id = row[0] + 1
         return new_id
 
+    # show all database listing (for testing)
     def show_all(self):
         self.cur.execute('select * from merchandise')
         for row in self.cur:
@@ -203,6 +207,7 @@ class DBManager:
         for row in self.cur:
             print(row)
 
+    # send best units sold to text file
     def show_best_units_sold(self):
         self.cur.execute('select * from merchandise')
         best_selling_list = []
@@ -260,6 +265,7 @@ class DBManager:
 
         return net_list
 
+    # provides print values (for testing)
     def show_line_item_sales(self):
         self.cur.execute('select * from line_item_sales')
         for row in self.cur:

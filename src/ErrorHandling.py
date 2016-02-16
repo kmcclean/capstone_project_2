@@ -1,11 +1,13 @@
 class ErrorHandling:
 
+    # checks to make sure string is not blank
     def nonblank_string(self, check_text):
         if check_text == "":
             return False
         else:
             return True
 
+    # checks to see if float is within range
     def float_check_range(self, check_text, low, high):
             try:
                 a = float(check_text)
@@ -16,6 +18,8 @@ class ErrorHandling:
             except ValueError:
                 print("The entry needs to be a float.")
                 return False
+
+    # checks for int
     def int_check(self, test_text):
         try:
             check = int(test_text)
@@ -36,6 +40,7 @@ class ErrorHandling:
                 print("The entry needs to be an integer.")
                 return False
 
+    # checks to make sure string is valid length
     def variable_length_checking(self, check_text, required_length):
         try:
             a = len(check_text)
@@ -44,7 +49,7 @@ class ErrorHandling:
             else:
                 return False
         except ValueError:
-            print("The entry needs to be an integer.")
+            print("The entry needs to be " + str(required_length) + " characters long.")
             return False
 
 
