@@ -242,8 +242,9 @@ class MerchPage (tk.Frame):
                 self.merch_tree.insert("", 0, values=(new_addition_to_list[0], new_addition_to_list[1], new_addition_to_list[2], new_addition_to_list[3], new_addition_to_list[4], new_addition_to_list[5]))
             else:
                 print("Addition failed.")
+
         else:
-            print(merch_test_results[1])
+            self.alert_errors(merch_test_results[1])
 
     def merch_list_testing(self, merch_list):
         eh = ErrorHandling()
@@ -262,6 +263,10 @@ class MerchPage (tk.Frame):
         else:
             success_list = [True, "All input fields have been entered correctly."]
             return success_list
+
+    #Error messagebox
+    def alert_errors(self, string):
+        tk.messagebox.showinfo("Input Error", string)
 
 
 # Sales class
@@ -349,6 +354,10 @@ class SalesPage (tk.Frame):
               "\n" + self.quantity.get() +
               "\n" + self.total_units_cost.get() +
               "\n" + self.total.get())
+
+    #Error messagebox
+    def alert_errors(self, string):
+        tk.messagebox.showinfo("Input Error", string)
 
 
 # Schedule class
@@ -514,7 +523,7 @@ class SchedulePage (tk.Frame):
             else:
                 print("Tour Date Addition Failed.")
         else:
-            print(results_list[1])
+            self.alert_errors(results_list[1])
 
     def test_new_tour_date(self, new_date):
         eh = ErrorHandling()
@@ -552,8 +561,10 @@ class SchedulePage (tk.Frame):
             success_list = [True, "All input fields have been entered correctly."]
             return success_list
 
-    def alert_errors(self):
-        tk.messagebox.showwarning("Please make sure you are entering the right formats into fields")
+    #Error messagebox
+    def alert_errors(self, string):
+        tk.messagebox.showinfo("Input Error", string)
+
 
 # Analysis Class
 class AnalysisPage(tk.Frame):
